@@ -5,6 +5,8 @@
  */
 package EJB;
 
+import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,4 +31,13 @@ public class CitasFacade extends AbstractFacade<Citas> {
         super(Citas.class);
     }
     
+    public List<Citas> citasValidas() {
+        return em.createNamedQuery("Citas.citasValidas").setParameter("tiempo", new Date()).getResultList();
+    }
+    
+    public boolean crearCita(Citas cita) {
+        
+        
+        return true;
+    }
 }

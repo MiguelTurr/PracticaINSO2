@@ -6,11 +6,13 @@ import controlador.util.JsfUtil;
 import java.io.IOException;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import modelo.Citas;
 
 @Named("sesionController")
 @SessionScoped
@@ -22,6 +24,7 @@ public class SesionController implements Serializable {
     private boolean estadoLogin = false;
     private String usuario;
     private String password;
+    private Date ultimoLogin;
 
     public SesionController() {
         
@@ -47,6 +50,14 @@ public class SesionController implements Serializable {
         this.password = clave;
     }
     
+    public Date getUltimoLogin() {
+        return ultimoLogin;
+    }
+    
+    public void setUltimoLogin(Date login) {
+        this.ultimoLogin = login;
+    }
+    
     public Usuarios getLogeado() {
         return this.logeado;
     }
@@ -67,13 +78,14 @@ public class SesionController implements Serializable {
             JsfUtil.addErrorMessage("Credenciales incorrectas");
             
         } else {
-            System.out.println(usuario.getNombre());
-            
             this.logeado = usuario;
             this.estadoLogin = true;
+            this.ultimoLogin = usuario.getUltimaConexion();
+            
+            getFacade().actualizarUltimaConexion(this.logeado);
             
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-            ec.redirect("inicio.xhtml");
+            ec.redirect("faces/inicio.xhtml");
         }
     }
     
@@ -81,4 +93,10 @@ public class SesionController implements Serializable {
         this.logeado = null;
         this.estadoLogin = false;
     }
+    
+    /*public List<Citas> obtenerMisCitas() {
+        
+        List<Citas> lista = null;
+        return lista;
+    }*/
 }

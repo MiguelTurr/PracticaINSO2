@@ -32,14 +32,18 @@ public class SesionFacade {
         
         if(lista.isEmpty() == false) {
             usuario = (Usuarios) lista.get(0);
-            
-            usuario.setUltimaConexion(new Date());
-        
-            em.merge(usuario);
-            em.flush();
-            em.refresh(usuario);
         }
         
         return usuario;
+    }
+    
+    public void actualizarUltimaConexion(Usuarios usuario) {
+        
+        Usuarios actualizar = (Usuarios) em.createNamedQuery("Usuarios.findByIdUsuario").setParameter("idUsuario", usuario.getIdUsuario()).getResultList().get(0);
+        actualizar.setUltimaConexion(new Date());
+        
+        em.merge(actualizar);
+        em.flush();
+        em.refresh(actualizar);
     }
 }

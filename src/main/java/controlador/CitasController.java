@@ -120,6 +120,17 @@ public class CitasController implements Serializable {
     public List<Citas> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
+    
+    public List<Citas> obtenerCitasValidas() {
+        
+        List<Citas> lista = getFacade().citasValidas();
+        return lista;
+    }
+    
+    public void crearNuevaCita() {
+        System.out.println("Quiero crear una nueva cita");
+        
+    }
 
     @FacesConverter(forClass = Citas.class)
     public static class CitasControllerConverter implements Converter {

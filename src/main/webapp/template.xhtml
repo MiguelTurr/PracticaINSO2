@@ -6,16 +6,16 @@
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
-        <title><ui:insert name="title">Default Title</ui:insert></title>
+        <link rel="shortcut icon" type="image/png" href="#{request.contextPath}/imagenes/favicon.png"/>
+
+        <title><ui:insert name="title">#{bundle.AppName}</ui:insert></title>
         <h:outputStylesheet library="css" name="jsfcrud.css"/>
         <h:outputScript library="js" name="jsfcrud.js"/>
     </h:head>
 
     <h:body
         style=
-            "text-align:center;
-            align:center;
-            background: #8360c3;
+            "background: #8360c3;
             background: -webkit-linear-gradient(to right, #8360c3, #2ebf91);
             background: linear-gradient(to right, #8360c3, #2ebf91);">
 
@@ -23,11 +23,12 @@
 
         <div fullPage="true">
             <div position="north" size="65" header="#{bundle.AppName}">
+                
                 <h:form id="menuForm">
-                    <p:menubar style="background:lightgrey;">
+                    <p:menubar>
                         
                         <p:menuitem value="#{bundle.Inicio}" outcome="/inicio"/>
-                        <p:menuitem value="#{bundle.Calendario}" outcome="/inicio"/>
+                        <p:menuitem value="#{bundle.Calendario}" outcome="/calendario"/>
                         
                         <p:menuitem 
                                     rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Cliente'}"
