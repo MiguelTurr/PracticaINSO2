@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ProductosCreateDlg" widgetVar="ProductosCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateProductosTitle}">
+            <h:form id="ProductosCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{productosController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateProductosLabel_idProducto}" for="idProducto" />
+                        <p:inputText id="idProducto" value="#{productosController.selected.idProducto}" title="#{bundle.CreateProductosTitle_idProducto}" required="true" requiredMessage="#{bundle.CreateProductosRequiredMessage_idProducto}"/>
+                        <p:outputLabel value="#{bundle.CreateProductosLabel_producto}" for="producto" />
+                        <p:inputText id="producto" value="#{productosController.selected.producto}" title="#{bundle.CreateProductosTitle_producto}" required="true" requiredMessage="#{bundle.CreateProductosRequiredMessage_producto}"/>
+                        <p:outputLabel value="#{bundle.CreateProductosLabel_precio}" for="precio" />
+                        <p:inputText id="precio" value="#{productosController.selected.precio}" title="#{bundle.CreateProductosTitle_precio}" required="true" requiredMessage="#{bundle.CreateProductosRequiredMessage_precio}"/>
+                        <p:outputLabel value="#{bundle.CreateProductosLabel_cantidad}" for="cantidad" />
+                        <p:inputText id="cantidad" value="#{productosController.selected.cantidad}" title="#{bundle.CreateProductosTitle_cantidad}" required="true" requiredMessage="#{bundle.CreateProductosRequiredMessage_cantidad}"/>
+                        <p:outputLabel value="#{bundle.CreateProductosLabel_descuento}" for="descuento" />
+                        <p:inputText id="descuento" value="#{productosController.selected.descuento}" title="#{bundle.CreateProductosTitle_descuento}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{productosController.create}" value="#{bundle.Save}" update="display,:ProductosListForm:datalist,:growl" oncomplete="handleSubmit(args,'ProductosCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ProductosCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

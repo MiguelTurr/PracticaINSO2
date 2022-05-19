@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AnimalesCreateDlg" widgetVar="AnimalesCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateAnimalesTitle}">
+            <h:form id="AnimalesCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{animalesController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateAnimalesLabel_idAnimal}" for="idAnimal" />
+                        <p:inputText id="idAnimal" value="#{animalesController.selected.idAnimal}" title="#{bundle.CreateAnimalesTitle_idAnimal}" required="true" requiredMessage="#{bundle.CreateAnimalesRequiredMessage_idAnimal}"/>
+                        <p:outputLabel value="#{bundle.CreateAnimalesLabel_tipoAnimal}" for="tipoAnimal" />
+                        <p:inputText id="tipoAnimal" value="#{animalesController.selected.tipoAnimal}" title="#{bundle.CreateAnimalesTitle_tipoAnimal}" required="true" requiredMessage="#{bundle.CreateAnimalesRequiredMessage_tipoAnimal}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{animalesController.create}" value="#{bundle.Save}" update="display,:AnimalesListForm:datalist,:growl" oncomplete="handleSubmit(args,'AnimalesCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="AnimalesCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

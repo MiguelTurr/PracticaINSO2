@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ProductosEditDlg" widgetVar="ProductosEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditProductosTitle}">
+            <h:form id="ProductosEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{productosController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditProductosLabel_idProducto}" for="idProducto" />
+                        <p:inputText id="idProducto" value="#{productosController.selected.idProducto}" title="#{bundle.EditProductosTitle_idProducto}" required="true" requiredMessage="#{bundle.EditProductosRequiredMessage_idProducto}"/>
+                        <p:outputLabel value="#{bundle.EditProductosLabel_producto}" for="producto" />
+                        <p:inputText id="producto" value="#{productosController.selected.producto}" title="#{bundle.EditProductosTitle_producto}" required="true" requiredMessage="#{bundle.EditProductosRequiredMessage_producto}"/>
+                        <p:outputLabel value="#{bundle.EditProductosLabel_precio}" for="precio" />
+                        <p:inputText id="precio" value="#{productosController.selected.precio}" title="#{bundle.EditProductosTitle_precio}" required="true" requiredMessage="#{bundle.EditProductosRequiredMessage_precio}"/>
+                        <p:outputLabel value="#{bundle.EditProductosLabel_cantidad}" for="cantidad" />
+                        <p:inputText id="cantidad" value="#{productosController.selected.cantidad}" title="#{bundle.EditProductosTitle_cantidad}" required="true" requiredMessage="#{bundle.EditProductosRequiredMessage_cantidad}"/>
+                        <p:outputLabel value="#{bundle.EditProductosLabel_descuento}" for="descuento" />
+                        <p:inputText id="descuento" value="#{productosController.selected.descuento}" title="#{bundle.EditProductosTitle_descuento}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{productosController.update}" value="#{bundle.Save}" update="display,:ProductosListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ProductosEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ProductosEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
