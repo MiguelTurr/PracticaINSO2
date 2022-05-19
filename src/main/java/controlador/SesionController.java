@@ -2,16 +2,15 @@ package controlador;
 
 import modelo.Usuarios;
 import EJB.SesionFacade;
+import controlador.util.JsfUtil;
 import java.io.IOException;
 
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 
 @Named("sesionController")
 @SessionScoped
@@ -58,21 +57,18 @@ public class SesionController implements Serializable {
     
     public void iniciarSesion() throws IOException {
         
-        /*this.usuario = "AnSaEs";
-        this.password = "AnSaEs";*/
-        
         Usuarios usuario = getFacade().comprobarUsuario(this.usuario, this.password);
-        System.out.println(usuario.getNombre());
         
         if(usuario == null) {
             
             this.usuario = "";
             this.password = "";
             
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Credenciales no válidas");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+            JsfUtil.addErrorMessage("Credenciales incorrectas");
             
         } else {
+            System.out.println(usuario.getNombre());
+            
             this.logeado = usuario;
             this.estadoLogin = true;
             
@@ -82,11 +78,7 @@ public class SesionController implements Serializable {
     }
     
     public void cerrarSesion() throws IOException {
-        
         this.logeado = null;
         this.estadoLogin = false;
-        
-        //ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        //ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
     }
 }
