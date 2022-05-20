@@ -5,9 +5,12 @@
  */
 package EJB;
 
+import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import modelo.Citas;
 import modelo.Mascotas;
 
 /**

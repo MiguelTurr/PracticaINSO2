@@ -18,6 +18,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import modelo.Mascotas;
 
 @Named("consultasController")
 @SessionScoped
@@ -119,6 +120,12 @@ public class ConsultasController implements Serializable {
 
     public List<Consultas> getItemsAvailableSelectOne() {
         return getFacade().findAll();
+    }
+    
+    public List<Consultas> obtenerConsultasMascota(Mascotas mascota) {
+ 
+        List<Consultas> lista = getFacade().obtenerConsultasMascota(mascota);
+        return lista;
     }
 
     @FacesConverter(forClass = Consultas.class)

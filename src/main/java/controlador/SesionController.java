@@ -69,12 +69,11 @@ public class SesionController implements Serializable {
     public void iniciarSesion() throws IOException {
         
         Usuarios usuario = getFacade().comprobarUsuario(this.usuario, this.password);
+         
+        this.usuario = "";
+        this.password = "";
         
         if(usuario == null) {
-            
-            this.usuario = "";
-            this.password = "";
-            
             JsfUtil.addErrorMessage("Credenciales incorrectas");
             
         } else {
@@ -93,10 +92,4 @@ public class SesionController implements Serializable {
         this.logeado = null;
         this.estadoLogin = false;
     }
-    
-    /*public List<Citas> obtenerMisCitas() {
-        
-        List<Citas> lista = null;
-        return lista;
-    }*/
 }

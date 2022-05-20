@@ -5,10 +5,12 @@
  */
 package EJB;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import modelo.Consultas;
+import modelo.Mascotas;
 
 /**
  *
@@ -27,6 +29,11 @@ public class ConsultasFacade extends AbstractFacade<Consultas> {
 
     public ConsultasFacade() {
         super(Consultas.class);
+    }
+    
+    public List<Consultas> obtenerConsultasMascota(Mascotas mascota) {
+        
+        return em.createNamedQuery("Consultas.buscarConsultaAnimal").setParameter("idMascota", mascota).getResultList();
     }
     
 }

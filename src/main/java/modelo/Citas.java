@@ -36,7 +36,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Citas.findByIdCita", query = "SELECT c FROM Citas c WHERE c.idCita = :idCita"),
     @NamedQuery(name = "Citas.findByFechaCita", query = "SELECT c FROM Citas c WHERE c.fechaCita = :fechaCita"),
     @NamedQuery(name = "Citas.findByDescripcion", query = "SELECT c FROM Citas c WHERE c.descripcion = :descripcion"),
-    @NamedQuery(name = "Citas.citasValidas", query = "SELECT c FROM Citas c WHERE c.fechaCita >= :tiempo ORDER BY c.fechaCita")})
+    @NamedQuery(name = "Citas.citasValidas", query = "SELECT c FROM Citas c WHERE c.fechaCita >= :tiempo ORDER BY c.fechaCita"),
+    @NamedQuery(name = "Citas.citasValidasParaAnimal", query = "SELECT c FROM Citas c WHERE c.fechaCita >= :tiempo AND c.idMascota = :mascota ORDER BY c.fechaCita")})
 public class Citas implements Serializable {
 
     private static final long serialVersionUID = 1L;

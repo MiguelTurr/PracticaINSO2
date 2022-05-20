@@ -1,5 +1,6 @@
 package controlador.util;
 
+import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -65,5 +66,9 @@ public class JsfUtil {
         CREATE,
         DELETE,
         UPDATE
+    }
+    
+    public static int fechaValida(Date fecha) {
+        return fecha.compareTo(new Date());
     }
 }

@@ -6,6 +6,7 @@ import controlador.util.JsfUtil.PersistAction;
 import EJB.CitasFacade;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -18,6 +19,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import modelo.Mascotas;
 
 @Named("citasController")
 @SessionScoped
@@ -27,8 +29,13 @@ public class CitasController implements Serializable {
     private CitasFacade ejbFacade;
     private List<Citas> items = null;
     private Citas selected;
+    
+    private Date citaFecha;
+    private String citaDesc;
+    private Mascotas citaMascota;
 
     public CitasController() {
+        
     }
 
     public Citas getSelected() {
@@ -37,6 +44,30 @@ public class CitasController implements Serializable {
 
     public void setSelected(Citas selected) {
         this.selected = selected;
+    }
+    
+    public Date getCitaFecha() {
+        return citaFecha;
+    }
+    
+    public void setCitaFecha(Date date) {
+        this.citaFecha = date;
+    }
+    
+    public String getCitaDesc() {
+        return citaDesc;
+    }
+    
+    public void setCitaDesc(String desc) {
+        this.citaDesc = desc;
+    }
+    
+    public Mascotas getCitaMascota() {
+        return citaMascota;
+    }
+    
+    public void setCitaMascota(Mascotas mascota) {
+        this.citaMascota = mascota;
     }
 
     protected void setEmbeddableKeys() {
@@ -127,9 +158,27 @@ public class CitasController implements Serializable {
         return lista;
     }
     
+    public List<Citas> obtenerCitasMascota(Mascotas mascota) {
+ 
+        List<Citas> lista = getFacade().citasMascota(mascota);
+        return lista;
+    }
+    
     public void crearNuevaCita() {
-        System.out.println("Quiero crear una nueva cita");
         
+        if(JsfUtil.fechaValida(citaFecha) <= 0) {
+            
+            JsfUtil.addErrorMessage("Fecha introducida es incorrecta");
+            this.citaFecha = null;
+            return;
+        }
+
+        Citas cita = new Citas();
+        cita.setFechaCita(this.citaFecha);
+        cita.setDescripcion(this.citaDesc);
+        cita.setIdMascota(this.citaMascota);
+
+        getFacade().crearNuevaCita(cita); 
     }
 
     @FacesConverter(forClass = Citas.class)

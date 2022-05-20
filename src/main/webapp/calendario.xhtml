@@ -11,8 +11,29 @@
         <ui:define name="body">
             
             <h:form id="CalendarioCliente" rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Cliente'}">
-                <h1>Cliente</h1>
                 
+                <ui:repeat value="#{sesionController.logeado.mascotasList}" var="mascota">
+                    <br/>
+                    <p:card>
+                        
+                        <f:facet name="title">
+                            <h:outputText value="Mascota: #{mascota.nombre}"/>
+                        </f:facet>
+                        
+                        <ui:repeat value="#{citasController.obtenerCitasMascota(mascota)}" var="citas">
+
+                            <p:card style="width: 20rem; margin-bottom: 2em;">
+                                <f:facet name="title">
+                                        <h:outputText value="#{citas.fechaCita}">
+                                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                        </h:outputText>
+                                </f:facet>
+                                    <p>#{citas.descripcion}</p>  
+                            </p:card>
+                        </ui:repeat>
+                        
+                    </p:card>
+                </ui:repeat>
                 
             </h:form>      
             
@@ -20,14 +41,18 @@
                 <br/>
                 <p:card>
                     <f:facet name="title">
-                    <p:commandButton value="Crear nueva cita"
-                     actionListener="#{citasController.crearNuevaCita}"/>
-                            </f:facet>
+                        <p:commandButton 
+                            id="createButton"
+                            value="Crear nueva cita"
+                            actionListener="#{citasController.prepareCreate}"
+                            update=":CrearCita"
+                            oncomplete="PF('CrearDialogCita').show()"/>
+                    </f:facet>
                     
                     <p:panelGrid columns="3" layout="flex" styleClass="showcase-text-align-center">
                         <ui:repeat value="#{citasController.obtenerCitasValidas()}" var="item">
                             
-                            <p:card style="width: 25rem; margin-bottom: 2em;;">
+                            <p:card style="width: 20rem; margin-bottom: 2em;;">
                             <f:facet name="title">
                                     <h:outputText value="#{item.fechaCita}">
                                         <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
@@ -39,9 +64,13 @@
                             </p:card>
                         </ui:repeat>  
                     </p:panelGrid>
+                    
                 </p:card>
  
             </h:form>      
+                
+            <ui:include src="crearCita.xhtml"/>
+            
         </ui:define>
     </ui:composition>
 

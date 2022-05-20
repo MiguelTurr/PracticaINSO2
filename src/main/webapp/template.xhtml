@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
         <link rel="shortcut icon" type="image/png" href="#{request.contextPath}/imagenes/favicon.png"/>
@@ -25,27 +26,48 @@
             <div position="north" size="65" header="#{bundle.AppName}">
                 
                 <h:form id="menuForm">
-                    <p:menubar>
+                    <p:menubar autoDisplay="false">
                         
-                        <p:menuitem value="#{bundle.Inicio}" outcome="/inicio"/>
-                        <p:menuitem value="#{bundle.Calendario}" outcome="/calendario"/>
+                        <p:menuitem
+                            value="#{bundle.Inicio}"
+                            outcome="/inicio"
+                            icon="pi pi-fw pi-home"
+                            styleClass="ui-button-info"/>
+                        <p:menuitem 
+                            value="#{bundle.Calendario}"
+                            outcome="/calendario"
+                            icon="pi pi-fw pi-calendar"
+                            styleClass="ui-button-info"/>
                         
                         <p:menuitem 
-                                    rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Cliente'}"
-                                    value="#{bundle.Mascotas}"
-                                    outcome="/index"/>
+                            rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Cliente'}"
+                            value="#{bundle.Mascotas}"
+                            outcome="/mascotas"
+                            icon="pi pi-fw pi-info-circle"
+                            styleClass="ui-button-info"/>
                         
                         <p:menuitem 
-                                    rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Empleado'}"
-                                    value="#{bundle.Clientes}"
-                                    outcome="/index"/>
+                            rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Empleado'}"
+                            value="#{bundle.Clientes}"
+                            outcome="/clientes"
+                            icon="pi pi-fw pi-user"
+                            styleClass="ui-button-info"/>
                         
                         <p:menuitem 
-                                    rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Administrador'}"
-                                    value="#{bundle.Admin}"
-                                    outcome="/index"/>
+                            rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Administrador'}"
+                            value="#{bundle.Admin}"
+                            outcome="/index"
+                            icon="pi pi-fw pi-lock"
+                            styleClass="ui-button-info"/>
+
+                        <p:menuitem
+                            style="text-align: right;"
+                            value="#{bundle.CerrarSesion}"
+                            outcome="/index"
+                            actionListener="#{sesionController.cerrarSesion}"
+                            icon="pi pi-fw pi-sign-out"
+                            styleClass="ui-button-info"/>
                         
-                        <p:menuitem value="#{bundle.CerrarSesion}" outcome="/index" actionListener="#{sesionController.cerrarSesion}" />
                     </p:menubar>
                 </h:form>
             </div>
