@@ -49,21 +49,28 @@
                             oncomplete="PF('CrearDialogCita').show()"/>
                     </f:facet>
                     
-                    <p:panelGrid columns="3" layout="flex" styleClass="showcase-text-align-center">
-                        <ui:repeat value="#{citasController.obtenerCitasValidas()}" var="item">
-                            
-                            <p:card style="width: 20rem; margin-bottom: 2em;;">
-                            <f:facet name="title">
-                                    <h:outputText value="#{item.fechaCita}">
-                                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                                    </h:outputText>
-                            </f:facet>
+                    <p:dataGrid var="item" value="#{citasController.obtenerCitasValidas()}" columns="3" layout="grid"
+                            rows="20" style="margin-top:20px">
 
-                                <p>#{item.idMascota.getNombre()} (#{item.idMascota.idAnimal.getTipoAnimal()})</p>
-                                <p>#{item.descripcion}</p>  
-                            </p:card>
-                        </ui:repeat>  
-                    </p:panelGrid>
+                        <f:facet name="header">
+                            Próximas citas
+                        </f:facet>
+
+                        <p:panel header="#{item.fechaCita}" style="text-align:center">
+                            
+                            <h:panelGrid columns="1" style="width:100%">
+                                
+                                <p:graphicImage style="height:10%; width:10%;" url="/imagenes/#{item.idMascota.idAnimal.getTipoAnimal()}.png" />
+                
+                                <h:outputText
+                                    value="#{item.idMascota.getNombre()}" />
+                                <h:outputText
+                                    value="#{item.descripcion}" />
+                                
+                            </h:panelGrid>
+                        </p:panel>
+
+                    </p:dataGrid>
                     
                 </p:card>
  

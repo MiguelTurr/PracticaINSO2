@@ -53,12 +53,15 @@
                             icon="pi pi-fw pi-user"
                             styleClass="ui-button-info"/>
                         
-                        <p:menuitem 
-                            rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Administrador'}"
-                            value="#{bundle.Admin}"
-                            outcome="/index"
+                        <p:submenu 
                             icon="pi pi-fw pi-lock"
-                            styleClass="ui-button-info"/>
+                            styleClass="ui-button-info"
+                            rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Administrador'}"
+                            label="#{bundle.Admin}">
+                            
+                            <p:menuitem value="Usuarios" url="/a.jsf"/>
+                            <p:menuitem value="Productos" url="/b.jsf"/>
+                        </p:submenu>
 
                         <p:menuitem
                             style="text-align: right;"

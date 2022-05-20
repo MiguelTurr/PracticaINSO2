@@ -12,6 +12,7 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import modelo.Citas;
 
 @Named("sesionController")
@@ -91,5 +92,8 @@ public class SesionController implements Serializable {
     public void cerrarSesion() throws IOException {
         this.logeado = null;
         this.estadoLogin = false;
+        
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        session.invalidate();
     }
 }
