@@ -1,12 +1,13 @@
 package controlador;
 
-import EJB.AnimalesFacade;
 import modelo.Usuarios;
 import controlador.util.JsfUtil;
 import controlador.util.JsfUtil.PersistAction;
 import EJB.UsuariosFacade;
+import java.io.IOException;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -16,6 +17,7 @@ import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -28,8 +30,75 @@ public class UsuariosController implements Serializable {
     private UsuariosFacade ejbFacade;
     private List<Usuarios> items = null;
     private Usuarios selected;
+    
+    private String clienteNombre;
+    private String clienteApellido1;
+    private String clienteApellido2;
+    private String clienteDni;
+    private String clienteTelefono;
+    private Date clienteFecha;
+    private String clienteUsuario;
+    private String clientePassword;
+    
+    private Usuarios usuarioCreado = null;
 
     public UsuariosController() {
+    }
+    
+    public String getClienteNombre() {
+        return this.clienteNombre;
+    }
+    public String getClienteApellido1() {
+        return this.clienteApellido1;
+    }
+    public String getClienteApellido2() {
+        return this.clienteApellido2;
+    }
+    public String getClienteDni() {
+        return this.clienteDni;
+    }
+    public String getClienteTelefono() {
+        return this.clienteTelefono;
+    }
+    public Date getClienteFecha() {
+        return this.clienteFecha;
+    }
+    public String getClienteUsuario() {
+        return this.clienteUsuario;
+    }
+    public String getClientePassword() {
+        return this.clientePassword;
+    }
+    public Usuarios getUsuarioCreado() {
+        return this.usuarioCreado;
+    }
+    
+    public void setClienteNombre(String nombre) {
+        this.clienteNombre = nombre;
+    }
+    public void setClienteApellido1(String apellido) {
+        this.clienteApellido1 = apellido;
+    }
+    public void setClienteApellido2(String apellido) {
+        this.clienteApellido2 = apellido;
+    }
+    public void setClienteDni(String dni) {
+        this.clienteDni = dni;
+    }
+    public void setClienteTelefono(String telefono) {
+        this.clienteTelefono = telefono;
+    }
+    public void setClienteFecha(Date fecha) {
+        this.clienteFecha = fecha;
+    }
+    public void setClienteUsuario(String user) {
+        this.clienteUsuario = user;
+    }
+    public void setClientePassword(String password) {
+        this.clientePassword = password;
+    }
+    public void setUsuarioCreado(Usuarios user) {
+        this.usuarioCreado = user;
     }
 
     public Usuarios getSelected() {
@@ -39,7 +108,7 @@ public class UsuariosController implements Serializable {
     public void setSelected(Usuarios selected) {
         this.selected = selected;
     }
-
+  
     protected void setEmbeddableKeys() {
     }
 
@@ -121,6 +190,46 @@ public class UsuariosController implements Serializable {
 
     public List<Usuarios> getItemsAvailableSelectOne() {
         return getFacade().findAll();
+    }
+    
+    public void sinNumeros(FacesContext context, UIComponent comp, Object value) {
+
+        String mno = (String) value;
+
+        if (mno.matches(".*[0-9].*")) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("Esa celda no puede contener números");
+        }
+    }
+    
+    public void crearCliente() throws IOException {
+ 
+        Usuarios nuevoUsuario = new Usuarios();
+
+        //
+        nuevoUsuario.setNombre(clienteNombre);
+        nuevoUsuario.setApellido1(clienteApellido1);
+        nuevoUsuario.setApellido2(clienteApellido2);
+        nuevoUsuario.setDni(clienteDni);
+        nuevoUsuario.setTelefono(clienteTelefono);
+        nuevoUsuario.setFechaNacimiento(clienteFecha);
+        nuevoUsuario.setCreadoEn(new Date());
+        nuevoUsuario.setUltimaConexion(new Date());
+
+        // Creación Usuario
+        nuevoUsuario.setUsuario(clienteUsuario);
+        nuevoUsuario.setPassword(clientePassword);
+
+        //
+        getFacade().crearNuevoCliente(nuevoUsuario);
+        JsfUtil.addSuccessMessage("Se ha creado el nuevo cliente");
+
+        this.usuarioCreado = nuevoUsuario;
+    }
+    
+    public void borrarCliente(Usuarios usuario) {
+        
+        System.out.println("Quiero borrar un usuario: "+usuario.getNombre());
     }
 
     @FacesConverter(forClass = Usuarios.class)

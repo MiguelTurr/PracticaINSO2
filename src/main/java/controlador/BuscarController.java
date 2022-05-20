@@ -10,6 +10,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import modelo.Mascotas;
 
 @Named("buscarController")
@@ -58,6 +60,21 @@ public class BuscarController implements Serializable {
         return this.buscarClientes;
     }
     
+    public Usuarios getVerPerfilCliente() {
+        return this.verPerfilCliente;
+    }
+    
+    public Mascotas getVerPerfilMascota() {
+        return this.verPerfilMascota;
+    }
+    
+    public void setVerPerfilCliente(Usuarios perfil) {
+        this.verPerfilCliente = perfil;
+    }
+    public void setVerPerfilMascota(Mascotas perfil) {
+        this.verPerfilMascota = perfil;
+    }
+    
     public void buscarClienteNombre() {
         buscarClientes = getFacade().buscarClienteNombre(this.textoBuscarCliente);
         
@@ -67,8 +84,15 @@ public class BuscarController implements Serializable {
         }
     }
     
-    public void verPerfil(Usuarios usuario) {
+    public void verPerfil(Usuarios usuario) throws IOException {
         System.out.println("Ver perfil de cliente:" +usuario.getNombre());
+        
+        this.verPerfilCliente = usuario;
+        
+        // Ir al perfil cliente
+            
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect("perfilCliente.xhtml");
     }
     
     public void buscarMascotaNombre() {
@@ -80,7 +104,12 @@ public class BuscarController implements Serializable {
         }
     }
     
-    public void verPerfil(Mascotas mascota) {
+    public void verPerfil(Mascotas mascota) throws IOException {
         System.out.println("Ver perfil de mascota :" +mascota.getNombre());
+        
+        // Ir al perfil cliente
+            
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect("perfilMascota.xhtml");
     }
 }

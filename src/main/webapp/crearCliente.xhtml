@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="body">
+            <br/>
+
+            <p:growl globalOnly="true" life="3000" >
+                <p:autoUpdate/>
+            </p:growl>
+            
+            <p:card>
+                <f:facet name="title">
+                    <h:form>
+                        <h:outputText value="Crear nuevo cliente"/>
+                    </h:form>
+                </f:facet>
+                
+                <h:form id="CrearFormCliente">
+                    <p:panelGrid columns="4" columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-2,ui-g-12 ui-md-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                        <p:outputLabel for="name" value="Nombre"/>
+                        <p:inputText 
+                            
+                            validator="#{usuariosController.sinNumeros}"
+                            id="name"
+                            required="true"
+                            requiredMessage="Es necesario escribir un nombre"
+                            value="#{usuariosController.clienteNombre}"/>
+                        
+                        <p:outputLabel for="apellido1" value="Apellido 1"/>
+                        <p:inputText
+                            validator="#{usuariosController.sinNumeros}"
+                            id="apellido1"
+                            required="true"
+                            requiredMessage="Es necesario escribir un apellido"
+                            value="#{usuariosController.clienteApellido1}"/>
+                        
+                        <p:outputLabel for="apellido2" value="Apellido 2"/>
+                        <p:inputText 
+                            validator="#{usuariosController.sinNumeros}"
+                            id="apellido2"
+                            value="#{usuariosController.clienteApellido2}"/>
+                        
+                        <p:outputLabel for="dni" value="DNI"/>
+                        <p:inputText 
+                            id="dni"
+                            required="true"
+                            requiredMessage="Es necesario escribir un DNI"
+                            value="#{usuariosController.clienteDni}"/>
+                        
+                        <p:outputLabel for="telefono" value="Telefono"/>
+                        <p:inputText 
+                            id="telefono"
+                            required="true"
+                            requiredMessage="Es necesario escribir un teléfono"
+                            value="#{usuariosController.clienteTelefono}"/>
+                        
+                        <p:outputLabel value="Fecha Nacimiento" for="fecha" />
+                        <p:calendar 
+                            id="fecha"
+                            pattern="MM/dd/yyyy"
+                            required="true"
+                            requiredMessage="Es necesario escribir la fecha de nacimiento"
+                            value="#{usuariosController.clienteFecha}"/>
+                        
+                        <p:outputLabel for="usuario" value="Usuario"/>
+                        <p:inputText 
+                            id="usuario"
+                            required="true"
+                            requiredMessage="Es necesario escribir un usuario"
+                            value="#{usuariosController.clienteUsuario}"/>
+                        
+                        <p:outputLabel for="password" value="Contraseña"/>
+                        <p:inputText 
+                            id="password"
+                            required="true"
+                            requiredMessage="Es necesario escribir una contraseña"
+                            value="#{usuariosController.clientePassword}"/>
+                        
+                    </p:panelGrid>
+                    
+                    <div style="text-align:center;">
+                        <p:commandButton
+                            value="Crear"
+                            actionListener="#{usuariosController.crearCliente()}"
+                            update=":growl,:CrearFormCliente"
+                            style="width:80%;height:80%"
+                            oncomplete="handleSubmit(args,'CrearFormCliente');">
+                        </p:commandButton>
+
+                        <p:commandButton
+                            id="pruebaBoton"
+                            actionListener="#{buscarController.verPerfil(usuariosController.usuarioCreado)}"
+                            rendered="#{usuariosController.usuarioCreado ne null}"
+                            style="width:80%;height:80%"
+                            value="Ir perfil"/>
+                    </div>
+                </h:form>
+                
+            </p:card>
+        </ui:define>
+    </ui:composition>
+
+</html>

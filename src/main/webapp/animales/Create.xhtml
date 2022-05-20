@@ -12,8 +12,6 @@
             <h:form id="AnimalesCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{animalesController.selected != null}">
-                        <p:outputLabel value="#{bundle.CreateAnimalesLabel_idAnimal}" for="idAnimal" />
-                        <p:inputText id="idAnimal" value="#{animalesController.selected.idAnimal}" title="#{bundle.CreateAnimalesTitle_idAnimal}" required="true" requiredMessage="#{bundle.CreateAnimalesRequiredMessage_idAnimal}"/>
                         <p:outputLabel value="#{bundle.CreateAnimalesLabel_tipoAnimal}" for="tipoAnimal" />
                         <p:inputText id="tipoAnimal" value="#{animalesController.selected.tipoAnimal}" title="#{bundle.CreateAnimalesTitle_tipoAnimal}" required="true" requiredMessage="#{bundle.CreateAnimalesRequiredMessage_tipoAnimal}"/>
                     </p:panelGrid>

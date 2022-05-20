@@ -13,26 +13,46 @@
     <ui:composition template="/template.xhtml">
         
         <ui:define name="body">
+            
+            <style type="text/css">
+                .noHeader thead {
+                    display: none;
+                }
+                
+            </style>
 
             <br/>
-
+                            
             <p:card>
                 <f:facet name="title">
                     Bienvenido #{sesionController.logeado.nombre} #{sesionController.logeado.apellido1} #{sesionController.logeado.apellido2}
                 </f:facet>
                 
-                <p:graphicImage style="height:10%; width:10%;" url="/imagenes/persona.png" />
-                
-                <p>Usuario: #{sesionController.logeado.usuario}</p>
-                <p>Estas conectado como: #{sesionController.logeado.idRol.getTipoUsuario()}</p>
-                <p>Tu última conexión fue: 
-                    <h:outputText value="#{sesionController.ultimoLogin}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:outputText>
-                </p>
-                <p>
-                    Tienes #{sesionController.logeado.mascotasList.size()} mascotas
-                </p>
+                <hr/>
+
+                <h:form>
+                    <p:dataTable value="" style="text-align:center" styleClass="noHeader">
+                        
+                        <p:column>
+                            <p:graphicImage style="height:10%; width:10%;" url="/imagenes/persona.png" />
+
+                            <p>Usuario: #{sesionController.logeado.usuario}</p>
+                            <p>Estas conectado como: #{sesionController.logeado.idRol.getTipoUsuario()}</p>
+                            <p>Tu última conexión fue: 
+                                <h:outputText value="#{sesionController.ultimoLogin}">
+                                    <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                </h:outputText>
+                            </p>
+                            <p>
+                                Tienes #{sesionController.logeado.mascotasList.size()} mascotas
+                            </p>
+                        </p:column>
+                        
+                        <p:column>
+                            
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </p:card>
         </ui:define>
     </ui:composition>
