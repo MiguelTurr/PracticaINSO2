@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import modelo.Mascotas;
 import modelo.Roles;
 import modelo.Usuarios;
 
@@ -31,5 +32,11 @@ public class BuscarFacade {
         
         Roles cliente = (Roles) em.createNamedQuery("Roles.findByIdRol").setParameter("idRol", 3).getResultList().get(0);
         return em.createNamedQuery("Usuarios.buscarCliente").setParameter("usuario", "%"+nombre+"%").setParameter("rol", cliente).getResultList();
+    }
+    
+    public List<Mascotas> buscarMascotaNombre(String nombre) {
+        
+        //Animales animal = (Animales) em.createNamedQuery("Roles.findByIdRol").setParameter("idRol", 3).getResultList().get(0);
+        return em.createNamedQuery("Mascotas.buscarMascota").setParameter("mascota", "%"+nombre+"%").getResultList();
     }
 }

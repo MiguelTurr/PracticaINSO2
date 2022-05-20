@@ -10,33 +10,72 @@
 
         <ui:define name="body">
             <br/>
+
+            <p:growl globalOnly="true" life="3000" >
+                <p:autoUpdate/>
+            </p:growl>
             
             <p:card>
                 <f:facet name="title">
+                    
                     <h:form>
-                            <p:inputText id="inputBuscarMascotas" />
-                            <p:commandButton
-                                style="margin-left: 10px;"
-                                id="btnBuscarMascotas"
-                                value="Buscar mascotas"
-                                icon="pi pi-search"
-                                type="button"/>
+                        
+                        <p:inputText 
+                            id="inputBuscarMascotas" 
+                            value="#{buscarController.textoBuscarMascota}"/>
+
+                        <p:commandButton
+                            actionListener="#{buscarController.buscarMascotaNombre}"
+                            style="margin-left: 10px;"
+                            value="Buscar mascota"
+                            icon="pi pi-search"
+                            update=":ResultadosBusquedaMascotas"/>
                     </h:form>
                 </f:facet>
 
-                <p:dataGrid 
-                    var="item" 
-                    value="#{citasController.obtenerCitasValidas()}" 
-                    columns="3" 
-                    layout="grid"
-                    rows="20" 
-                    style="margin-top:20px">
+                <h:form id="ResultadosBusquedaMascotas">
 
-                    <f:facet name="header">
-                        Busca una mascota
-                    </f:facet>
+                    <p:dataTable id="datalist" value="#{buscarController.buscarMascotas}" var="item"
+                                 paginator="#{buscarController.buscarMascotas.size() ne 0}"
+                                 rows="20"
+                                 rowsPerPageTemplate="20,30,40"
+                                 >
 
-                </p:dataGrid>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Animal"/>
+                            </f:facet>
+                            
+                            <p:graphicImage
+                                style="height:15%; width:15%;"
+                                url="/imagenes/#{item.idAnimal.getTipoAnimal()}.png" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nombre"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nombre}"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Dueño"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idCliente.getNombre()} #{item.idCliente.getApellido1()} #{item.idCliente.getApellido2()}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Perfil"/>
+                            </f:facet>
+                            <p:commandButton
+                                actionListener="#{buscarController.verPerfil(item)}"
+                                icon="pi pi-user-edit"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
                 
             </p:card>
         </ui:define>

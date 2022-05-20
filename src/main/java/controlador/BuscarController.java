@@ -50,6 +50,10 @@ public class BuscarController implements Serializable {
         return this.textoBuscarMascota;
     }
     
+    public List<Mascotas> getBuscarMascotas() {
+        return this.buscarMascotas;
+    }
+    
     public List<Usuarios> getBuscarClientes() {
         return this.buscarClientes;
     }
@@ -64,11 +68,19 @@ public class BuscarController implements Serializable {
     }
     
     public void verPerfil(Usuarios usuario) {
-        System.out.println("Ver perfil de :" +usuario.getNombre());
+        System.out.println("Ver perfil de cliente:" +usuario.getNombre());
     }
     
     public void buscarMascotaNombre() {
-        System.out.println("Quiero buscar una mascota: "+this.textoBuscarMascota);
-        //buscarClientes = getFacade().buscarClienteNombre(this.textoBuscarCliente);
+        buscarMascotas = getFacade().buscarMascotaNombre(this.textoBuscarMascota);
+        
+        if(buscarMascotas.isEmpty() == true) {
+            this.textoBuscarMascota = "";
+            JsfUtil.addErrorMessage("No se ha encontrado ningún resultado");
+        }
+    }
+    
+    public void verPerfil(Mascotas mascota) {
+        System.out.println("Ver perfil de mascota :" +mascota.getNombre());
     }
 }
