@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="body">
+            <br/>
+            
+            <p:card>
+                <f:facet name="title">
+                    <h:form>
+                            <p:inputText id="inputBuscarMascotas" />
+                            <p:commandButton
+                                style="margin-left: 10px;"
+                                id="btnBuscarMascotas"
+                                value="Buscar mascotas"
+                                icon="pi pi-search"
+                                type="button"/>
+                    </h:form>
+                </f:facet>
+
+                <p:dataGrid 
+                    var="item" 
+                    value="#{citasController.obtenerCitasValidas()}" 
+                    columns="3" 
+                    layout="grid"
+                    rows="20" 
+                    style="margin-top:20px">
+
+                    <f:facet name="header">
+                        Busca una mascota
+                    </f:facet>
+
+                </p:dataGrid>
+                
+            </p:card>
+        </ui:define>
+    </ui:composition>
+
+</html>

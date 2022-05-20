@@ -46,11 +46,21 @@
                             icon="pi pi-fw pi-info-circle"
                             styleClass="ui-button-info"/>
                         
-                        <p:menuitem 
+                        <p:submenu 
+                            icon="pi pi-fw pi-search"
+                            styleClass="ui-button-info"
                             rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Empleado'}"
-                            value="#{bundle.Clientes}"
-                            outcome="/clientes"
-                            icon="pi pi-fw pi-user"
+                            label="#{bundle.Buscar}">
+                            
+                            <p:menuitem value="Clientes" outcome="/buscarClientes"/>
+                            <p:menuitem value="Mascotas" outcome="/buscarMascotas"/>
+                        </p:submenu>
+                        
+                        <p:menuitem 
+                            rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Empleado' or sesionController.logeado.idRol.tipoUsuario eq 'Administrador'}"
+                            value="#{bundle.CrearCliente}"
+                            outcome="/buscarClientes"
+                            icon="pi pi-fw pi-user-plus"
                             styleClass="ui-button-info"/>
                         
                         <p:submenu 
@@ -59,8 +69,8 @@
                             rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Administrador'}"
                             label="#{bundle.Admin}">
                             
-                            <p:menuitem value="Usuarios" url="/a.jsf"/>
-                            <p:menuitem value="Productos" url="/b.jsf"/>
+                            <p:menuitem value="Usuarios" outcome="/buscarClientes"/>
+                            <p:menuitem value="Productos" outcome="/buscarClientes"/>
                         </p:submenu>
 
                         <p:menuitem

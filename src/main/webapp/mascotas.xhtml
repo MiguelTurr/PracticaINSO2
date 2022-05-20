@@ -18,7 +18,16 @@
                     
                     <p:card style="margin-bottom: 2em;">
                         
-                        <p:panel header="#{mascota.nombre}">
+                        <p:panel>
+                            
+                            <f:facet name="header">
+                                <p:graphicImage
+                                    style="height:2.5%; width:2.5%;"
+                                    url="/imagenes/#{mascota.idAnimal.getTipoAnimal()}.png" />
+                                <br/>
+                                <h:outputText value="#{mascota.nombre}"/>
+                            </f:facet>
+                            
                             <p:dataTable id="datalist" 
                                      value="#{consultasController.obtenerConsultasMascota(mascota)}" var="item"
                                      rows="30">
@@ -29,7 +38,7 @@
                                     </f:facet>
                                     
                                     <h:outputText value="#{item.fechaConsulta}">
-                                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                     </h:outputText>
                                 </p:column>
 
@@ -42,7 +51,7 @@
 
                                 <p:column>
                                     <f:facet name="header">
-                                        <h:outputText value="Información"/>
+                                        <h:outputText value="Consulta"/>
                                     </f:facet>
                                     <h:outputText value="#{item.descripcion}"/>
                                 </p:column>

@@ -14,23 +14,37 @@
                 
                 <ui:repeat value="#{sesionController.logeado.mascotasList}" var="mascota">
                     <br/>
+                    
                     <p:card>
                         
-                        <f:facet name="title">
-                            <h:outputText value="Mascota: #{mascota.nombre}"/>
-                        </f:facet>
-                        
-                        <ui:repeat value="#{citasController.obtenerCitasMascota(mascota)}" var="citas">
-
-                            <p:card style="width: 20rem; margin-bottom: 2em;">
-                                <f:facet name="title">
-                                        <h:outputText value="#{citas.fechaCita}">
-                                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                                        </h:outputText>
+                        <p:dataGrid var="item" value="#{citasController.obtenerCitasMascota(mascota)}" columns="3" layout="grid"
+                                rows="20">
+                            
+                            <f:facet name="header">
+                                <p:graphicImage
+                                    style="height:2.5%; width:2.5%;"
+                                    url="/imagenes/#{mascota.idAnimal.getTipoAnimal()}.png" />
+                                <br/>
+                                <h:outputText value="#{mascota.nombre}"/>
+                            </f:facet>
+                            
+                            <p:panel style="text-align:center">
+                                
+                                <f:facet name="header">
+                                    <h:outputText value="#{item.fechaCita}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                    </h:outputText>
                                 </f:facet>
-                                    <p>#{citas.descripcion}</p>  
-                            </p:card>
-                        </ui:repeat>
+                                
+                                <h:panelGrid columns="1" style="width:100%">
+                                    <h:outputText
+                                        value="#{item.descripcion}" />
+
+                                </h:panelGrid>
+                            </p:panel>
+                            
+
+                        </p:dataGrid>
                         
                     </p:card>
                 </ui:repeat>
@@ -56,7 +70,13 @@
                             Próximas citas
                         </f:facet>
 
-                        <p:panel header="#{item.fechaCita}" style="text-align:center">
+                        <p:panel style="text-align:center">
+                            
+                            <f:facet name="header">
+                                <h:outputText value="#{item.fechaCita}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                </h:outputText>
+                            </f:facet>
                             
                             <h:panelGrid columns="1" style="width:100%">
                                 
