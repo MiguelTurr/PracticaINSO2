@@ -46,4 +46,14 @@ public class SesionFacade {
         em.flush();
         em.refresh(actualizar);
     }
+    
+    public void cambiarPassword(Usuarios usuario, String newPassword) {  
+        
+        Usuarios actualizar = (Usuarios) em.createNamedQuery("Usuarios.findByIdUsuario").setParameter("idUsuario", usuario.getIdUsuario()).getResultList().get(0);
+        actualizar.setPassword(newPassword);
+
+        em.merge(actualizar);
+        em.flush();
+        em.refresh(actualizar);
+    }
 }

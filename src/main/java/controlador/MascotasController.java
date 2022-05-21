@@ -120,6 +120,10 @@ public class MascotasController implements Serializable {
     public List<Mascotas> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
+    
+    public void borrarMascota(Mascotas mascota) {
+        System.out.println("Quiero borrar una mascota: "+mascota.getNombre());
+    }
 
     @FacesConverter(forClass = Mascotas.class)
     public static class MascotasControllerConverter implements Converter {

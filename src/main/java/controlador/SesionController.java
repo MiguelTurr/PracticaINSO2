@@ -25,6 +25,7 @@ public class SesionController implements Serializable {
     private String usuario;
     private String password;
     private Date ultimoLogin;
+    private String newPassword;
 
     public SesionController() {
         
@@ -66,6 +67,14 @@ public class SesionController implements Serializable {
         return this.estadoLogin;
     }
     
+    public void setNewPassword(String password) {
+        this.newPassword = password;
+    }
+    
+    public String getNewPassword() {
+        return this.newPassword;
+    }
+    
     public void iniciarSesion() throws IOException {
         
         Usuarios usuario = getFacade().comprobarUsuario(this.usuario, this.password);
@@ -91,8 +100,14 @@ public class SesionController implements Serializable {
     public void cerrarSesion() throws IOException {
         this.logeado = null;
         this.estadoLogin = false;
+        this.newPassword = "";
         
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         session.invalidate();
+    }
+    
+    public void actualizarPassword() {
+        getFacade().cambiarPassword(this.logeado, this.newPassword);
+        JsfUtil.addSuccessMessage("Contraseña cambiada correctamente");
     }
 }

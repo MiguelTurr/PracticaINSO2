@@ -15,6 +15,10 @@
         <ui:define name="body">
             
             <style type="text/css">
+                .ui-datagrid-no-border>.ui-datagrid-content {
+                        border: none !important;
+                }
+                
                 .noHeader thead {
                     display: none;
                 }
@@ -22,6 +26,10 @@
             </style>
 
             <br/>
+            
+            <p:growl globalOnly="true" life="3000" >
+                <p:autoUpdate/>
+            </p:growl>
                             
             <p:card>
                 <f:facet name="title">
@@ -50,6 +58,32 @@
                         
                         <p:column>
                             
+                            <p:panelGrid 
+                                styleClass="ui-datagrid-no-border"
+                                columns="2"
+                                layout="grid">
+
+                               <p:panel>  
+                                   <p>Escribe tu nueva contraseña:</p>
+                                    <p:inputText value="#{sesionController.newPassword}"/>
+                                    <p:commandButton
+                                        style="background:red;border-color:red;"
+                                        value="Cambiar contraseña"
+                                        onclick="return confirm('¿Estás seguro?');"
+                                        actionListener="#{sesionController.actualizarPassword()}"
+                                        update=":growl"/> 
+                               </p:panel>   
+
+                               <p:panel>  
+                                   <p>Escribe tu nueva :</p>
+                                    <p:inputText value=""/>
+                                    <p:commandButton
+                                        value="Sin usoaaaa"
+                                        update=":growl"
+                                        disabled="true"/> 
+                               </p:panel> 
+                                    
+                            </p:panelGrid>
                         </p:column>
                     </p:dataTable>
                 </h:form>

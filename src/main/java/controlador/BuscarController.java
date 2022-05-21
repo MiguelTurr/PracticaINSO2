@@ -107,7 +107,9 @@ public class BuscarController implements Serializable {
     public void verPerfil(Mascotas mascota) throws IOException {
         System.out.println("Ver perfil de mascota :" +mascota.getNombre());
         
-        // Ir al perfil cliente
+        this.verPerfilMascota = mascota;
+        
+        // Ir al perfil mascota
             
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect("perfilMascota.xhtml");

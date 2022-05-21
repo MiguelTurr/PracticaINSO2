@@ -172,6 +172,13 @@ public class CitasController implements Serializable {
             this.citaFecha = null;
             return;
         }
+        
+        if(this.citaDesc.length() <= 10) {
+            
+            JsfUtil.addErrorMessage("Descripción demasiado corta");
+            this.citaDesc = "";
+            return;
+        }
 
         Citas cita = new Citas();
         cita.setFechaCita(this.citaFecha);

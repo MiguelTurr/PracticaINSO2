@@ -85,12 +85,14 @@
                         
                     </p:panelGrid>
                     
+                    <hr/>
+                    
                     <div style="text-align:center;">
                         <p:commandButton
                             value="Crear"
                             actionListener="#{usuariosController.crearCliente()}"
                             update=":growl,:CrearFormCliente"
-                            style="width:80%;height:80%"
+                            style="width:50%;height:50%"
                             oncomplete="handleSubmit(args,'CrearFormCliente');">
                         </p:commandButton>
 
