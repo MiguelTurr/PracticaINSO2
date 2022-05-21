@@ -18,6 +18,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import modelo.Animales;
+import modelo.Usuarios;
 
 @Named("mascotasController")
 @SessionScoped
@@ -27,6 +29,9 @@ public class MascotasController implements Serializable {
     private MascotasFacade ejbFacade;
     private List<Mascotas> items = null;
     private Mascotas selected;
+    
+    private Animales mascotaTipo;
+    private String mascotaNombre;
 
     public MascotasController() {
     }
@@ -37,6 +42,22 @@ public class MascotasController implements Serializable {
 
     public void setSelected(Mascotas selected) {
         this.selected = selected;
+    }
+    
+    public Animales getMascotaTipo() {
+        return this.mascotaTipo;
+    }
+    
+    public void setMascotaTipo(Animales tipo) {
+        this.mascotaTipo = tipo;
+    }
+    
+    public String getMascotaNombre() {
+        return this.mascotaNombre;
+    }
+    
+    public void setMascotaNombre(String nombre) {
+        this.mascotaNombre = nombre;
     }
 
     protected void setEmbeddableKeys() {
@@ -119,6 +140,11 @@ public class MascotasController implements Serializable {
 
     public List<Mascotas> getItemsAvailableSelectOne() {
         return getFacade().findAll();
+    }
+    
+    public void crearNuevaMascota(Usuarios usuario) {
+        System.out.println("Quiero crear una mascota: "+ mascotaTipo.getTipoAnimal());
+        System.out.println("de: "+ usuario.getNombre());
     }
     
     public void borrarMascota(Mascotas mascota) {

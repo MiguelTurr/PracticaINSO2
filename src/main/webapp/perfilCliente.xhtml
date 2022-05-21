@@ -28,7 +28,10 @@
                     <h:form>
                         <p:commandButton
                             style="margin-right:20px;"
-                            value="Añadir mascota"/>
+                            actionListener="#{mascotasController.prepareCreate}"
+                            value="Añadir mascota"
+                            update=":CrearMascota"
+                            oncomplete="PF('CrearDialogMascota').show()"/>
 
                         <p:commandButton
                             styleClass="danger-button"
@@ -45,7 +48,7 @@
                 
                 <hr/>
                 
-                <h:form>
+                <h:form id="animalesCliente">
                     <p:dataTable value="" style="text-align:center" styleClass="noHeader">
                         
                         <p:column>
@@ -97,6 +100,8 @@
                     </p:dataTable>
                 </h:form>
             </p:card>
+            
+            <ui:include src="crearMascota.xhtml"/>
             
         </ui:define>
     </ui:composition>

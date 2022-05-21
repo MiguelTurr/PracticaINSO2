@@ -18,6 +18,7 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -207,6 +208,7 @@ public class UsuariosController implements Serializable {
         Usuarios nuevoUsuario = new Usuarios();
 
         //
+        
         nuevoUsuario.setNombre(clienteNombre);
         nuevoUsuario.setApellido1(clienteApellido1);
         nuevoUsuario.setApellido2(clienteApellido2);
@@ -225,11 +227,24 @@ public class UsuariosController implements Serializable {
         JsfUtil.addSuccessMessage("Se ha creado el nuevo cliente");
 
         this.usuarioCreado = nuevoUsuario;
+        
+        // Reset
+        
+        clienteNombre = "";
+        clienteApellido1 = "";
+        clienteApellido2 = "";
+        clienteDni = "";
+        clienteTelefono = "";
+        clienteFecha = null;
+        clienteUsuario = "";
+        clientePassword = "";
     }
     
-    public void borrarCliente(Usuarios usuario) {
+    public void borrarCliente(Usuarios usuario) throws IOException {
+        getFacade().remove(usuario);
         
-        System.out.println("Quiero borrar un usuario: "+usuario.getNombre());
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect("faces/inicio.xhtml");
     }
 
     @FacesConverter(forClass = Usuarios.class)

@@ -1,16 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CrearDialogMascota" widgetVar="CrearDialogMascota" modal="true" resizable="false" appendTo="@(body)" header="Crear nueva mascota">
+            <h:form id="CrearMascota">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2">
+                       
+                        <p:outputLabel value="Nombre" for="nombreMascota" />
+                        <p:inputText id="nombreMascota" value="#{mascotasController.mascotaNombre}" required="true" requiredMessage="Debes escribir un nombre"/>
+
+                        <p:outputLabel value="Tipo animal" for="tipoMascota" />
+                        <h:selectOneMenu id="tipoMascota" value="#{mascotasController.mascotaTipo}">
+                                <f:selectItems 
+                                    value="#{animalesController.itemsAvailableSelectOne}"
+                                    var="entry"
+                                    itemValue="#{entry}"
+                                    itemLabel="#{entry.tipoAnimal}" />
+                        </h:selectOneMenu>
+                        
+                        <p:commandButton 
+                            actionListener="#{mascotasController.crearNuevaMascota(buscarController.verPerfilCliente)}" 
+                            value="#{bundle.Crear}" 
+                            update="display,:animalesCliente,:growl" 
+                            oncomplete="handleSubmit(args,'CrearDialogMascota');"/>
+                        
+                        <p:commandButton value="#{bundle.Cancelar}" onclick="CrearDialogMascota.hide()"/>
+                        
+                    </p:panelGrid>
+                    
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
 </html>

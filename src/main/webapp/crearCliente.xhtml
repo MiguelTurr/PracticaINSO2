@@ -91,21 +91,20 @@
                         <p:commandButton
                             value="Crear"
                             actionListener="#{usuariosController.crearCliente()}"
+                            action="#{buscarController.verPerfil(usuariosController.usuarioCreado)}"
                             update=":growl,:CrearFormCliente"
                             style="width:50%;height:50%"
-                            oncomplete="handleSubmit(args,'CrearFormCliente');">
+                            oncomplete="prueba();handleSubmit(args,'CrearFormCliente');">
                         </p:commandButton>
-
-                        <p:commandButton
-                            id="pruebaBoton"
-                            actionListener="#{buscarController.verPerfil(usuariosController.usuarioCreado)}"
-                            rendered="#{usuariosController.usuarioCreado ne null}"
-                            style="width:80%;height:80%"
-                            value="Ir perfil"/>
                     </div>
                 </h:form>
                 
             </p:card>
+            <script>
+                function prueba() {
+                    alert("prueba "+#{usuariosController.usuarioCreado});
+                }
+            </script>
         </ui:define>
     </ui:composition>
 
