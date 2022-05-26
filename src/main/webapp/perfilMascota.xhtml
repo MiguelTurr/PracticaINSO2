@@ -28,7 +28,9 @@
                     <h:form>
                         <p:commandButton
                             style="margin-right:20px;"
-                            value="Añadir consulta"/>
+                            value="Añadir consulta"
+                            update=":CrearConsulta"
+                            oncomplete="PF('CrearDialogConsulta').show()"/>
                         
                         <p:commandButton
                             style="margin-right:20px;"
@@ -38,14 +40,21 @@
                         <p:commandButton
                             style="background:red;border-color:red;"
                             value="Borrar mascota"
-                            onclick="return confirm('¿Estás seguro?');"
-                            actionListener="#{mascotasController.borrarMascota(buscarController.verPerfilMascota)}"/> 
+                            onclick="return confirm('¿Estás seguro?');"> 
+
+                            <f:actionListener 
+                                binding="#{mascotasController.borrarMascota(buscarController.verPerfilMascota)}"/>
+                            
+                            <f:actionListener 
+                                binding="#{buscarController.limpiarBusquedaMascotas()}"/> 
+                        </p:commandButton> 
+                            
                     </h:form>
                 </f:facet>
                 
                 <hr/>
                 
-                <h:form>
+                <h:form id="ConsultasMascota">
                     <p:dataTable value="" style="text-align:center" styleClass="noHeader">
                         
                         <p:column>
@@ -55,18 +64,41 @@
                                url="/imagenes/#{buscarController.verPerfilMascota.idAnimal.getTipoAnimal()}.png" />
                                     
                             <p>#{buscarController.verPerfilMascota.nombre}</p>
-                            <p>Dueño: #{buscarController.verPerfilMascota.idCliente.getNombre()}</p>
+                            <p>Dueño: #{buscarController.verPerfilMascota.idCliente.getNombre()} #{buscarController.verPerfilMascota.idCliente.getApellido1()}</p>
                         </p:column>
 
                         <p:column>
-                            <p>
+                            <p style="font-size: 14px;font-weight: bold;">
                                 Consultas:
                             </p>
+                       
+                            <p:dataGrid 
+                                styleClass="ui-datagrid-no-border"
+                                var="item" 
+                                value="#{buscarController.verPerfilMascota.consultasList}"
+                                columns="3"
+                                layout="grid"
+                                rows="20">
+
+                                <p:panel style="text-align:center;">
+
+                                    <h:outputText style="font-weight: bold;" value="#{item.fechaConsulta}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                    
+                                    <br/>
+                                    
+                                    <h:outputText value="#{item.descripcion}"/>
+                                    
+                                </p:panel>
+                            </p:dataGrid>     
 
                         </p:column>
                     </p:dataTable>
                 </h:form>
             </p:card>
+            
+            <ui:include src="crearConsulta.xhtml"/>
             
         </ui:define>
     </ui:composition>

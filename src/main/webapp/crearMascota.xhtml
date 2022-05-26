@@ -24,16 +24,21 @@
                                     itemValue="#{entry}"
                                     itemLabel="#{entry.tipoAnimal}" />
                         </h:selectOneMenu>
-                        
-                        <p:commandButton 
-                            actionListener="#{mascotasController.crearNuevaMascota(buscarController.verPerfilCliente)}" 
-                            value="#{bundle.Crear}" 
-                            update="display,:animalesCliente,:growl" 
-                            oncomplete="handleSubmit(args,'CrearDialogMascota');"/>
-                        
-                        <p:commandButton value="#{bundle.Cancelar}" onclick="CrearDialogMascota.hide()"/>
-                        
                     </p:panelGrid>
+            
+                    <div style="text-align:center;">            
+                        <p:commandButton 
+                            value="#{bundle.Crear}" 
+                            actionListener="#{mascotasController.crearNuevaMascota(buscarController.verPerfilCliente)}"
+                            update="display,:animalesCliente,:growl" 
+                            oncomplete="handleSubmit(args,'CrearDialogMascota');">
+                         </p:commandButton>
+                        
+                        <p:commandButton
+                            style="margin-left: 10px;background:red;border-color:red;"
+                            value="#{bundle.Cancelar}"
+                            onclick="CrearDialogMascota.hide()"/>
+                    </div>                    
                     
                 </h:panelGroup>
             </h:form>

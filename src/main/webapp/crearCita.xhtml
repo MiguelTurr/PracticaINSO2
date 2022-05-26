@@ -27,12 +27,21 @@
                                     itemValue="#{entry}"
                                     itemLabel="#{entry.nombre}" />
                         </h:selectOneMenu>
-                        
-                        <p:commandButton actionListener="#{citasController.crearNuevaCita}" value="#{bundle.Crear}" update="display,:CalendarioEmpleado,:growl" oncomplete="handleSubmit(args,'CrearDialogCita');"/>
-                        <p:commandButton value="#{bundle.Cancelar}" onclick="CrearDialogCita.hide()"/>
-                        
                     </p:panelGrid>
-                    
+                   
+                    <div style="text-align:center;">     
+                        <p:commandButton 
+                            actionListener="#{citasController.crearNuevaCita}" 
+                            value="#{bundle.Crear}" 
+                            update="display,:CalendarioEmpleado,:growl" 
+                            oncomplete="handleSubmit(args,'CrearDialogCita');"/>
+                        
+                        <p:commandButton
+                            style="margin-left: 10px;background:red;border-color:red;"
+                            value="#{bundle.Cancelar}" 
+                            onclick="CrearDialogCita.hide()"/>
+                    </div>
+                        
                 </h:panelGroup>
             </h:form>
         </p:dialog>

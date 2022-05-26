@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog
+            id="CrearDialogConsulta"
+            widgetVar="CrearDialogConsulta"
+            modal="true"
+            resizable="false"
+            appendTo="@(body)"
+            header="Crear nueva consulta">
+            
+            <h:form id="CrearConsulta">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2">
+                       
+                        <p:outputLabel value="Descripcion" for="infoConsulta" />
+                        <p:inputTextarea
+                            id="infoConsulta"
+                            value="#{consultasController.consultaInfo}"
+                            required="true"
+                            requiredMessage="Debes escribir una descripción"/>
+                    </p:panelGrid>
+
+                    <div style="text-align:center;">
+                        
+                        <p:commandButton 
+                            value="#{bundle.Crear}" 
+                            actionListener="#{consultasController.crearNuevaConsulta(buscarController.verPerfilMascota, sesionController.logeado)}"
+                            update="display,:ConsultasMascota,:growl" 
+                            oncomplete="handleSubmit(args,'CrearDialogConsulta');">
+                        </p:commandButton>
+
+                        <p:commandButton 
+                            style="margin-left: 10px;background:red;border-color:red;"
+                            value="#{bundle.Cancelar}" 
+                            onclick="CrearDialogConsulta.hide()"/>
+                    </div>
+                    
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

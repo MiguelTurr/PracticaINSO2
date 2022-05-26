@@ -6,6 +6,7 @@ import controlador.util.JsfUtil.PersistAction;
 import EJB.ConsultasFacade;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -19,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import modelo.Mascotas;
+import modelo.Usuarios;
 
 @Named("consultasController")
 @SessionScoped
@@ -28,6 +30,8 @@ public class ConsultasController implements Serializable {
     private ConsultasFacade ejbFacade;
     private List<Consultas> items = null;
     private Consultas selected;
+    
+    private String consultaInfo;
 
     public ConsultasController() {
     }
@@ -38,6 +42,14 @@ public class ConsultasController implements Serializable {
 
     public void setSelected(Consultas selected) {
         this.selected = selected;
+    }
+    
+    public String getConsultaInfo() {
+        return this.consultaInfo;
+    }
+    
+    public void setConsultaInfo(String descripcion) {
+        this.consultaInfo = descripcion;
     }
 
     protected void setEmbeddableKeys() {
@@ -126,6 +138,19 @@ public class ConsultasController implements Serializable {
  
         List<Consultas> lista = getFacade().obtenerConsultasMascota(mascota);
         return lista;
+    }
+    
+    public void crearNuevaConsulta(Mascotas mascota, Usuarios empleado) {
+        Consultas consulta = new Consultas();
+        
+        consulta.setFechaConsulta(new Date());
+        consulta.setDescripcion(this.consultaInfo);
+        consulta.setIdMascota(mascota);
+        consulta.setIdEmpleado(empleado);
+        
+        getFacade().create(consulta); 
+        mascota.getConsultasList().add(consulta);
+        JsfUtil.addSuccessMessage("Se ha creado una nueva consulta");
     }
 
     @FacesConverter(forClass = Consultas.class)
