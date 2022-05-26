@@ -48,12 +48,12 @@
                             <p>Estas conectado como: #{sesionController.logeado.idRol.getTipoUsuario()}</p>
                             <p>Tu última conexión fue: 
                                 <h:outputText value="#{sesionController.ultimoLogin}">
-                                    <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                 </h:outputText>
                             </p>
-                            <p>
+                            <p:outputLabel rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Cliente'}">
                                 Tienes #{sesionController.logeado.mascotasList.size()} mascotas
-                            </p>
+                            </p:outputLabel>
                         </p:column>
                         
                         <p:column>
@@ -64,24 +64,26 @@
                                 layout="grid">
 
                                <p:panel>  
-                                   <p>Escribe tu nueva contraseña:</p>
-                                    <p:inputText value="#{sesionController.newPassword}"/>
+                                   <!--<p>Escribe tu nueva :</p>
+                                    <p:inputText value=""/>
+                                    <br/>
                                     <p:commandButton
-                                        style="background:red;border-color:red;"
-                                        value="Cambiar contraseña"
+                                        value="Actualizar"
+                                        update=":growl"
+                                        disabled="true"/> -->
+                               </p:panel> 
+
+                               <p:panel>  
+                                   <p>Cambia tu <b>contraseña</b> aquí:</p>
+                                    <p:inputText value="#{sesionController.newPassword}"/>
+                                    <br/>
+                                    <p:commandButton
+                                        style="background:green;border-color:green;"
+                                        value="Actualizar"
                                         onclick="return confirm('¿Estás seguro?');"
                                         actionListener="#{sesionController.actualizarPassword()}"
                                         update=":growl"/> 
                                </p:panel>   
-
-                               <p:panel>  
-                                   <p>Escribe tu nueva :</p>
-                                    <p:inputText value=""/>
-                                    <p:commandButton
-                                        value="Sin usoaaaa"
-                                        update=":growl"
-                                        disabled="true"/> 
-                               </p:panel> 
                                     
                             </p:panelGrid>
                         </p:column>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="body">
+            <br/>
+
+            <p:growl globalOnly="true" life="3000" >
+                <p:autoUpdate/>
+            </p:growl>
+            
+            <p:card>
+                <f:facet name="title">
+                    <p>Tus facturas</p>
+                    <hr/>
+                </f:facet>
+                
+                <h:form>
+
+                    <p:dataTable id="datalist"
+                                 value="#{facturasController.obtenerFacturas(sesionController.logeado)}"
+                                 var="item"
+                                 paginator="#{facturasController.facturasCliente}"
+                                 rows="20"
+                                 rowsPerPageTemplate="20,30,40"
+                                 >
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Fecha"/>
+                            </f:facet>
+                            
+                            <h:outputText value="#{item.fechaFactura}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Productos"/>
+                            </f:facet>
+                            
+                            <h:outputText value="#{item.infofacturasList.size()}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Items"/>
+                            </f:facet>
+                            
+                            <h:outputText value="#{facturasController.itemsTotalFactura(item)}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Coste total"/>
+                            </f:facet>
+                            
+                            <h:outputText value="#{facturasController.costeTotalFactura(item)}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Descargar"/>
+                            </f:facet>
+                            
+                            <p:commandButton
+                                actionListener="#{facturasController.descargarFactura(item)}"
+                                icon="pi pi-download"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+                
+            </p:card>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -85,6 +85,12 @@ public class BuscarController implements Serializable {
     }
     
     public void verPerfil(Usuarios usuario) throws IOException {
+        
+        if(usuario == null) {
+            System.out.println("Usuario vacio");
+            return;
+        }
+        
         System.out.println("Ver perfil de cliente:" +usuario.getNombre());
         
         this.verPerfilCliente = usuario;

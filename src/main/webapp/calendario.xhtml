@@ -12,7 +12,18 @@
             
             <h:form id="CalendarioCliente" rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Cliente'}">
                 
+                <h:form rendered="#{sesionController.logeado.mascotasList.isEmpty()}">
+                    
+                    <br/>
+                    
+                    <p:card>
+                    
+                        No tienes citas ni mascotas
+                    </p:card>
+                </h:form>
+                
                 <ui:repeat value="#{sesionController.logeado.mascotasList}" var="mascota">
+                    
                     <br/>
                     
                     <p:card>

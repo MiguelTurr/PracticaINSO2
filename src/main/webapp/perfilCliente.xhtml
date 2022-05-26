@@ -58,14 +58,14 @@
                             <p>#{buscarController.verPerfilCliente.nombre} #{buscarController.verPerfilCliente.apellido1} #{buscarController.verPerfilCliente.apellido2}</p>
                              
                             <p>Usuario: #{buscarController.verPerfilCliente.usuario}</p>
-                            <p>Tu última conexión fue: 
-                                <h:outputText value="#{buscarController.verPerfilCliente.ultimaConexion}">
-                                    <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            <p>Creado: 
+                                <h:outputText value="#{buscarController.verPerfilCliente.creadoEn}">
+                                    <f:convertDateTime pattern="MM/dd/yyyy" />
                                 </h:outputText>
                             </p>
-                            <p>
-                                Tienes #{buscarController.verPerfilCliente.mascotasList.size()} mascotas
-                            </p>
+                            <p>DNI: #{buscarController.verPerfilCliente.dni}</p>
+                            <p>Telefono: #{buscarController.verPerfilCliente.telefono}</p>
+                            
                         </p:column>
 
                         <p:column>

@@ -14,25 +14,36 @@
             <p:growl globalOnly="true" life="3000" >
                 <p:autoUpdate/>
             </p:growl>
-            
-            <p:card>
-                <f:facet name="title">
-                    <h:form>
-                        <h:outputText value="Crear nuevo cliente"/>
-                    </h:form>
-                </f:facet>
-                
-                <h:form id="CrearFormCliente">
+
+            <h:form id="CrearFormCliente">
+                <p:card>
+                    <f:facet name="title">
+                        <p:commandButton
+                            actionListener="#{usuariosController.crearCliente()}"
+                            value="Crear cliente"
+                            update=":growl,:CrearFormCliente">
+                        </p:commandButton>
+                        
+                        <p:commandButton
+                            rendered="#{usuariosController.usuarioCreado ne null}"
+                            style="margin-left:10px;background:green;border-color:green;"
+                            action="#{buscarController.verPerfil(usuariosController.usuarioCreado)}"
+                            immediate="true"
+                            value="Ir perfil de #{usuariosController.usuarioCreado.getNombre()} #{usuariosController.usuarioCreado.getApellido1()}"
+                        />
+
+                    </f:facet>
+
                     <p:panelGrid columns="4" columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-2,ui-g-12 ui-md-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
                         <p:outputLabel for="name" value="Nombre"/>
                         <p:inputText 
-                            
+
                             validator="#{usuariosController.sinNumeros}"
                             id="name"
                             required="true"
                             requiredMessage="Es necesario escribir un nombre"
                             value="#{usuariosController.clienteNombre}"/>
-                        
+
                         <p:outputLabel for="apellido1" value="Apellido 1"/>
                         <p:inputText
                             validator="#{usuariosController.sinNumeros}"
@@ -40,71 +51,56 @@
                             required="true"
                             requiredMessage="Es necesario escribir un apellido"
                             value="#{usuariosController.clienteApellido1}"/>
-                        
+
                         <p:outputLabel for="apellido2" value="Apellido 2"/>
                         <p:inputText 
                             validator="#{usuariosController.sinNumeros}"
                             id="apellido2"
                             value="#{usuariosController.clienteApellido2}"/>
-                        
+
                         <p:outputLabel for="dni" value="DNI"/>
                         <p:inputText 
+                            validator="#{usuariosController.comprobarDNI}"
                             id="dni"
                             required="true"
                             requiredMessage="Es necesario escribir un DNI"
                             value="#{usuariosController.clienteDni}"/>
-                        
+
                         <p:outputLabel for="telefono" value="Telefono"/>
                         <p:inputText 
                             id="telefono"
                             required="true"
                             requiredMessage="Es necesario escribir un teléfono"
                             value="#{usuariosController.clienteTelefono}"/>
-                        
+
                         <p:outputLabel value="Fecha Nacimiento" for="fecha" />
                         <p:calendar 
                             id="fecha"
-                            pattern="MM/dd/yyyy"
+                            pattern="dd/MM/yyyy"
                             required="true"
                             requiredMessage="Es necesario escribir la fecha de nacimiento"
-                            value="#{usuariosController.clienteFecha}"/>
-                        
+                            value="#{usuariosController.clienteFecha}"
+                            showOn="button"/>
+
                         <p:outputLabel for="usuario" value="Usuario"/>
                         <p:inputText 
                             id="usuario"
                             required="true"
                             requiredMessage="Es necesario escribir un usuario"
                             value="#{usuariosController.clienteUsuario}"/>
-                        
+
                         <p:outputLabel for="password" value="Contraseña"/>
                         <p:inputText 
                             id="password"
                             required="true"
                             requiredMessage="Es necesario escribir una contraseña"
                             value="#{usuariosController.clientePassword}"/>
-                        
+
                     </p:panelGrid>
-                    
-                    <hr/>
-                    
-                    <div style="text-align:center;">
-                        <p:commandButton
-                            value="Crear"
-                            actionListener="#{usuariosController.crearCliente()}"
-                            action="#{buscarController.verPerfil(usuariosController.usuarioCreado)}"
-                            update=":growl,:CrearFormCliente"
-                            style="width:50%;height:50%"
-                            oncomplete="prueba();handleSubmit(args,'CrearFormCliente');">
-                        </p:commandButton>
-                    </div>
-                </h:form>
-                
-            </p:card>
-            <script>
-                function prueba() {
-                    alert("prueba "+#{usuariosController.usuarioCreado});
-                }
-            </script>
+
+                </p:card>
+            </h:form>
+           
         </ui:define>
     </ui:composition>
 

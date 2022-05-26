@@ -93,17 +93,21 @@ public class SesionController implements Serializable {
             getFacade().actualizarUltimaConexion(this.logeado);
             
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-            ec.redirect("faces/inicio.xhtml");
+            ec.redirect("inicio.xhtml");
         }
     }
     
     public void cerrarSesion() throws IOException {
+        
         this.logeado = null;
         this.estadoLogin = false;
         this.newPassword = "";
         
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         session.invalidate();
+            
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect("index.xhtml");
     }
     
     public void actualizarPassword() {

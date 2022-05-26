@@ -6,6 +6,8 @@ import controlador.util.JsfUtil.PersistAction;
 import EJB.FacturasFacade;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -18,6 +20,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import modelo.Infofacturas;
+import modelo.Usuarios;
 
 @Named("facturasController")
 @SessionScoped
@@ -27,6 +31,8 @@ public class FacturasController implements Serializable {
     private FacturasFacade ejbFacade;
     private List<Facturas> items = null;
     private Facturas selected;
+    
+    private boolean facturasCliente = false;
 
     public FacturasController() {
     }
@@ -37,6 +43,14 @@ public class FacturasController implements Serializable {
 
     public void setSelected(Facturas selected) {
         this.selected = selected;
+    }
+    
+    public boolean getFacturasCliente() {
+        return this.facturasCliente;
+    }
+    
+    public void setFacturasCliente(boolean tiene) {
+        this.facturasCliente = tiene;
     }
 
     protected void setEmbeddableKeys() {
@@ -119,6 +133,55 @@ public class FacturasController implements Serializable {
 
     public List<Facturas> getItemsAvailableSelectOne() {
         return getFacade().findAll();
+    }
+    
+    public int itemsTotalFactura(Facturas factura) {
+        int elementos = 0;
+        
+        List<Infofacturas> lista = factura.getInfofacturasList();
+        Iterator<Infofacturas> it = lista.iterator();
+        Infofacturas info;
+        
+        while(it.hasNext()) {
+            info = it.next();
+            elementos += info.getCantidad();
+        }
+        return elementos;
+    }
+    
+    public String costeTotalFactura(Facturas factura) {
+        double coste = 0.0;
+        
+        List<Infofacturas> lista = factura.getInfofacturasList();
+        Iterator<Infofacturas> it = lista.iterator();
+        Infofacturas info;
+        
+        while(it.hasNext()) {
+            info = it.next();
+            coste += info.getPrecio() * info.getCantidad();
+        }
+        
+        if(Double.compare(coste, 0.0) == 0) {
+            return "0,00€";
+            
+        } else {
+            DecimalFormat numberFormat = new DecimalFormat("#.00");
+            return numberFormat.format(coste)+"€";
+        } 
+    }
+    
+    public List<Facturas> obtenerFacturas(Usuarios usuario) {
+       
+        List<Facturas> lista = getFacade().facturasCliente(usuario); 
+        
+        facturasCliente = !lista.isEmpty();
+        
+        return lista;
+    }
+    
+    public void descargarFactura(Facturas factura) {
+        System.out.println("Quieres descargar una factura: "+factura);
+        
     }
 
     @FacesConverter(forClass = Facturas.class)

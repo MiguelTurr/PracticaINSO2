@@ -203,6 +203,18 @@ public class UsuariosController implements Serializable {
         }
     }
     
+    public void comprobarDNI(FacesContext context, UIComponent comp, Object value) {
+        
+        String DIGITO_CONTROL = "TRWAGMYFPDXBNJZSQVHLCKE";
+        String mno = (String) value;
+        
+        if(!mno.matches("[0-9]{8}[A-Z]")
+        || mno.charAt(8) != DIGITO_CONTROL.charAt(Integer.parseInt(mno.substring(0, 8)) % 23)) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("El DNI no es correcto");
+        }
+    }
+    
     public void crearCliente() throws IOException {
  
         Usuarios nuevoUsuario = new Usuarios();
@@ -244,7 +256,7 @@ public class UsuariosController implements Serializable {
         getFacade().remove(usuario);
         
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect("faces/inicio.xhtml");
+        ec.redirect("inicio.xhtml");
     }
 
     @FacesConverter(forClass = Usuarios.class)

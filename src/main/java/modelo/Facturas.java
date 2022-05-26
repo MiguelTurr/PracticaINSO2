@@ -36,7 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Facturas.findAll", query = "SELECT f FROM Facturas f"),
     @NamedQuery(name = "Facturas.findByIdFactura", query = "SELECT f FROM Facturas f WHERE f.idFactura = :idFactura"),
-    @NamedQuery(name = "Facturas.findByFechaFactura", query = "SELECT f FROM Facturas f WHERE f.fechaFactura = :fechaFactura")})
+    @NamedQuery(name = "Facturas.findByFechaFactura", query = "SELECT f FROM Facturas f WHERE f.fechaFactura = :fechaFactura"),
+    @NamedQuery(name = "Facturas.facturasCliente", query = "SELECT f FROM Facturas f WHERE f.idCliente = :usuario ORDER BY f.fechaFactura DESC")})
 public class Facturas implements Serializable {
 
     private static final long serialVersionUID = 1L;
