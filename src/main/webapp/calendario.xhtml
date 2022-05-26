@@ -62,7 +62,7 @@
                 
             </h:form>      
             
-            <h:form id="CalendarioEmpleado" rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Empleado'}">
+            <h:form id="CalendarioEmpleado" rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Empleado' or sesionController.logeado.idRol.tipoUsuario eq 'Administrador'}">
                 <br/>
                 <p:card>
                     <f:facet name="title">
@@ -71,8 +71,11 @@
                             value="Crear nueva cita"
                             actionListener="#{citasController.prepareCreate}"
                             update=":CrearCita"
+                            icon="pi pi-plus-circle"
                             oncomplete="PF('CrearDialogCita').show()"/>
                     </f:facet>
+                    
+                    <hr/>
                     
                     <p:dataGrid var="item" value="#{citasController.obtenerCitasValidas()}" columns="3" layout="grid"
                             rows="20" style="margin-top:20px">

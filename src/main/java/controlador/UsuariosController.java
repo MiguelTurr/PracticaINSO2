@@ -268,6 +268,18 @@ public class UsuariosController implements Serializable {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect("inicio.xhtml");
     }
+    
+    public void borrarUsuario(Usuarios usuario, Usuarios admin) throws IOException {
+        if(usuario.equals(admin)) {
+            JsfUtil.addErrorMessage("No puedes borrar ese usuario");
+            return;
+        }
+        
+        getFacade().remove(usuario);
+        items.remove(usuario);
+        
+        JsfUtil.addSuccessMessage("Usuario eliminado");
+    }
 
     @FacesConverter(forClass = Usuarios.class)
     public static class UsuariosControllerConverter implements Converter {

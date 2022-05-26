@@ -30,17 +30,20 @@
                             style="margin-right:20px;"
                             actionListener="#{mascotasController.prepareCreate}"
                             value="Añadir mascota"
+                            icon="pi pi-plus-circle"
                             update=":CrearMascota"
                             oncomplete="PF('CrearDialogMascota').show()"/>
 
                         <p:commandButton
                             styleClass="danger-button"
                             style="margin-right:20px;"
+                            icon="pi pi-file-o"
                             value="Hacer factura"/>
 
                         <p:commandButton
                             style="background:red;border-color:red;"
                             value="Borrar cliente"
+                            icon="pi pi-times-circle"
                             onclick="return confirm('¿Estás seguro?');"> 
 
                             <f:actionListener 

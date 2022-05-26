@@ -31,6 +31,8 @@
                     </h:form>
                 </f:facet>
                 
+                <hr/>
+                
                 <h:form id="ResultadosBusquedaCliente">
 
                     <p:dataTable id="datalist" value="#{buscarController.buscarClientes}" var="item"
@@ -43,14 +45,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Nombre"/>
                             </f:facet>
-                            <h:outputText value="#{item.nombre}"/>
-                        </p:column>
-
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="Apellido"/>
-                            </f:facet>
-                            <h:outputText value="#{item.apellido1} #{item.apellido2}"/>
+                            <h:outputText value="#{item.nombre} #{item.apellido1} #{item.apellido2}"/>
                         </p:column>
 
                         <p:column>
@@ -58,6 +53,13 @@
                                 <h:outputText value="DNI"/>
                             </f:facet>
                             <h:outputText value="#{item.dni}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Teléfono"/>
+                            </f:facet>
+                            <h:outputText value="#{item.telefono}"/>
                         </p:column>
 
                         <p:column>

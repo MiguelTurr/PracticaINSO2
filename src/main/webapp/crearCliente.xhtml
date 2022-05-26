@@ -19,6 +19,7 @@
                 <p:card>
                     <f:facet name="title">
                         <p:commandButton
+                            icon="pi pi-plus-circle"
                             actionListener="#{usuariosController.crearCliente()}"
                             value="Crear cliente"
                             update=":growl,:CrearFormCliente">
@@ -33,6 +34,8 @@
                         />
 
                     </f:facet>
+                
+                    <hr/>
 
                     <p:panelGrid columns="4" columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-2,ui-g-12 ui-md-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
                         <p:outputLabel for="name" value="Nombre"/>

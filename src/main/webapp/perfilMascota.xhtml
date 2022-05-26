@@ -29,17 +29,20 @@
                         <p:commandButton
                             style="margin-right:20px;"
                             value="Añadir consulta"
+                            icon="pi pi-plus-circle"
                             update=":CrearConsulta"
                             oncomplete="PF('CrearDialogConsulta').show()"/>
                         
                         <p:commandButton
                             style="margin-right:20px;"
                             value="Perfil dueño"
+                            icon="pi pi-user" 
                             actionListener="#{buscarController.verPerfil(buscarController.verPerfilMascota.idCliente)}"/> 
                         
                         <p:commandButton
                             style="background:red;border-color:red;"
                             value="Borrar mascota"
+                            icon="pi pi-times-circle"
                             onclick="return confirm('¿Estás seguro?');"> 
 
                             <f:actionListener 
