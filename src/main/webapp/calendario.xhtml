@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="body">
+            
+            <h:form id="CalendarioCliente" rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Cliente'}">
+                
+                <h:form rendered="#{sesionController.logeado.mascotasList.isEmpty()}">
+                    
+                    <br/>
+                    
+                    <p:card>
+                    
+                        No tienes citas ni mascotas
+                    </p:card>
+                </h:form>
+                
+                <ui:repeat value="#{sesionController.logeado.mascotasList}" var="mascota">
+                    
+                    <br/>
+                    
+                    <p:card>
+                        
+                        <p:dataGrid var="item" value="#{citasController.obtenerCitasMascota(mascota)}" columns="3" layout="grid"
+                                rows="20">
+                            
+                            <f:facet name="header">
+                                <p:graphicImage
+                                    style="height:2.5%; width:2.5%;"
+                                    url="/imagenes/#{mascota.idAnimal.getTipoAnimal()}.png" />
+                                <br/>
+                                <h:outputText value="#{mascota.nombre}"/>
+                            </f:facet>
+                            
+                            <p:panel style="text-align:center">
+                                
+                                <f:facet name="header">
+                                    <h:outputText value="#{item.fechaCita}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                    </h:outputText>
+                                </f:facet>
+                                
+                                <h:panelGrid columns="1" style="width:100%">
+                                    <h:outputText
+                                        value="#{item.descripcion}" />
+
+                                </h:panelGrid>
+                            </p:panel>
+                            
+
+                        </p:dataGrid>
+                        
+                    </p:card>
+                </ui:repeat>
+                
+            </h:form>      
+            
+            <h:form id="CalendarioEmpleado" rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Empleado'}">
+                <br/>
+                <p:card>
+                    <f:facet name="title">
+                        <p:commandButton 
+                            id="createButton"
+                            value="Crear nueva cita"
+                            actionListener="#{citasController.prepareCreate}"
+                            update=":CrearCita"
+                            oncomplete="PF('CrearDialogCita').show()"/>
+                    </f:facet>
+                    
+                    <p:dataGrid var="item" value="#{citasController.obtenerCitasValidas()}" columns="3" layout="grid"
+                            rows="20" style="margin-top:20px">
+
+                        <f:facet name="header">
+                            Próximas citas
+                        </f:facet>
+
+                        <p:panel style="text-align:center">
+                            
+                            <f:facet name="header">
+                                <h:outputText value="#{item.fechaCita}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                </h:outputText>
+                            </f:facet>
+                            
+                            <h:panelGrid columns="1" style="width:100%">
+                                
+                                <p:graphicImage style="height:10%; width:10%;" url="/imagenes/#{item.idMascota.idAnimal.getTipoAnimal()}.png" />
+                
+                                <h:outputText
+                                    value="#{item.idMascota.getNombre()}" />
+                                <h:outputText
+                                    value="#{item.descripcion}" />
+                                
+                            </h:panelGrid>
+                        </p:panel>
+
+                    </p:dataGrid>
+                    
+                </p:card>
+ 
+            </h:form>      
+                
+            <ui:include src="crearCita.xhtml"/>
+            
+        </ui:define>
+    </ui:composition>
+
+</html>

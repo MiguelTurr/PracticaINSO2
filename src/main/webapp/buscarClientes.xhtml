@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="body">
+            <br/>
+
+            <p:growl globalOnly="true" life="3000" >
+                <p:autoUpdate/>
+            </p:growl>
+            
+            <p:card>
+                <f:facet name="title">
+                    <h:form id="formBuscarClientes">
+                        <p:inputText 
+                            id="inputBuscarClientes" 
+                            value="#{buscarController.textoBuscarCliente}"/>
+
+                        <p:commandButton
+                            actionListener="#{buscarController.buscarClienteNombre}"
+                            style="margin-left: 10px;"
+                            value="Buscar cliente"
+                            icon="pi pi-search"
+                            update=":ResultadosBusquedaCliente"/>
+                    </h:form>
+                </f:facet>
+                
+                <h:form id="ResultadosBusquedaCliente">
+
+                    <p:dataTable id="datalist" value="#{buscarController.buscarClientes}" var="item"
+                                 paginator="#{buscarController.buscarClientes.size() ne 0}"
+                                 rows="20"
+                                 rowsPerPageTemplate="20,30,40"
+                                 >
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nombre"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nombre}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Apellido"/>
+                            </f:facet>
+                            <h:outputText value="#{item.apellido1} #{item.apellido2}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="DNI"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dni}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Mascotas"/>
+                            </f:facet>
+                            <h:outputText value="#{item.mascotasList.size()}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Perfil"/>
+                            </f:facet>
+                            <p:commandButton
+                                actionListener="#{buscarController.verPerfil(item)}"
+                                icon="pi pi-user-edit"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+                
+            </p:card>
+        </ui:define>
+    </ui:composition>
+
+</html>

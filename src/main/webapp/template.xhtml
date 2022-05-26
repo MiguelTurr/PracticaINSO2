@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <link rel="shortcut icon" type="image/png" href="#{request.contextPath}/imagenes/favicon.png"/>
+
+        <title><ui:insert name="title">#{bundle.AppName}</ui:insert></title>
+        <h:outputStylesheet library="css" name="jsfcrud.css"/>
+        <h:outputScript library="js" name="jsfcrud.js"/>
+    </h:head>
+
+    <h:body
+        style=
+            "background: #8360c3;
+            background: -webkit-linear-gradient(to right, #8360c3, #2ebf91);
+            background: linear-gradient(to right, #8360c3, #2ebf91);">
+
+        <p:growl id="growl" life="3000" />
+
+        <div fullPage="true">
+            <div position="north" size="65" header="#{bundle.AppName}">
+                
+                <h:form id="menuForm">
+                    <p:menubar autoDisplay="false">
+                        
+                        <p:menuitem
+                            value="#{bundle.Inicio}"
+                            outcome="/inicio"
+                            icon="pi pi-fw pi-home"/>
+                        <p:menuitem 
+                            value="#{bundle.Calendario}"
+                            outcome="/calendario"
+                            icon="pi pi-fw pi-calendar"/>
+                        
+                        <p:menuitem 
+                            rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Cliente'}"
+                            value="#{bundle.Mascotas}"
+                            outcome="/mascotas"
+                            icon="pi pi-fw pi-info-circle"/>
+                        
+                        <p:menuitem 
+                            rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Cliente'}"
+                            value="#{bundle.Facturas}"
+                            outcome="/facturas"
+                            icon="pi pi-fw pi-money-bill"/>
+
+                        <p:submenu 
+                            icon="pi pi-fw pi-search"
+                            rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Empleado' or sesionController.logeado.idRol.tipoUsuario eq 'Administrador'}"
+                            label="#{bundle.Buscar}">
+                            
+                            <p:menuitem value="Clientes" outcome="/buscarClientes"/>
+                            <p:menuitem value="Mascotas" outcome="/buscarMascotas"/>
+                        </p:submenu>
+                        
+                        <p:menuitem 
+                            rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Empleado' or sesionController.logeado.idRol.tipoUsuario eq 'Administrador'}"
+                            value="#{bundle.CrearCliente}"
+                            outcome="/crearCliente"
+                            icon="pi pi-fw pi-user-plus"/>
+                        
+                        <p:submenu 
+                            icon="pi pi-fw pi-lock"
+                            rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Administrador'}"
+                            label="#{bundle.Admin}">
+                            
+                            <p:menuitem value="Usuarios" outcome="/adminUsuarios"/>
+                            <p:menuitem value="Productos" outcome="/adminProductos"/>
+                        </p:submenu>
+                        
+                        <f:facet name="options">
+                            <p:commandButton
+                                action="#{sesionController.cerrarSesion()}"
+                                style="background:red;border-color:red;"
+                                icon="pi pi-fw pi-sign-out"
+                                value="#{bundle.CerrarSesion}" />
+                         </f:facet>
+
+                        
+                    </p:menubar>
+                </h:form>
+            </div>
+
+            <div position="south" size="60">
+                <ui:insert name="footer"/>
+            </div>
+
+            <div position="center">
+                <ui:insert name="body"/>
+            </div>
+
+        </div>
+
+    </h:body>
+
+</html>
