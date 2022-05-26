@@ -68,6 +68,7 @@
 
                         <p:outputLabel for="telefono" value="Telefono"/>
                         <p:inputText 
+                            validator="#{usuariosController.comprobarTelefono}"
                             id="telefono"
                             required="true"
                             requiredMessage="Es necesario escribir un teléfono"

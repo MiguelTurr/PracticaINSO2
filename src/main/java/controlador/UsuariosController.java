@@ -215,6 +215,16 @@ public class UsuariosController implements Serializable {
         }
     }
     
+    public void comprobarTelefono(FacesContext context, UIComponent comp, Object value) {
+        
+        String mno = (String) value;
+        
+        if(!mno.matches("[0-9]{9}")) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("El número de teléfono no es correcto");
+        }
+    }
+    
     public void crearCliente() throws IOException {
  
         Usuarios nuevoUsuario = new Usuarios();
