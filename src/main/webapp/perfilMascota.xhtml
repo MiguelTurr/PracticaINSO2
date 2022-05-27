@@ -78,7 +78,7 @@
                             <p:dataGrid 
                                 styleClass="ui-datagrid-no-border"
                                 var="item" 
-                                value="#{buscarController.verPerfilMascota.consultasList}"
+                                value="#{consultasController.ordernarConsultas(buscarController.verPerfilMascota)}"
                                 columns="3"
                                 layout="grid"
                                 rows="20">
@@ -86,7 +86,7 @@
                                 <p:panel style="text-align:center;">
 
                                     <h:outputText style="font-weight: bold;" value="#{item.fechaConsulta}">
-                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        <f:convertDateTime pattern="dd/MM/yyyy - HH:mm" />
                                     </h:outputText>
                                     
                                     <br/>

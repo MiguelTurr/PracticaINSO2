@@ -41,7 +41,7 @@
                         <p:outputLabel for="name" value="Nombre"/>
                         <p:inputText 
 
-                            validator="#{usuariosController.sinNumeros}"
+                            validator="#{usuariosController.sinNumerosAndSize}"
                             id="name"
                             required="true"
                             requiredMessage="Es necesario escribir un nombre"
@@ -49,7 +49,7 @@
 
                         <p:outputLabel for="apellido1" value="Apellido 1"/>
                         <p:inputText
-                            validator="#{usuariosController.sinNumeros}"
+                            validator="#{usuariosController.sinNumerosAndSize}"
                             id="apellido1"
                             required="true"
                             requiredMessage="Es necesario escribir un apellido"
@@ -80,6 +80,7 @@
                         <p:outputLabel value="Fecha Nacimiento" for="fecha" />
                         <p:calendar 
                             id="fecha"
+                            validator="#{usuariosController.comprobarFecha}"
                             pattern="dd/MM/yyyy"
                             required="true"
                             requiredMessage="Es necesario escribir la fecha de nacimiento"
@@ -89,6 +90,7 @@
                         <p:outputLabel for="usuario" value="Usuario"/>
                         <p:inputText 
                             id="usuario"
+                            validator="#{usuariosController.sizeString}"
                             required="true"
                             requiredMessage="Es necesario escribir un usuario"
                             value="#{usuariosController.clienteUsuario}"/>
@@ -96,6 +98,7 @@
                         <p:outputLabel for="password" value="Contraseña"/>
                         <p:inputText 
                             id="password"
+                            validator="#{usuariosController.sizeString}"
                             required="true"
                             requiredMessage="Es necesario escribir una contraseña"
                             value="#{usuariosController.clientePassword}"/>

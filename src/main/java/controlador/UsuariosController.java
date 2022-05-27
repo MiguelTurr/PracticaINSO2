@@ -193,6 +193,20 @@ public class UsuariosController implements Serializable {
         return getFacade().findAll();
     }
     
+    public void sinNumerosAndSize(FacesContext context, UIComponent comp, Object value) {
+
+        String mno = (String) value;
+
+        if(mno.length() < 3) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("Esa celda necesita más de 3 caracteres");
+            
+        } else if (mno.matches(".*[0-9].*")) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("Esa celda no puede contener números");
+        }
+    }
+    
     public void sinNumeros(FacesContext context, UIComponent comp, Object value) {
 
         String mno = (String) value;
@@ -200,6 +214,16 @@ public class UsuariosController implements Serializable {
         if (mno.matches(".*[0-9].*")) {
             ((UIInput) comp).setValid(false);
             JsfUtil.addErrorMessage("Esa celda no puede contener números");
+        }
+    }
+    
+    public void sizeString(FacesContext context, UIComponent comp, Object value){
+
+        String mno = (String) value;
+
+        if(mno.length() < 3) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("Esa celda necesita más de 3 caracteres");
         }
     }
     
@@ -223,6 +247,15 @@ public class UsuariosController implements Serializable {
             ((UIInput) comp).setValid(false);
             JsfUtil.addErrorMessage("El número de teléfono no es correcto");
         }
+    }
+    
+    public void comprobarFecha(FacesContext context, UIComponent comp, Object value) {
+        Date fecha = (Date) value;
+        
+        
+        
+        System.out.println(fecha);
+        System.out.println("La fecha no es correcta");
     }
     
     public void crearCliente() throws IOException {

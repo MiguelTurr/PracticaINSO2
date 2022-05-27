@@ -26,12 +26,14 @@
             <h:form id="ListaProductos">
                 <p:card>
                     <f:facet name="title">
+                        
                         <p:commandButton
-                            actionListener="#{buscarController.buscarClienteNombre}"
-                            style="margin-left: 10px;"
+                            actionListener="#{productosController.nuevoProductoInfo}"
                             value="Crear producto"
                             icon="pi pi-plus-circle"
-                            update=":ListaProductos"/>
+                            update=":CrearProducto"
+                            oncomplete="PF('CrearDialogProducto').show()"/>
+                        
                     </f:facet>
 
                     <hr/>
@@ -77,7 +79,11 @@
                             <f:facet name="header">
                                 <h:outputText value="Descuento"/>
                             </f:facet>
-                            <h:outputText value="#{item.descuento}%"/>
+                            <h:outputText 
+                                value="#{item.descuento==0.0 ? 'Sin descuento' : item.descuento}"/>
+                            
+                            <h:outputText 
+                                value="#{item.descuento!=0.0 ? '%' : ''}"/>
                         </p:column>
 
                         <p:column>
@@ -86,12 +92,14 @@
                             </f:facet>
                             
                             <p:commandButton
-                                actionListener="#{buscarController.verPerfil(item)}"
-                                icon="pi pi-user-edit"/>
+                                actionListener="#{productosController.editarProductoInfo(item)}"
+                                icon="pi pi-user-edit"
+                                update=":EditarProducto"
+                                oncomplete="PF('EditarDialogProducto').show()"/>
                             
                             <p:commandButton
                                 style="margin-left: 5px;background:red;border-color:red;"
-                                actionListener="#{usuariosController.borrarUsuario(item, sesionController.logeado)}"
+                                actionListener="#{productosController.borrarProducto(item)}"
                                 update=":growl,:ListaProductos"
                                 icon="pi pi-times-circle"
                                 onclick="return confirm('¿Estás seguro?');"/>
@@ -102,6 +110,10 @@
 
                 </p:card>
             </h:form>
+            
+            <ui:include src="adminProductosCrear.xhtml"/>
+            <ui:include src="adminProductosEditar.xhtml"/>
+            
         </ui:define>
     </ui:composition>
 

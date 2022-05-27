@@ -6,7 +6,9 @@ import controlador.util.JsfUtil.PersistAction;
 import EJB.ConsultasFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -16,6 +18,7 @@ import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -134,11 +137,22 @@ public class ConsultasController implements Serializable {
         return getFacade().findAll();
     }
     
-    public List<Consultas> obtenerConsultasMascota(Mascotas mascota) {
+    public List<Consultas> ordernarConsultas(Mascotas mascota) {
  
         List<Consultas> lista = getFacade().obtenerConsultasMascota(mascota);
         return lista;
     }
+    
+    public void descripcionConsultaLength(FacesContext context, UIComponent comp, Object value){
+
+        String mno = (String) value;
+
+        if(mno.length() < 15) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("Esa celda necesita más de 15 caracteres");
+        }
+    }
+    
     
     public void crearNuevaConsulta(Mascotas mascota, Usuarios empleado) {
         Consultas consulta = new Consultas();

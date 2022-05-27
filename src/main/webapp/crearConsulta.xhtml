@@ -22,6 +22,7 @@
                        
                         <p:outputLabel value="Descripcion" for="infoConsulta" />
                         <p:inputTextarea
+                            validator="#{consultasController.descripcionConsultaLength}"
                             id="infoConsulta"
                             value="#{consultasController.consultaInfo}"
                             required="true"
