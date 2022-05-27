@@ -32,6 +32,8 @@ public class UsuariosController implements Serializable {
     private List<Usuarios> items = null;
     private Usuarios selected;
     
+    private Usuarios userInfo;
+    
     private String clienteNombre;
     private String clienteApellido1;
     private String clienteApellido2;
@@ -297,6 +299,7 @@ public class UsuariosController implements Serializable {
     
     public void borrarCliente(Usuarios usuario) throws IOException {
         getFacade().remove(usuario);
+        items = null;
         
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect("inicio.xhtml");
@@ -309,7 +312,7 @@ public class UsuariosController implements Serializable {
         }
         
         getFacade().remove(usuario);
-        items.remove(usuario);
+        items = null;
         
         JsfUtil.addSuccessMessage("Usuario eliminado");
     }

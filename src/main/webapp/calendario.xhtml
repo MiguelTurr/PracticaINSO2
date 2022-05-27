@@ -17,9 +17,9 @@
                     <br/>
                     
                     <p:card>
-                    
                         No tienes citas ni mascotas
                     </p:card>
+                    
                 </h:form>
                 
                 <ui:repeat value="#{sesionController.logeado.mascotasList}" var="mascota">
@@ -69,7 +69,7 @@
                         <p:commandButton 
                             id="createButton"
                             value="Crear nueva cita"
-                            actionListener="#{citasController.prepareCreate}"
+                            actionListener="#{citasController.nuevaCitaInfo}"
                             update=":CrearCita"
                             icon="pi pi-plus-circle"
                             oncomplete="PF('CrearDialogCita').show()"/>
@@ -87,6 +87,7 @@
                         <p:panel style="text-align:center">
                             
                             <f:facet name="header">
+                                
                                 <h:outputText value="#{item.fechaCita}">
                                     <f:convertDateTime pattern="dd/MM/yyyy - HH:mm" />
                                 </h:outputText>
@@ -101,6 +102,13 @@
                 
                                 <h:outputText
                                     value="#{item.descripcion}" />
+                                
+                                <p:commandButton 
+                                    style="margin-left: 5px;background:red;border-color:red;"
+                                    actionListener="#{citasController.borrarCita(item)}"
+                                    update=":CalendarioEmpleado"
+                                    icon="pi pi-times-circle"
+                                    onclick="return confirm('¿Estás seguro?');"/>
                                 
                             </h:panelGrid>
                         </p:panel>

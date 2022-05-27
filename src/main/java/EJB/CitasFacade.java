@@ -39,8 +39,4 @@ public class CitasFacade extends AbstractFacade<Citas> {
     public List<Citas> citasMascota(Mascotas mascota) {
         return em.createNamedQuery("Citas.citasValidasParaAnimal").setParameter("tiempo", new Date()).setParameter("mascota", mascota).getResultList();
     }
-    
-    public void crearNuevaCita(Citas cita) {
-        em.persist(cita);
-    }
 }

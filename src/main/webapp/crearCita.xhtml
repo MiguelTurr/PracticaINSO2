@@ -14,13 +14,13 @@
                     <p:panelGrid columns="2">
                        
                         <p:outputLabel value="Fecha" for="fechaCita" />
-                        <p:calendar id="fechaCita" pattern="dd/MM/yyyy HH:mm" value="#{citasController.citaFecha}" required="true" requiredMessage="#{bundle.CitaSinFecha}" showOn="button"/>
+                        <p:calendar id="fechaCita" pattern="dd/MM/yyyy HH:mm" value="#{citasController.citaInfo.fechaCita}" required="true" requiredMessage="#{bundle.CitaSinFecha}" showOn="button"/>
                         
                         <p:outputLabel value="Descripción" for="citaDesc" />
-                        <p:inputTextarea id="citaDesc" value="#{citasController.citaDesc}" required="true" requiredMessage="#{bundle.CitaSinDesc}"/>
+                        <p:inputTextarea id="citaDesc" value="#{citasController.citaInfo.descripcion}" required="true" requiredMessage="#{bundle.CitaSinDesc}"/>
                         
                         <p:outputLabel value="Mascota" for="citaMascota" />
-                        <h:selectOneMenu id="citaMascota" value="#{citasController.citaMascota}">
+                        <h:selectOneMenu id="citaMascota" value="#{citasController.citaInfo.idMascota}">
                                 <f:selectItems 
                                     value="#{mascotasController.itemsAvailableSelectOne}"
                                     var="entry"
