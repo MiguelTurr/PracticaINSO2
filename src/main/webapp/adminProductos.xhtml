@@ -34,6 +34,14 @@
                             update=":CrearProducto"
                             oncomplete="PF('CrearDialogProducto').show()"/>
                         
+                        <p:commandButton
+                            style="margin-left: 10px;"
+                            actionListener="#{facturasController.facturasDelMes}"
+                            value="Facturas"
+                            icon="pi pi-info-circle"/>
+                        
+                        #{facturasController.facturasDelMes}
+                        
                     </f:facet>
 
                     <hr/>

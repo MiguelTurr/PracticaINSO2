@@ -7,6 +7,8 @@ import EJB.FacturasFacade;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -32,7 +34,9 @@ public class FacturasController implements Serializable {
     private List<Facturas> items = null;
     private Facturas selected;
     
+    private List<Facturas> facturasDelMes;
     private boolean facturasCliente = false;
+    private double gananciasMes;
 
     public FacturasController() {
     }
@@ -51,6 +55,40 @@ public class FacturasController implements Serializable {
     
     public void setFacturasCliente(boolean tiene) {
         this.facturasCliente = tiene;
+    }
+ 
+    public List<Facturas> getFacturasDelMes() {
+        
+        if(this.facturasDelMes != null) {
+            return this.facturasDelMes;
+            
+        } else {
+            this.facturasDelMes = new ArrayList<>();
+            List<Facturas> lista = getItems();
+
+            if(!lista.isEmpty()) {
+
+                Iterator<Facturas> itFacturas = lista.iterator();
+                Facturas infoFacturas;
+
+                Date fecha = new Date();
+
+                while(itFacturas.hasNext()) {
+                    infoFacturas = itFacturas.next();
+
+                    if(infoFacturas.getFechaFactura().getMonth() == fecha.getMonth()
+                    && infoFacturas.getFechaFactura().getYear() == fecha.getYear()
+                    && !infoFacturas.getInfofacturasList().isEmpty()) {
+
+                        facturasDelMes.add(infoFacturas);
+                    }
+                }
+            }
+
+            System.out.println("Facturas totales: "+facturasDelMes.size());
+
+            return facturasDelMes;
+        } 
     }
 
     protected void setEmbeddableKeys() {
@@ -174,7 +212,7 @@ public class FacturasController implements Serializable {
        
         List<Facturas> lista = getFacade().facturasCliente(usuario); 
         
-        facturasCliente = !lista.isEmpty();
+        this.facturasCliente = !lista.isEmpty();
         
         return lista;
     }
