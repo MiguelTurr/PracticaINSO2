@@ -194,6 +194,10 @@ public class UsuariosController implements Serializable {
         this.usuarioInfo = null;
     }
     
+    public void actualizarUsuario(Usuarios usuario) {
+        getFacade().edit(usuario);
+    }
+    
     public void borrarCliente(Usuarios usuario) throws IOException {
         getFacade().remove(usuario);
         items = null;

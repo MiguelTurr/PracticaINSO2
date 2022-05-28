@@ -29,9 +29,15 @@
                     <div style="text-align:center;">            
                         <p:commandButton 
                             value="#{bundle.Crear}" 
-                            actionListener="#{mascotasController.crearNuevaMascota(buscarController.verPerfilCliente)}"
                             update="display,:animalesCliente,:growl" 
                             oncomplete="handleSubmit(args,'CrearDialogMascota');">
+                            
+                            <f:actionListener 
+                                binding="#{mascotasController.crearNuevaMascota(buscarController.verPerfilCliente)}"/>
+                            
+                            <f:actionListener 
+                                binding="#{usuariosController.actualizarUsuario(buscarController.verPerfilCliente)}"/>
+                            
                          </p:commandButton>
                         
                         <p:commandButton
