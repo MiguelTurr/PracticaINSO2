@@ -108,6 +108,18 @@ public class CitasController implements Serializable {
         return listaFinal;
     }
     
+    public Citas obtenerCitaMasCercana(Usuarios usuario) {
+        
+        List<Citas> listaFinal = obtenerCitasCliente(usuario);
+        Citas cita = null;
+        
+        if(!listaFinal.isEmpty()) {
+            cita = listaFinal.get(0);
+        }
+        
+        return cita;
+    }
+    
     public void crearNuevaCita() {
         
         if(JsfUtil.fechaValida(this.citaInfo.getFechaCita()) <= 0) {

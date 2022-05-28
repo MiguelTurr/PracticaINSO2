@@ -13,25 +13,20 @@
             widgetVar="VerDialogFactura" 
             modal="true" 
             width="700"
-            appendTo="@(body)">
-
-            <f:facet name="header">
-                Factura de 
-                <h:outputText value="#{facturasController.facturaInfo.fechaFactura}">
-                    <f:convertDateTime pattern="dd/MM/yyyy - HH:mm" />
-                </h:outputText>
-                
-            </f:facet>
+            appendTo="@(body)"
+            header="Factura">
             
             <h:form
                 id="VerFactura"
                 rendered="#{facturasController.facturaInfo != null}">
                 
-                <!--<p style="font-size: 14px;font-weight: bold;">
-                    Mes:
-                </p>-->
-                
                 <p style="font-size: 14px;font-weight: bold;">
+                    Fecha: 
+                    <h:outputText value="#{facturasController.facturaInfo.fechaFactura}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                    
+                    <br/>
                     Coste total:
                     #{facturasController.costeTotalFactura(facturasController.facturaInfo)}
                 </p>

@@ -63,14 +63,47 @@
                                 columns="2"
                                 layout="grid">
 
-                               <p:panel>  
-                                   <!--<p>Escribe tu nueva :</p>
-                                    <p:inputText value=""/>
-                                    <br/>
-                                    <p:commandButton
-                                        value="Actualizar"
-                                        update=":growl"
-                                        disabled="true"/> -->
+                               <p:panel
+                                   rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Cliente'}">
+                                   
+                                    <h:outputText 
+                                        style="font-size:20px; font-weight: bold;"
+                                        rendered="#{citasController.obtenerCitaMasCercana(sesionController.logeado) == null}"
+                                        value="No tienes ninguna cita próxima"/>
+                                 
+                                    <h:form>
+                                        <ui:repeat
+                                            value="#{citasController.obtenerCitaMasCercana(sesionController.logeado)}"
+                                            var="item">
+
+                                                <p:graphicImage
+                                                    style="height:20%; width:20%;"
+                                                    url="/imagenes/#{item.idMascota.idAnimal.getTipoAnimal()}.png" />
+
+                                                <br/>
+                                                Próxima cita: 
+                                                <h:outputText 
+                                                    style="font-weight: bold;"
+                                                    value="#{item.idMascota.nombre}"/>
+                                                
+                                                <hr/>
+                                                Fecha:
+                                                <h:outputText
+                                                    value="#{item.fechaCita}">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                </h:outputText>
+                                                
+                                                <br/>
+                                                Hora:
+                                                <h:outputText
+                                                    value="#{item.fechaCita}">
+                                                    <f:convertDateTime pattern="HH:mm" />
+                                                </h:outputText>
+                                   
+                                        </ui:repeat>
+                                        
+                                    </h:form>
+                                   
                                </p:panel> 
 
                                <p:panel>  
