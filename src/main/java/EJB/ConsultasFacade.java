@@ -35,5 +35,4 @@ public class ConsultasFacade extends AbstractFacade<Consultas> {
         
         return em.createNamedQuery("Consultas.buscarConsultaAnimal").setParameter("idMascota", mascota).getResultList();
     }
-    
 }

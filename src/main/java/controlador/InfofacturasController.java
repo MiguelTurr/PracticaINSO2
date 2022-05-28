@@ -73,7 +73,18 @@ public class InfofacturasController implements Serializable {
             return;
         }
         
-        this.infoFacturasInfo.setPrecio(this.infoFacturasInfo.getIdProducto().getPrecio());
+        // Descuento
+        
+        float descuento = this.infoFacturasInfo.getIdProducto().getDescuento();
+        float precioFinal = this.infoFacturasInfo.getIdProducto().getPrecio();
+        
+        if(descuento != 0.0) {
+            precioFinal = precioFinal * (descuento / 100);
+        }
+        
+        //
+        
+        this.infoFacturasInfo.setPrecio(precioFinal);
         this.infoFacturasInfo.setIdFactura(factura);
         
         //

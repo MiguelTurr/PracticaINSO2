@@ -245,18 +245,77 @@ public class FacturasController implements Serializable {
                 infoFacturas = itFacturas.next();
 
                 if (infoFacturas.getFechaFactura().getMonth() == fecha.getMonth()
-                        && infoFacturas.getFechaFactura().getYear() == fecha.getYear()
-                        && !infoFacturas.getInfofacturasList().isEmpty()) {
+                && infoFacturas.getFechaFactura().getYear() == fecha.getYear()
+                && !infoFacturas.getInfofacturasList().isEmpty()) {
 
                     listaFinal.add(infoFacturas);
                 }
             }
+            prueba(listaFinal);
         }        
         
         this.facturasDelMes = listaFinal;
         System.out.println("Facturas totales: " + listaFinal.size());
         
         return listaFinal;
+    }
+    
+    public void prueba(List<Facturas> lista) {
+        
+        double costeFinal = 0.0;
+        
+        List<Infofacturas> listaFinal = new ArrayList<>();
+        Iterator<Facturas> itFacturas = lista.iterator();
+        Facturas infoFacturas;
+        Infofacturas infoProductos;
+
+        while (itFacturas.hasNext()) {
+            infoFacturas = itFacturas.next();
+            Iterator<Infofacturas> itInfo = infoFacturas.getInfofacturasList().iterator();
+            
+            while(itInfo.hasNext()) {
+                infoProductos = itInfo.next();
+                //System.out.println(infoProductos.getIdProducto().getProducto());
+                
+                costeFinal += infoProductos.getCantidad() * infoProductos.getPrecio();
+                
+                if(listaFinal.size() == 0) {                  
+                    listaFinal.add(infoProductos);
+                }
+                
+                boolean encontrado = false;
+                
+                for(int i = 0; i < listaFinal.size(); i++) {
+                    Infofacturas prueba = listaFinal.get(i);
+                    
+                    if(prueba.getIdProducto().equals(infoProductos.getIdProducto())) {
+                        encontrado = true;
+                        prueba.setCantidad(prueba.getCantidad() + infoProductos.getCantidad());
+                        
+                        if(prueba.getPrecio() != infoProductos.getPrecio()) {
+                            float media = (prueba.getPrecio() + infoProductos.getPrecio()) / 2;
+                            prueba.setPrecio(media);
+                        }
+                    }
+                }
+                
+                if(encontrado == false) {           
+                    listaFinal.add(infoProductos);    
+                }              
+            }
+        }
+        
+        System.out.println("Ganancias final: "+costeFinal);
+        System.out.println("Productos: ");
+
+        for (int i = 0; i < listaFinal.size(); i++) {
+
+            Infofacturas prueba = listaFinal.get(i);
+            System.out.println(prueba.getIdProducto().getProducto()
+                    + " : " + prueba.getCantidad() + " "
+                    + prueba.getPrecio());
+        }
+
     }
 
     @FacesConverter(forClass = Facturas.class)
