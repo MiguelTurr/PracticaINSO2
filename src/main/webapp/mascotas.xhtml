@@ -22,47 +22,50 @@
                     
                     <p:card style="margin-bottom: 2em;">
                         
-                        <p:panel>
-                            
-                            <f:facet name="header">
+                        <f:facet name="header">
+                            <div style="text-align: center;font-weight: bold;font-size: 15px;">
                                 <p:graphicImage
-                                    style="height:2.5%; width:2.5%;"
+                                    style="height:2.5%; width:2.5%; margin-top:10px;"
                                     url="/imagenes/#{mascota.idAnimal.getTipoAnimal()}.png" />
+
                                 <br/>
                                 <h:outputText value="#{mascota.nombre}"/>
-                            </f:facet>
-                            
-                            <p:dataTable id="datalist" 
-                                     value="#{mascota.consultasList}"
-                                     var="item"
-                                     rows="30">
+                        
+                                <hr/>
+                            </div>
+                        </f:facet>
 
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Fecha"/>
-                                    </f:facet>
-                                    
-                                    <h:outputText value="#{item.fechaConsulta}">
-                                        <f:convertDateTime pattern="dd/MM/yyyy - HH:mm" />
-                                    </h:outputText>
-                                </p:column>
+                        <p:dataTable 
+                            id="datalist" 
+                            value="#{consultasController.ordernarConsultas(mascota)}"
+                            var="item"
+                            rows="5">
 
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Empleado"/>
-                                    </f:facet>
-                                    <h:outputText value="#{item.idEmpleado.getNombre()}"/>
-                                </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Fecha"/>
+                                </f:facet>
 
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Consulta"/>
-                                    </f:facet>
-                                    <h:outputText value="#{item.descripcion}"/>
-                                </p:column>
+                                <h:outputText value="#{item.fechaConsulta}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy - HH:mm" />
+                                </h:outputText>
+                            </p:column>
 
-                            </p:dataTable>                    
-                        </p:panel> 
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Empleado"/>
+                                </f:facet>
+                                <h:outputText value="#{item.idEmpleado.getNombre()}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Consulta"/>
+                                </f:facet>
+                                <h:outputText value="#{item.descripcion}"/>
+                            </p:column>
+
+                        </p:dataTable>       
                     </p:card>
                 </ui:repeat>
                 

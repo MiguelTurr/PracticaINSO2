@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog
+            id="VerDialogFactura" 
+            widgetVar="VerDialogFactura" 
+            modal="true" 
+            width="700"
+            appendTo="@(body)">
+
+            <f:facet name="header">
+                Factura de 
+                <h:outputText value="#{facturasController.facturaInfo.fechaFactura}">
+                    <f:convertDateTime pattern="dd/MM/yyyy - HH:mm" />
+                </h:outputText>
+                
+            </f:facet>
+            
+            <h:form
+                id="VerFactura"
+                rendered="#{facturasController.facturaInfo != null}">
+                
+                <!--<p style="font-size: 14px;font-weight: bold;">
+                    Mes:
+                </p>-->
+                
+                <p style="font-size: 14px;font-weight: bold;">
+                    Coste total:
+                    #{facturasController.costeTotalFactura(facturasController.facturaInfo)}
+                </p>
+                
+                <hr/>
+                <br/>
+                
+                <p:dataTable 
+                    id="datalist" 
+                    value="#{facturasController.facturaInfo.infofacturasList}" 
+                    var="item"
+                    paginator="#{facturasController.facturaInfo.infofacturasList.size() > 4}"
+                    rows="4">
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Producto"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idProducto.getProducto()}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Cantidad"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cantidad}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Coste total"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cantidad * item.precio}€"/>
+                    </p:column>
+
+                </p:dataTable>
+                       
+                <div style="text-align:center;"> 
+                    
+                    <p:commandButton
+                        rendered="#{!facturasController.facturaInfo.infofacturasList.isEmpty()}"
+                        actionListener="#{facturasController.descargarFactura(facturasController.facturaInfo)}"
+                        value="Descargar"
+                        oncomplete="PF('VerDialogFactura').hide()"
+                        icon="pi pi-download"/>
+                </div>  
+                    
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

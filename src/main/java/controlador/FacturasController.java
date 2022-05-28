@@ -34,6 +34,7 @@ public class FacturasController implements Serializable {
     private List<Facturas> items = null;
     private Facturas selected;
     
+    private Facturas facturaInfo;
     private List<Facturas> facturasDelMes;
     private boolean facturasCliente = false;
     private double gananciasMes;
@@ -55,6 +56,18 @@ public class FacturasController implements Serializable {
     
     public void setFacturasCliente(boolean tiene) {
         this.facturasCliente = tiene;
+    }
+    
+    public List<Facturas> getFacturasDelMes() {
+        return this.facturasDelMes;
+    }
+    
+    public void setFacturaInfo(Facturas factura) {
+        this.facturaInfo = factura;
+    }
+    
+    public Facturas getFacturaInfo() {
+        return this.facturaInfo;
     }
 
     protected void setEmbeddableKeys() {
@@ -185,11 +198,9 @@ public class FacturasController implements Serializable {
     
     public void descargarFactura(Facturas factura) {
         System.out.println("Quieres descargar una factura: "+factura);
-        
     }
     
-    
-    public List<Facturas> getFacturasDelMes() {
+    public List<Facturas> facturasDelMes() {
         
         List<Facturas> listaFinal = new ArrayList<>();
         List<Facturas> lista = getItems();

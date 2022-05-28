@@ -146,9 +146,8 @@ public class MascotasController implements Serializable {
     
     public void crearNuevaMascota(Usuarios usuario) {
         
-        System.out.println("Crear");
-        
         Mascotas mascota = new Mascotas();
+        
         mascota.setNombre(mascotaNombre);
         mascota.setIdAnimal(mascotaTipo);
         mascota.setIdCliente(usuario);

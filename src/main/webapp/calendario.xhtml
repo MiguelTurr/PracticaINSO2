@@ -10,7 +10,9 @@
 
         <ui:define name="body">
             
-            <h:form id="CalendarioCliente" rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Cliente'}">
+            <h:form
+                id="CalendarioCliente"
+                rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Cliente'}">
                 
                 <h:form rendered="#{sesionController.logeado.mascotasList.isEmpty()}">
                     
@@ -22,14 +24,20 @@
                     
                 </h:form>
                 
-                <ui:repeat value="#{sesionController.logeado.mascotasList}" var="mascota">
+                <ui:repeat
+                    value="#{sesionController.logeado.mascotasList}"
+                    var="mascota">
                     
                     <br/>
                     
                     <p:card>
                         
-                        <p:dataGrid var="item" value="#{citasController.obtenerCitasMascota(mascota)}" columns="3" layout="grid"
-                                rows="20">
+                        <p:dataGrid
+                            var="item"
+                            value="#{citasController.obtenerCitasMascota(mascota)}"
+                            columns="5"
+                            layout="grid"
+                            rows="20">
                             
                             <f:facet name="header">
                                 <p:graphicImage
@@ -77,8 +85,13 @@
                     
                     <hr/>
                     
-                    <p:dataGrid var="item" value="#{citasController.obtenerCitasValidas()}" columns="3" layout="grid"
-                            rows="20" style="margin-top:20px">
+                    <p:dataGrid 
+                        var="item"
+                        value="#{citasController.obtenerCitasValidas()}"
+                        columns="4"
+                        layout="grid"
+                        rows="20" 
+                        style="margin-top:20px">
 
                         <f:facet name="header">
                             Próximas citas
@@ -95,11 +108,11 @@
                             
                             <h:panelGrid columns="1" style="width:100%">
                                 
+                                <p:graphicImage style="height:10%; width:10%;" url="/imagenes/#{item.idMascota.idAnimal.getTipoAnimal()}.png" />
+                
                                 <h:outputText
                                     value="#{item.idMascota.getNombre()}" />
                                 
-                                <p:graphicImage style="height:10%; width:10%;" url="/imagenes/#{item.idMascota.idAnimal.getTipoAnimal()}.png" />
-                
                                 <h:outputText
                                     value="#{item.descripcion}" />
                                 

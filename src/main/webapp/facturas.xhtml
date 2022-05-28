@@ -67,10 +67,17 @@
 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Descargar"/>
+                                <h:outputText value="Opciones"/>
                             </f:facet>
                             
                             <p:commandButton
+                                actionListener="#{facturasController.setFacturaInfo(item)}"
+                                icon="pi pi-search"
+                                update=":VerFactura"
+                                oncomplete="PF('VerDialogFactura').show()"/>
+                            
+                            <p:commandButton
+                                style="margin-left: 10px;"
                                 actionListener="#{facturasController.descargarFactura(item)}"
                                 icon="pi pi-download"/>
                         </p:column>
@@ -79,6 +86,9 @@
                 </h:form>
                 
             </p:card>
+            
+            <ui:include src="facturasVer.xhtml"/>
+            
         </ui:define>
     </ui:composition>
 
