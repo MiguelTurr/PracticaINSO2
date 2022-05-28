@@ -56,40 +56,6 @@ public class FacturasController implements Serializable {
     public void setFacturasCliente(boolean tiene) {
         this.facturasCliente = tiene;
     }
- 
-    public List<Facturas> getFacturasDelMes() {
-        
-        if(this.facturasDelMes != null) {
-            return this.facturasDelMes;
-            
-        } else {
-            this.facturasDelMes = new ArrayList<>();
-            List<Facturas> lista = getItems();
-
-            if(!lista.isEmpty()) {
-
-                Iterator<Facturas> itFacturas = lista.iterator();
-                Facturas infoFacturas;
-
-                Date fecha = new Date();
-
-                while(itFacturas.hasNext()) {
-                    infoFacturas = itFacturas.next();
-
-                    if(infoFacturas.getFechaFactura().getMonth() == fecha.getMonth()
-                    && infoFacturas.getFechaFactura().getYear() == fecha.getYear()
-                    && !infoFacturas.getInfofacturasList().isEmpty()) {
-
-                        facturasDelMes.add(infoFacturas);
-                    }
-                }
-            }
-
-            System.out.println("Facturas totales: "+facturasDelMes.size());
-
-            return facturasDelMes;
-        } 
-    }
 
     protected void setEmbeddableKeys() {
     }
@@ -220,6 +186,37 @@ public class FacturasController implements Serializable {
     public void descargarFactura(Facturas factura) {
         System.out.println("Quieres descargar una factura: "+factura);
         
+    }
+    
+    
+    public List<Facturas> getFacturasDelMes() {
+        
+        List<Facturas> listaFinal = new ArrayList<>();
+        List<Facturas> lista = getItems();
+
+        if(lista != null) {
+
+            Iterator<Facturas> itFacturas = lista.iterator();
+            Facturas infoFacturas;
+
+            Date fecha = new Date();
+
+            while (itFacturas.hasNext()) {
+                infoFacturas = itFacturas.next();
+
+                if (infoFacturas.getFechaFactura().getMonth() == fecha.getMonth()
+                        && infoFacturas.getFechaFactura().getYear() == fecha.getYear()
+                        && !infoFacturas.getInfofacturasList().isEmpty()) {
+
+                    listaFinal.add(infoFacturas);
+                }
+            }
+        }        
+        
+        this.facturasDelMes = listaFinal;
+        System.out.println("Facturas totales: " + listaFinal.size());
+        
+        return listaFinal;
     }
 
     @FacesConverter(forClass = Facturas.class)

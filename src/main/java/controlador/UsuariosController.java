@@ -32,9 +32,8 @@ public class UsuariosController implements Serializable {
     private Usuarios usuarioInfo;
     private Usuarios usuarioCreado = null;
     
-    public Usuarios nuevoUsuarioInfo(Roles rol) throws IOException {
+    public Usuarios nuevoUsuarioInfo() throws IOException {
         this.usuarioInfo = new Usuarios();
-        this.usuarioInfo.setIdRol(rol);
         
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect("crearCliente.xhtml");
@@ -42,7 +41,7 @@ public class UsuariosController implements Serializable {
         return this.usuarioInfo;
     }
     
-    public Usuarios nuevoUsuarioInfo() {
+    public Usuarios nuevoUsuarioInfoAdmin() {
         this.usuarioInfo = new Usuarios();
         return this.usuarioInfo;
     }
@@ -160,10 +159,11 @@ public class UsuariosController implements Serializable {
         }
     }
     
-    public void crearUsuario() throws IOException {
+    public void crearUsuario(Roles rol) throws IOException {
         
         this.usuarioInfo.setCreadoEn(new Date());
         this.usuarioInfo.setUltimaConexion(new Date());
+        this.usuarioInfo.setIdRol(rol);
         
         getFacade().create(this.usuarioInfo);
         JsfUtil.addSuccessMessage("Se ha creado el nuevo cliente");

@@ -20,7 +20,7 @@
                     <f:facet name="title">
                         <p:commandButton
                             icon="pi pi-plus-circle"
-                            actionListener="#{usuariosController.crearUsuario()}"
+                            actionListener="#{usuariosController.crearUsuario(rolesController.items.get(2))}"
                             value="Crear cliente"
                             update=":growl,:CrearFormCliente">
                         </p:commandButton>
@@ -37,7 +37,13 @@
                 
                     <hr/>
 
-                    <p:panelGrid columns="4" columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-2,ui-g-12 ui-md-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                    <p:panelGrid
+                        rendered="#{usuariosController.usuarioInfo != null}"
+                        columns="4"
+                        columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-2,ui-g-12 ui-md-4"
+                        layout="grid"
+                        styleClass="ui-panelgrid-blank ui-fluid">
+                        
                         <p:outputLabel for="name" value="Nombre"/>
                         <p:inputText 
 

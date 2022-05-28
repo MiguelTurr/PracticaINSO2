@@ -61,7 +61,7 @@
                         <p:menuitem 
                             rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Empleado'}"
                             value="#{bundle.CrearCliente}"
-                            actionListener="#{usuariosController.nuevoUsuarioInfo(rolesController.items.get(2))}"
+                            actionListener="#{usuariosController.nuevoUsuarioInfo()}"
                             icon="pi pi-fw pi-user-plus"/>
                         
                         <p:submenu 
