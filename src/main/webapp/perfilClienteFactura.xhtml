@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog 
+            id="CrearDialogFactura" 
+            widgetVar="CrearDialogFactura" 
+            modal="true" 
+            resizable="false" 
+            appendTo="@(body)" 
+            header="Factura">
+            
+            <h:form id="CrearFactura">
+                
+                <p>Añade productos a la factura:</p>
+                
+                <hr/>
+                <br/>
+                
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2">
+                        
+                        <p:outputLabel value="Producto" for="producto" />
+                        <h:selectOneMenu
+                            id="producto"
+                            value="#{infofacturasController.infoFacturasInfo.idProducto}">
+                            
+                            <f:selectItems 
+                                value="#{productosController.getProductosDisponibles()}"
+                                var="entry"
+                                itemValue="#{entry}"
+                                itemLabel="#{entry.producto}" />
+                        </h:selectOneMenu>
+                       
+                        <p:outputLabel value="Cantidad" for="cantidad" />
+                        <p:inputText
+                            id="cantidad"
+                            value="#{infofacturasController.infoFacturasInfo.cantidad}"
+                            required="true"
+                            requiredMessage="Debes escribir una cantidad"/>
+
+                    </p:panelGrid>
+            
+                    <div style="text-align:center;">            
+                        <p:commandButton 
+                            value="Añadir" 
+                            update=":growl" 
+                            oncomplete="handleSubmit(args,'CrearDialogFactura');PF('CrearDialogFactura').show();">
+                            
+                            <f:actionListener 
+                                binding="#{infofacturasController.crearNuevaInfofactura(facturasController.facturaInfo)}"/>
+                            
+                            <f:actionListener 
+                                binding="#{facturasController.actualizarFactura(facturasController.facturaInfo)}"/>
+                            
+                         </p:commandButton>
+                        
+                        <p:commandButton
+                            style="margin-left: 10px;background:red;border-color:red;"
+                            value="Terminar"
+                            onclick="CrearDialogFactura.hide()"/>
+                    </div>                    
+                    
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

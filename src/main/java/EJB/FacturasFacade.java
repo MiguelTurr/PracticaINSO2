@@ -30,10 +30,4 @@ public class FacturasFacade extends AbstractFacade<Facturas> {
     public FacturasFacade() {
         super(Facturas.class);
     }
-    
-    public List<Facturas> facturasCliente(Usuarios usuario) {
-        
-        return em.createNamedQuery("Facturas.facturasCliente").setParameter("usuario", usuario).getResultList();
-    }
-    
 }

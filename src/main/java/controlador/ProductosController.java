@@ -6,6 +6,8 @@ import controlador.util.JsfUtil.PersistAction;
 import EJB.ProductosFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -143,6 +145,22 @@ public class ProductosController implements Serializable {
         JsfUtil.addSuccessMessage("Producto editado");
         
         this.productoInfo = null;
+    }
+    
+    public List<Productos> getProductosDisponibles() {
+        List<Productos> lista = getFacade().findAll();
+        List<Productos> listaFinal = new ArrayList<Productos>();
+        Productos prod;
+        Iterator<Productos> it = lista.iterator();
+        
+        while(it.hasNext()) {
+            prod = it.next();
+            if(prod.getCantidad() != 0) {
+                listaFinal.add(prod);
+            }
+        }
+        
+        return listaFinal;
     }
 
     @FacesConverter(forClass = Productos.class)

@@ -18,6 +18,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import modelo.Facturas;
 
 @Named("infofacturasController")
 @SessionScoped
@@ -27,6 +28,7 @@ public class InfofacturasController implements Serializable {
     private InfofacturasFacade ejbFacade;
     private List<Infofacturas> items = null;
     private Infofacturas selected;
+    private Infofacturas infoFacturasInfo;
 
     public InfofacturasController() {
     }
@@ -37,6 +39,54 @@ public class InfofacturasController implements Serializable {
 
     public void setSelected(Infofacturas selected) {
         this.selected = selected;
+    }
+    
+    public void setInfoFacturasInfo(Infofacturas info) {
+        this.infoFacturasInfo = info;
+    }
+    
+    public Infofacturas getInfoFacturasInfo() {
+        return this.infoFacturasInfo;
+    }
+    
+    public void nuevaInfoFacturasInfo() {
+        this.infoFacturasInfo = new Infofacturas();
+    }
+    
+    public void crearNuevaInfofactura(Facturas factura) {
+        
+        int cantidadElegida = this.infoFacturasInfo.getCantidad();
+        
+        if(cantidadElegida <= 0) {
+            JsfUtil.addErrorMessage("Esa cantidad no es válida");
+            return;
+        }
+        
+        int cantidad = this.infoFacturasInfo.getIdProducto().getCantidad();
+        
+        if(cantidad == -1) {
+            this.infoFacturasInfo.setCantidad(1);
+        }
+        
+        if(cantidad != -1 && cantidadElegida > cantidad) {
+            JsfUtil.addErrorMessage("No hay tanta cantidad de ese producto");
+            return;
+        }
+        
+        this.infoFacturasInfo.setPrecio(this.infoFacturasInfo.getIdProducto().getPrecio());
+        this.infoFacturasInfo.setIdFactura(factura);
+        
+        //
+        
+        factura.getInfofacturasList().add(this.infoFacturasInfo);
+        getFacade().create(this.infoFacturasInfo);
+        
+        JsfUtil.addSuccessMessage("Añadido producto a la factura");
+        
+        //
+        
+        items = null;
+        this.infoFacturasInfo = new Infofacturas();
     }
 
     protected void setEmbeddableKeys() {

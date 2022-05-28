@@ -8,6 +8,7 @@ import EJB.FacturasFacade;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -152,6 +153,17 @@ public class FacturasController implements Serializable {
         return getFacade().findAll();
     }
     
+    public void prepararFactura(Usuarios usuario) {
+        this.facturaInfo = new Facturas();
+        this.facturaInfo.setIdCliente(usuario);
+        this.facturaInfo.setFechaFactura(new Date());
+        
+        getFacade().create(this.facturaInfo);
+        items = null;
+        
+        //return this.facturaInfo;
+    }
+    
     public int itemsTotalFactura(Facturas factura) {
         int elementos = 0;
         
@@ -189,11 +201,28 @@ public class FacturasController implements Serializable {
     
     public List<Facturas> obtenerFacturas(Usuarios usuario) {
        
-        List<Facturas> lista = getFacade().facturasCliente(usuario); 
+        List<Facturas> lista = getFacade().findAll(); 
+        List<Facturas> listaFinal = new ArrayList<Facturas>(); 
+        Iterator<Facturas> it = lista.iterator();
+        Facturas info;
         
-        this.facturasCliente = !lista.isEmpty();
+        while(it.hasNext()) {
+            info = it.next();
+            
+            if(info.getIdCliente().equals(usuario)
+            && !info.getInfofacturasList().isEmpty()) {
+                listaFinal.add(info);
+            }
+        }
         
-        return lista;
+        this.facturasCliente = !listaFinal.isEmpty();
+        Collections.sort(listaFinal, (x, y) -> y.getFechaFactura().compareTo(x.getFechaFactura()));
+        
+        return listaFinal;
+    }
+   
+    public void actualizarFactura(Facturas factura) {
+        getFacade().edit(factura);
     }
     
     public void descargarFactura(Facturas factura) {

@@ -35,10 +35,19 @@
                             oncomplete="PF('CrearDialogMascota').show()"/>
 
                         <p:commandButton
-                            styleClass="danger-button"
+                            update=":CrearDialogFactura"
                             style="margin-right:20px;"
                             icon="pi pi-file-o"
-                            value="Hacer factura"/>
+                            value="Hacer factura"
+                            onclick="return confirm('¿Estás seguro?');"
+                            oncomplete="PF('CrearDialogFactura').show()">
+
+                            <f:actionListener 
+                                binding="#{facturasController.prepararFactura(buscarController.verPerfilCliente)}"/>
+                            
+                            <f:actionListener 
+                                binding="#{infofacturasController.nuevaInfoFacturasInfo()}"/>
+                        </p:commandButton>  
 
                         <p:commandButton
                             style="background:red;border-color:red;"
@@ -110,6 +119,7 @@
             </h:form>
             
             <ui:include src="crearMascota.xhtml"/>
+            <ui:include src="perfilClienteFactura.xhtml"/>
             
         </ui:define>
     </ui:composition>

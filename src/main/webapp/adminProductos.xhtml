@@ -44,11 +44,13 @@
 
                     <hr/>
 
-                    <p:dataTable id="datalist" value="#{productosController.items}" var="item"
-                                 paginator="true"
-                                 rows="20"
-                                 rowsPerPageTemplate="20,30,40"
-                                 >
+                    <p:dataTable 
+                        id="datalist"
+                        value="#{productosController.items}"
+                        var="item"
+                        paginator="true"
+                        rows="20"
+                        rowsPerPageTemplate="20,30,40">
 
                         <p:column>
                             <f:facet name="header">

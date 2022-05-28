@@ -153,6 +153,7 @@ public class MascotasController implements Serializable {
         mascota.setIdCliente(usuario);
         
         getFacade().create(mascota); 
+        this.items = null;
         usuario.getMascotasList().add(mascota);
         JsfUtil.addSuccessMessage("Se ha creado una nueva mascota");
     }
@@ -163,6 +164,7 @@ public class MascotasController implements Serializable {
         usuario.getMascotasList().remove(mascota);
         
         getFacade().remove(mascota);
+        this.items = null;
         
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect("inicio.xhtml");
