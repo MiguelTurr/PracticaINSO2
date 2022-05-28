@@ -1,16 +1,118 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog
+            id="EditarDialogUsuario" 
+            widgetVar="EditarDialogUsuario" 
+            modal="true" 
+            resizable="false" 
+            appendTo="@(body)" 
+            header="#{bundle.EditUserTitle}">
+            
+            <h:form id="EditarUsuario">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="4">
+
+                        <p:outputLabel value="Nombre" for="userNombre" />
+                        <p:inputText
+                            id="userNombre"
+                            validator="#{usuariosController.sinNumerosAndSize}"
+                            value="#{usuariosController.usuarioInfo.nombre}"
+                            required="true"
+                            requiredMessage="Debes escribir un nombre"/>
+
+                        <p:outputLabel value="Apellido1" for="userApellido1" />
+                        <p:inputText
+                            id="userApellido1"
+                            validator="#{usuariosController.sinNumerosAndSize}"
+                            value="#{usuariosController.usuarioInfo.apellido1}"
+                            required="true"
+                            requiredMessage="Debes escribir un apellido"/>
+                        
+                        
+                        <p:outputLabel for="apellido2" value="Apellido 2"/>
+                        <p:inputText 
+                            validator="#{usuariosController.sinNumeros}"
+                            id="apellido2"
+                            value="#{usuariosController.usuarioInfo.apellido2}"/>
+
+                        <p:outputLabel for="dni" value="DNI"/>
+                        <p:inputText 
+                            validator="#{usuariosController.comprobarDNI}"
+                            id="dni"
+                            required="true"
+                            requiredMessage="Es necesario escribir un DNI"
+                            value="#{usuariosController.usuarioInfo.dni}"/>
+
+                        <p:outputLabel for="telefono" value="Telefono"/>
+                        <p:inputText 
+                            validator="#{usuariosController.comprobarTelefono}"
+                            id="telefono"
+                            required="true"
+                            requiredMessage="Es necesario escribir un teléfono"
+                            value="#{usuariosController.usuarioInfo.telefono}"/>
+
+                        <p:outputLabel value="Fecha Nacimiento" for="fecha" />
+                        <p:calendar 
+                            id="fecha"
+                            validator="#{usuariosController.comprobarFecha}"
+                            pattern="dd/MM/yyyy"
+                            required="true"
+                            requiredMessage="Es necesario escribir la fecha de nacimiento"
+                            value="#{usuariosController.usuarioInfo.fechaNacimiento}"
+                            showOn="button"/>
+
+                        <p:outputLabel for="usuario" value="Usuario"/>
+                        <p:inputText 
+                            id="usuario"
+                            validator="#{usuariosController.sizeString}"
+                            required="true"
+                            requiredMessage="Es necesario escribir un usuario"
+                            value="#{usuariosController.usuarioInfo.usuario}"/>
+
+                        <p:outputLabel for="password" value="Contraseña"/>
+                        <p:inputText 
+                            id="password"
+                            validator="#{usuariosController.sizeString}"
+                            required="true"
+                            requiredMessage="Es necesario escribir una contraseña"
+                            value="#{usuariosController.usuarioInfo.password}"/>
+                        
+                        <p:outputLabel value="Rol" for="rol" />
+                        <h:selectOneMenu id="rol" value="#{usuariosController.usuarioInfo.idRol}">
+                                <f:selectItems 
+                                    value="#{rolesController.itemsAvailableSelectOne}"
+                                    var="entry"
+                                    itemValue="#{entry}"
+                                    itemLabel="#{entry.tipoUsuario}" />
+                        </h:selectOneMenu>
+
+                    </p:panelGrid>
+                   
+                    <div style="text-align:center;"> 
+                        
+                        <p:commandButton 
+                            actionListener="#{usuariosController.editarUsuario}" 
+                            value="#{bundle.Editar}" 
+                            update="display,:ListaUsuarios,:growl" 
+                            oncomplete="handleSubmit(args,'EditarDialogUsuario');"/>
+                        
+                        <p:commandButton
+                            style="margin-left: 10px;background:red;border-color:red;"
+                            value="#{bundle.Cancelar}" 
+                            onclick="EditarDialogUsuario.hide()"/>
+                    </div>
+                        
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
 </html>

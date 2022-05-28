@@ -20,7 +20,7 @@
                     <f:facet name="title">
                         <p:commandButton
                             icon="pi pi-plus-circle"
-                            actionListener="#{usuariosController.crearCliente()}"
+                            actionListener="#{usuariosController.crearUsuario()}"
                             value="Crear cliente"
                             update=":growl,:CrearFormCliente">
                         </p:commandButton>
@@ -45,7 +45,7 @@
                             id="name"
                             required="true"
                             requiredMessage="Es necesario escribir un nombre"
-                            value="#{usuariosController.clienteNombre}"/>
+                            value="#{usuariosController.usuarioInfo.nombre}"/>
 
                         <p:outputLabel for="apellido1" value="Apellido 1"/>
                         <p:inputText
@@ -53,13 +53,13 @@
                             id="apellido1"
                             required="true"
                             requiredMessage="Es necesario escribir un apellido"
-                            value="#{usuariosController.clienteApellido1}"/>
+                            value="#{usuariosController.usuarioInfo.apellido1}"/>
 
                         <p:outputLabel for="apellido2" value="Apellido 2"/>
                         <p:inputText 
                             validator="#{usuariosController.sinNumeros}"
                             id="apellido2"
-                            value="#{usuariosController.clienteApellido2}"/>
+                            value="#{usuariosController.usuarioInfo.apellido2}"/>
 
                         <p:outputLabel for="dni" value="DNI"/>
                         <p:inputText 
@@ -67,7 +67,7 @@
                             id="dni"
                             required="true"
                             requiredMessage="Es necesario escribir un DNI"
-                            value="#{usuariosController.clienteDni}"/>
+                            value="#{usuariosController.usuarioInfo.dni}"/>
 
                         <p:outputLabel for="telefono" value="Telefono"/>
                         <p:inputText 
@@ -75,7 +75,7 @@
                             id="telefono"
                             required="true"
                             requiredMessage="Es necesario escribir un teléfono"
-                            value="#{usuariosController.clienteTelefono}"/>
+                            value="#{usuariosController.usuarioInfo.telefono}"/>
 
                         <p:outputLabel value="Fecha Nacimiento" for="fecha" />
                         <p:calendar 
@@ -84,7 +84,7 @@
                             pattern="dd/MM/yyyy"
                             required="true"
                             requiredMessage="Es necesario escribir la fecha de nacimiento"
-                            value="#{usuariosController.clienteFecha}"
+                            value="#{usuariosController.usuarioInfo.fechaNacimiento}"
                             showOn="button"/>
 
                         <p:outputLabel for="usuario" value="Usuario"/>
@@ -93,7 +93,7 @@
                             validator="#{usuariosController.sizeString}"
                             required="true"
                             requiredMessage="Es necesario escribir un usuario"
-                            value="#{usuariosController.clienteUsuario}"/>
+                            value="#{usuariosController.usuarioInfo.usuario}"/>
 
                         <p:outputLabel for="password" value="Contraseña"/>
                         <p:inputText 
@@ -101,7 +101,7 @@
                             validator="#{usuariosController.sizeString}"
                             required="true"
                             requiredMessage="Es necesario escribir una contraseña"
-                            value="#{usuariosController.clientePassword}"/>
+                            value="#{usuariosController.usuarioInfo.password}"/>
 
                     </p:panelGrid>
 

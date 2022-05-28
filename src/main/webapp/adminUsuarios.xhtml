@@ -15,14 +15,15 @@
                 <p:autoUpdate/>
             </p:growl>
             
-            <h:form id="ListaClientes">
+            <h:form id="ListaUsuarios">
                 <p:card>
                     <f:facet name="title">
                         <p:commandButton
-                            actionListener="true"
+                            actionListener="#{usuariosController.nuevoUsuarioInfo}"
                             value="Crear usuario"
                             icon="pi pi-plus-circle"
-                            update=":ListaClientes"/>
+                            update=":CrearUsuario"
+                            oncomplete="PF('CrearDialogUsuario').show()"/>
                     </f:facet>
 
                     <hr/>
@@ -67,13 +68,15 @@
                             </f:facet>
                             
                             <p:commandButton
-                                actionListener="#{buscarController.verPerfil(item)}"
-                                icon="pi pi-user-edit"/>
+                                actionListener="#{usuariosController.editarUsuarioInfo(item)}"
+                                icon="pi pi-user-edit"
+                                update=":EditarUsuario"
+                                oncomplete="PF('EditarDialogUsuario').show()"/>
                             
                             <p:commandButton
                                 style="margin-left: 5px;background:red;border-color:red;"
                                 actionListener="#{usuariosController.borrarUsuario(item, sesionController.logeado)}"
-                                update=":growl,:ListaClientes"
+                                update=":growl,:ListaUsuarios"
                                 icon="pi pi-times-circle"
                                 onclick="return confirm('¿Estás seguro?');"/>
                             
@@ -84,6 +87,8 @@
                 </p:card>
             </h:form>
             
+            <ui:include src="adminUsuariosCrear.xhtml"/>
+            <ui:include src="adminUsuariosEditar.xhtml"/>
             
         </ui:define>
     </ui:composition>
