@@ -9,6 +9,12 @@
     <ui:composition template="/template.xhtml">
 
         <ui:define name="body">
+            <style type="text/css">
+                .ui-datagrid-no-border>.ui-datagrid-content {
+                        border: none !important;
+                }
+                
+            </style>
             
             <h:form
                 id="CalendarioCliente"
@@ -24,50 +30,63 @@
                     
                 </h:form>
                 
-                <ui:repeat
-                    value="#{sesionController.logeado.mascotasList}"
-                    var="mascota">
-                    
                     <br/>
-                    
+
                     <p:card>
-                        
-                        <p:dataGrid
+                               
+                        <f:facet name="title">
+                            Tus citas
+                            <hr/>
+                        </f:facet> 
+
+                        <p:dataTable 
+                            id="datalist" 
+                            value="#{citasController.obtenerCitasCliente(sesionController.logeado)}"
                             var="item"
-                            value="#{citasController.obtenerCitasMascota(mascota)}"
-                            columns="5"
-                            layout="grid"
-                            rows="20">
-                            
-                            <f:facet name="header">
-                                <p:graphicImage
-                                    style="height:2.5%; width:2.5%;"
-                                    url="/imagenes/#{mascota.idAnimal.getTipoAnimal()}.png" />
-                                <br/>
-                                <h:outputText value="#{mascota.nombre}"/>
-                            </f:facet>
-                            
-                            <p:panel style="text-align:center">
-                                
+                            rows="7">
+
+                            <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="#{item.fechaCita}">
-                                        <f:convertDateTime pattern="dd/MM/yyyy - HH:mm" />
-                                    </h:outputText>
+                                    <h:outputText value="Mascota"/>
+                                </f:facet> 
+                                <p:graphicImage
+                                    style="height:10%; width:10%;"
+                                    url="/imagenes/#{item.idMascota.idAnimal.getTipoAnimal()}.png" />
+                                <br/>
+                                <h:outputText  value="#{item.idMascota.nombre}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Fecha"/>
                                 </f:facet>
-                                
-                                <h:panelGrid columns="1" style="width:100%">
-                                    <h:outputText
-                                        value="#{item.descripcion}" />
 
-                                </h:panelGrid>
-                            </p:panel>
-                            
+                                <h:outputText value="#{item.fechaCita}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
 
-                        </p:dataGrid>
-                        
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Hora"/>
+                                </f:facet>
+
+                                <h:outputText value="#{item.fechaCita}">
+                                    <f:convertDateTime pattern="HH:mm" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Cita"/>
+                                </f:facet>
+                                <h:outputText value="#{item.descripcion}"/>
+                            </p:column>
+
+                        </p:dataTable>       
+
                     </p:card>
-                </ui:repeat>
-                
+
             </h:form>      
             
             <h:form id="CalendarioEmpleado" rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Empleado' or sesionController.logeado.idRol.tipoUsuario eq 'Administrador'}">

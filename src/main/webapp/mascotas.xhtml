@@ -22,15 +22,15 @@
                     
                     <p:card style="margin-bottom: 2em;">
                         
-                        <f:facet name="header">
-                            <div style="text-align: center;font-weight: bold;font-size: 15px;">
+                        <f:facet name="title">
+                            <div style="text-align: center;font-size: 15px;">
                                 <p:graphicImage
                                     style="height:2.5%; width:2.5%; margin-top:10px;"
                                     url="/imagenes/#{mascota.idAnimal.getTipoAnimal()}.png" />
 
                                 <br/>
                                 <h:outputText value="#{mascota.nombre}"/>
-                        
+
                                 <hr/>
                             </div>
                         </f:facet>
@@ -47,7 +47,17 @@
                                 </f:facet>
 
                                 <h:outputText value="#{item.fechaConsulta}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy - HH:mm" />
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Hora"/>
+                                </f:facet>
+
+                                <h:outputText value="#{item.fechaConsulta}">
+                                    <f:convertDateTime pattern="HH:mm" />
                                 </h:outputText>
                             </p:column>
 

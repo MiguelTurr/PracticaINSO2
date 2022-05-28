@@ -6,7 +6,10 @@ import controlador.util.JsfUtil.PersistAction;
 import EJB.CitasFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -20,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import modelo.Mascotas;
+import modelo.Usuarios;
 
 @Named("citasController")
 @SessionScoped
@@ -81,6 +85,27 @@ public class CitasController implements Serializable {
  
         List<Citas> lista = getFacade().citasMascota(mascota);
         return lista;
+    }
+    
+    public List<Citas> obtenerCitasCliente(Usuarios usuario) {
+        
+        List<Citas> listaFinal = new ArrayList<>();
+        List<Citas> lista = null;
+        
+        Iterator<Mascotas> itAnimales = usuario.getMascotasList().iterator();
+        Mascotas infoAnimales;
+        
+        while(itAnimales.hasNext()) {
+            infoAnimales = itAnimales.next();
+            lista = getFacade().citasMascota(infoAnimales);
+            
+            if (!lista.isEmpty()) {
+                listaFinal.addAll(lista);
+            }
+        }
+        
+        Collections.sort(listaFinal, (x, y) -> x.getFechaCita().compareTo(y.getFechaCita()));
+        return listaFinal;
     }
     
     public void crearNuevaCita() {
