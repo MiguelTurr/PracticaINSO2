@@ -36,9 +36,18 @@
                         
                         <p:commandButton
                             style="margin-left: 10px;"
-                            actionListener="#{facturasController.facturasDelMes}"
-                            value="Ganancias mes"
-                            icon="pi pi-dollar"/>
+                            value="Informe mensual"
+                            icon="pi pi-dollar"
+                            update=":FacturaMes"
+                            oncomplete="PF('VerDialogFacturaMes').show()">
+                           
+                            <f:actionListener 
+                                binding="#{facturasController.facturasDelMes()}"/>
+                            
+                            <f:actionListener 
+                                binding="#{facturasController.calcularProductosGanancia()}"/>
+                            
+                        </p:commandButton>
                         
                     </f:facet>
 
@@ -121,6 +130,7 @@
             
             <ui:include src="adminProductosCrear.xhtml"/>
             <ui:include src="adminProductosEditar.xhtml"/>
+            <ui:include src="adminProductosGanancias.xhtml"/>
             
         </ui:define>
     </ui:composition>

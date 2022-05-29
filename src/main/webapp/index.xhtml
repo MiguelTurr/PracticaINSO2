@@ -13,35 +13,42 @@
     
     <h:body 
         style=
-            "text-align:center;
-            align:center;
-            background: #8360c3;
+            "background: #8360c3;
             background: -webkit-linear-gradient(to right, #8360c3, #2ebf91);
             background: linear-gradient(to right, #8360c3, #2ebf91);"
         >
         
-        <p:growl id="loginAlerta" globalOnly="true" life="3000" >
+        <p:growl id="growl" life="3000" >
             <p:autoUpdate/>
         </p:growl>
         
-        <h:form id="LoginEditForm" style="margin-left:35%;margin-top:10%;">
-            
-            <p:panel header="Inicio sesión" style="width:350px;">
+        <h:form id="LoginEditForm" style="margin-left:40%;margin-top:10%;width:300px;">
+                        
+            <p:panel header="Inicio sesión">
                 
-              <h:panelGrid columns="3" cellpadding="5">
+              <h:panelGrid columns="2" cellpadding="3" style="text-align: center !important;">
                   
                 <h:outputLabel for="username" value="Usuario:" />
-                <p:inputText id="username" value="#{sesionController.usuario}" required="true" label="username"/>
-                <p:message for="username" display="icon"/>
+                <p:inputText
+                    id="username"
+                    value="#{sesionController.usuario}"
+                    required="true"
+                    requiredMessage="Escribe el usuario"
+                    label="username"/>
                 
                 <h:outputLabel for="password" value="Clave:" />
-                <p:password id="password" value="#{sesionController.password}" required="true" label="password" />
-                <p:message for="password" display="icon"/>
+                <p:password
+                    id="password"
+                    value="#{sesionController.password}"
+                    required="true"
+                    requiredMessage="Escribe la contraseña"
+                    label="password"/>
                 
                 <f:facet name="footer" >
-                  <p:commandButton value="Login"
-                     actionListener="#{sesionController.iniciarSesion}"
-                     update="LoginEditForm" />
+                  <p:commandButton
+                    value="Login"
+                    actionListener="#{sesionController.iniciarSesion}" 
+                    update=":LoginEditForm,:growl"/>
                   
                 </f:facet>
               </h:panelGrid>

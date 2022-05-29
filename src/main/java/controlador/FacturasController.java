@@ -36,9 +36,12 @@ public class FacturasController implements Serializable {
     private Facturas selected;
     
     private Facturas facturaInfo;
-    private List<Facturas> facturasDelMes;
     private boolean facturasCliente = false;
+    
+    private List<Infofacturas> productosDelMes;
+    private List<Facturas> facturasDelMes;
     private double gananciasMes;
+    private String nombreMes;
 
     public FacturasController() {
     }
@@ -63,12 +66,32 @@ public class FacturasController implements Serializable {
         return this.facturasDelMes;
     }
     
+    public List<Infofacturas> getProductosDelMes() {
+        return this.productosDelMes;
+    }
+    
     public void setFacturaInfo(Facturas factura) {
         this.facturaInfo = factura;
     }
     
     public Facturas getFacturaInfo() {
         return this.facturaInfo;
+    }
+    
+    public void setGananciasMes(double ganancia) {
+        this.gananciasMes = ganancia;
+    }
+    
+    public double getGananciasMes() {
+        return this.gananciasMes;
+    }
+    
+    public void setNombreMes(String mes) {
+        this.nombreMes = mes;
+    }
+    
+    public String getNombreMes() {
+        return this.nombreMes;
     }
 
     protected void setEmbeddableKeys() {
@@ -202,7 +225,7 @@ public class FacturasController implements Serializable {
     public List<Facturas> obtenerFacturas(Usuarios usuario) {
        
         List<Facturas> lista = getFacade().findAll(); 
-        List<Facturas> listaFinal = new ArrayList<Facturas>(); 
+        List<Facturas> listaFinal = new ArrayList<>(); 
         Iterator<Facturas> it = lista.iterator();
         Facturas info;
         
@@ -229,7 +252,11 @@ public class FacturasController implements Serializable {
         System.out.println("Quieres descargar una factura: "+factura);
     }
     
-    public List<Facturas> facturasDelMes() {
+    public void descargarInformeMensual() {
+        System.out.println("Quieres descargar el informe mensual"); 
+    }
+    
+    public void facturasDelMes() {
         
         List<Facturas> listaFinal = new ArrayList<>();
         List<Facturas> lista = getItems();
@@ -251,21 +278,36 @@ public class FacturasController implements Serializable {
                     listaFinal.add(infoFacturas);
                 }
             }
-            prueba(listaFinal);
         }        
         
         this.facturasDelMes = listaFinal;
-        System.out.println("Facturas totales: " + listaFinal.size());
-        
-        return listaFinal;
     }
     
-    public void prueba(List<Facturas> lista) {
+    public void calcularProductosGanancia() {
         
-        double costeFinal = 0.0;
+        String[] monthNames = 
+            {
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio", 
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre"
+            };
         
-        List<Infofacturas> listaFinal = new ArrayList<>();
-        Iterator<Facturas> itFacturas = lista.iterator();
+        Date fecha = new Date();
+        
+        this.nombreMes = monthNames[fecha.getMonth()];
+        this.gananciasMes = 0.0;
+        this.productosDelMes = new ArrayList<>();
+        
+        Iterator<Facturas> itFacturas = this.facturasDelMes.iterator();
         Facturas infoFacturas;
         Infofacturas infoProductos;
 
@@ -275,18 +317,23 @@ public class FacturasController implements Serializable {
             
             while(itInfo.hasNext()) {
                 infoProductos = itInfo.next();
-                //System.out.println(infoProductos.getIdProducto().getProducto());
-                
-                costeFinal += infoProductos.getCantidad() * infoProductos.getPrecio();
-                
-                if(listaFinal.size() == 0) {                  
-                    listaFinal.add(infoProductos);
-                }
+                this.gananciasMes += infoProductos.getCantidad() * infoProductos.getPrecio();
                 
                 boolean encontrado = false;
                 
-                for(int i = 0; i < listaFinal.size(); i++) {
-                    Infofacturas prueba = listaFinal.get(i);
+                if(this.productosDelMes.isEmpty()) {    
+                    Infofacturas creado = new Infofacturas();
+                    
+                    creado.setIdProducto(infoProductos.getIdProducto());
+                    creado.setCantidad(infoProductos.getCantidad());
+                    creado.setPrecio(infoProductos.getPrecio());
+                    
+                    this.productosDelMes.add(creado);
+                    encontrado = true;
+                }
+                
+                for(int i = 0; i < this.productosDelMes.size(); i++) {
+                    Infofacturas prueba = this.productosDelMes.get(i);
                     
                     if(prueba.getIdProducto().equals(infoProductos.getIdProducto())) {
                         encontrado = true;
@@ -296,26 +343,21 @@ public class FacturasController implements Serializable {
                             float media = (prueba.getPrecio() + infoProductos.getPrecio()) / 2;
                             prueba.setPrecio(media);
                         }
+                        break;
                     }
                 }
                 
-                if(encontrado == false) {           
-                    listaFinal.add(infoProductos);    
+                if(encontrado == false) {            
+                    Infofacturas creado = new Infofacturas();
+                    
+                    creado.setIdProducto(infoProductos.getIdProducto());
+                    creado.setCantidad(infoProductos.getCantidad());
+                    creado.setPrecio(infoProductos.getPrecio());
+                    
+                    this.productosDelMes.add(creado); 
                 }              
             }
         }
-        
-        System.out.println("Ganancias final: "+costeFinal);
-        System.out.println("Productos: ");
-
-        for (int i = 0; i < listaFinal.size(); i++) {
-
-            Infofacturas prueba = listaFinal.get(i);
-            System.out.println(prueba.getIdProducto().getProducto()
-                    + " : " + prueba.getCantidad() + " "
-                    + prueba.getPrecio());
-        }
-
     }
 
     @FacesConverter(forClass = Facturas.class)

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog
+            id="VerDialogFacturaMes" 
+            widgetVar="VerDialogFacturaMes" 
+            modal="true" 
+            width="700"
+            appendTo="@(body)"
+            header="Informe mensual">
+            
+            <h:form id="FacturaMes">
+                
+                <p style="font-size: 14px;font-weight: bold;">
+                    Mes: 
+                    <h:outputText value="#{facturasController.nombreMes}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                    
+                    <br/>
+                    Ganancia total:
+                    #{facturasController.gananciasMes}€
+                    
+                    <br/>
+                    Facturas: 
+                    #{facturasController.facturasDelMes.size()}
+                </p>
+                
+                <hr/>
+                <br/>
+                
+                <p:dataTable 
+                    id="datalist" 
+                    value="#{facturasController.productosDelMes}" 
+                    var="item"
+                    paginator="#{facturasController.productosDelMes.size() > 2}"
+                    rows="2">
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Producto"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idProducto.getProducto()}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Vendido"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cantidad}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Ganancia total"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cantidad * item.precio}€"/>
+                    </p:column>
+
+                </p:dataTable>
+                       
+                <div style="text-align:center;"> 
+                    
+                    <p:commandButton
+                        actionListener="#{facturasController.descargarInformeMensual}"
+                        value="Descargar"
+                        oncomplete="PF('VerDialogFacturaMes').hide()"
+                        icon="pi pi-download"/>
+                </div>  
+                    
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
