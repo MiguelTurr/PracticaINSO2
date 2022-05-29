@@ -4,8 +4,6 @@ import modelo.Facturas;
 import controlador.util.JsfUtil;
 import controlador.util.JsfUtil.PersistAction;
 import EJB.FacturasFacade;
-import java.io.File;
-import java.io.FileWriter;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
