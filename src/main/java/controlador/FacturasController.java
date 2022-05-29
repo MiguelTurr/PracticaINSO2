@@ -31,6 +31,11 @@ import modelo.Infofacturas;
 import modelo.Usuarios;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import java.io.FileOutputStream;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.text.SimpleDateFormat;
 
 @Named("facturasController")
 @SessionScoped
@@ -49,6 +54,8 @@ public class FacturasController implements Serializable {
     private float gananciasMes;
     private String nombreMes;
     private StreamedContent informeSemanal = null;
+    
+    private StreamedContent facturaCliente = null;
 
     public FacturasController() {
     }
@@ -259,8 +266,83 @@ public class FacturasController implements Serializable {
         getFacade().edit(factura);
     }
     
-    public void descargarFactura(Facturas factura) {
-        System.out.println("Quieres descargar una factura: "+factura);
+    public void generarFactura(Facturas factura) {
+
+	FacesContext facesContext = FacesContext.getCurrentInstance(); 
+	ExternalContext externalContext = facesContext.getExternalContext();
+        ServletContext e = (ServletContext) externalContext.getContext();
+        
+        //
+        
+        try {
+            Document documento = new Document();
+
+            //
+            
+            FileOutputStream ficheroPdf = new FileOutputStream(e.getRealPath("/resources/facturas/")+"/factura.pdf");
+
+            //
+            
+            PdfWriter.getInstance(documento, ficheroPdf).setInitialLeading(20);
+            documento.open();
+            
+            //
+            
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            
+            Paragraph titulo = new Paragraph("Factura "+factura.getIdFactura()); 
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            documento.add(titulo);
+            
+            documento.add(new Chunk(""));
+            documento.add(new Paragraph("Fecha: " +format.format(factura.getFechaFactura())));
+            documento.add(new Paragraph("Coste total: " +costeTotalFactura(factura)));
+            documento.add(new Chunk(""));
+            
+            //
+            
+            PdfPTable tabla = new PdfPTable(4);
+            tabla.addCell("Producto");
+            tabla.addCell("Cantidad");
+            tabla.addCell("Coste unidad");
+            tabla.addCell("Coste total");
+            
+            Infofacturas info;
+            
+            for (int i = 0; i < factura.getInfofacturasList().size(); i++) {
+                
+                info = factura.getInfofacturasList().get(i);
+                
+                tabla.addCell(info.getIdProducto().getProducto());
+                tabla.addCell(info.getCantidad()+"");
+                tabla.addCell(info.getPrecio()+"€");
+                tabla.addCell(info.getCantidad() * info.getPrecio() + "€");
+            }
+            documento.add(tabla);
+            
+            //
+            
+            documento.close();
+            
+            //
+
+            this.facturaCliente = DefaultStreamedContent.builder()
+                .name("factura.pdf")
+                .contentType("application/force-download")
+                .stream(() -> externalContext.getResourceAsStream("/resources/facturas/factura.pdf"))
+                .build();
+            
+        } catch(Exception a) {
+            System.out.println(a); 
+        }
+    }
+    
+    public StreamedContent getFacturaCliente() {
+        return this.facturaCliente;
+    }
+    
+    public void resetFacturaCliente() {
+        this.facturaCliente = null;
     }
     
     public StreamedContent descargarInformeMensual() {

@@ -68,10 +68,22 @@
                     
                     <p:commandButton
                         rendered="#{!facturasController.facturaInfo.infofacturasList.isEmpty()}"
-                        actionListener="#{facturasController.descargarFactura(facturasController.facturaInfo)}"
+                        action="#{facturasController.generarFactura(facturasController.facturaInfo)}"
+                        value="Generar factura"
+                        oncomplete="PF('VerDialogFactura').show()"
+                        update=":VerFactura"
+                        icon="pi pi-file-pdf"/>
+                    
+                    <p:commandButton
+                        style="margin-left: 10px;"
+                        rendered="#{facturasController.facturaCliente != null}"
                         value="Descargar"
                         oncomplete="PF('VerDialogFactura').hide()"
-                        icon="pi pi-download"/>
+                        icon="pi pi-download">
+                        
+                        <p:fileDownload value="#{facturasController.facturaCliente}"/>
+                        
+                    </p:commandButton>
                 </div>  
                     
             </h:form>

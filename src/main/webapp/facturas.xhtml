@@ -67,19 +67,23 @@
 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Opciones"/>
+                                <h:outputText value="Mostrar"/>
                             </f:facet>
                             
                             <p:commandButton
-                                actionListener="#{facturasController.setFacturaInfo(item)}"
                                 icon="pi pi-search"
                                 update=":VerFactura,:VerDialogFactura"
-                                oncomplete="PF('VerDialogFactura').show()"/>
+                                oncomplete="PF('VerDialogFactura').show()">
+                                
+                                <f:actionListener 
+                                    binding="#{facturasController.setFacturaInfo(item)}"/>
+
+                                <f:actionListener 
+                                    binding="#{facturasController.resetFacturaCliente()}"/>
+
+                                
+                            </p:commandButton>
                             
-                            <p:commandButton
-                                style="margin-left: 10px;"
-                                actionListener="#{facturasController.descargarFactura(item)}"
-                                icon="pi pi-download"/>
                         </p:column>
 
                     </p:dataTable>
