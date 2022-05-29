@@ -4,6 +4,8 @@ import modelo.Facturas;
 import controlador.util.JsfUtil;
 import controlador.util.JsfUtil.PersistAction;
 import EJB.FacturasFacade;
+import java.io.File;
+import java.io.FileWriter;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -20,11 +22,15 @@ import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.servlet.ServletContext;
 import modelo.Infofacturas;
 import modelo.Usuarios;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 @Named("facturasController")
 @SessionScoped
@@ -40,8 +46,9 @@ public class FacturasController implements Serializable {
     
     private List<Infofacturas> productosDelMes;
     private List<Facturas> facturasDelMes;
-    private double gananciasMes;
+    private float gananciasMes;
     private String nombreMes;
+    private StreamedContent informeSemanal = null;
 
     public FacturasController() {
     }
@@ -78,11 +85,11 @@ public class FacturasController implements Serializable {
         return this.facturaInfo;
     }
     
-    public void setGananciasMes(double ganancia) {
+    public void setGananciasMes(float ganancia) {
         this.gananciasMes = ganancia;
     }
     
-    public double getGananciasMes() {
+    public float getGananciasMes() {
         return this.gananciasMes;
     }
     
@@ -92,6 +99,10 @@ public class FacturasController implements Serializable {
     
     public String getNombreMes() {
         return this.nombreMes;
+    }
+    
+    public StreamedContent getInformeSemanal() {
+        return this.informeSemanal;
     }
 
     protected void setEmbeddableKeys() {
@@ -252,8 +263,51 @@ public class FacturasController implements Serializable {
         System.out.println("Quieres descargar una factura: "+factura);
     }
     
-    public void descargarInformeMensual() {
-        System.out.println("Quieres descargar el informe mensual"); 
+    public StreamedContent descargarInformeMensual() {
+        return this.informeSemanal;
+    }
+    
+    public void generarInformeMensual() {
+        
+	FacesContext facesContext = FacesContext.getCurrentInstance(); 
+	ExternalContext externalContext = facesContext.getExternalContext();
+        ServletContext e = (ServletContext) externalContext.getContext();
+        File file = new File(e.getRealPath("/resources/facturas/")+ "/informe.txt");
+        
+        try {
+            file.createNewFile();
+            
+            FileWriter myWriter = new FileWriter(file);
+            
+            myWriter.write("\t\t\tFactura de "+this.nombreMes+"\n\n");
+            myWriter.write("Ganancias del mes: "+this.gananciasMes+"€\n");
+            myWriter.write("------------------------------------------------\n\n");
+            
+            myWriter.write("Producto\t\tVendidos\t\tGanancia total\n\n");
+            
+            Infofacturas info;
+            
+            for(int i = 0; i < this.productosDelMes.size(); i++) {
+                info = this.productosDelMes.get(i);
+                
+                myWriter.write(info.getIdProducto().getProducto()+"\t\t");
+                myWriter.write(info.getCantidad()+"\t\t\t");
+                myWriter.write((info.getCantidad() * info.getPrecio())+"€\n");
+            }
+            
+            myWriter.close();
+            
+            //
+            
+            this.informeSemanal = DefaultStreamedContent.builder()
+                .name("informe-" +this.nombreMes+ ".txt")
+                .contentType("text/txt")
+                .stream(() -> FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/facturas/informe.txt"))
+                .build();
+            
+        } catch(Exception a) {
+            System.out.println(a);
+        }
     }
     
     public void facturasDelMes() {
@@ -304,7 +358,7 @@ public class FacturasController implements Serializable {
         Date fecha = new Date();
         
         this.nombreMes = monthNames[fecha.getMonth()];
-        this.gananciasMes = 0.0;
+        this.gananciasMes = 0.0f;
         this.productosDelMes = new ArrayList<>();
         
         Iterator<Facturas> itFacturas = this.facturasDelMes.iterator();

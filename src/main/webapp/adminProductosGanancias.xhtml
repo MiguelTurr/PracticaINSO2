@@ -67,12 +67,23 @@
                 </p:dataTable>
                        
                 <div style="text-align:center;"> 
-                    
+
                     <p:commandButton
-                        actionListener="#{facturasController.descargarInformeMensual}"
+                        action="#{facturasController.generarInformeMensual()}"
+                        value="Generar informe"
+                        oncomplete="PF('VerDialogFacturaMes').show()"
+                        update=":FacturaMes"
+                        icon="pi pi-file-pdf"/>
+
+                    <p:commandButton
+                        style="margin-left:10px;"
+                        rendered="#{facturasController.informeSemanal != null}"
                         value="Descargar"
                         oncomplete="PF('VerDialogFacturaMes').hide()"
-                        icon="pi pi-download"/>
+                        icon="pi pi-download">
+                        
+                        <p:fileDownload value="#{facturasController.descargarInformeMensual()}"/>
+                    </p:commandButton>
                 </div>  
                     
             </h:form>
