@@ -23,13 +23,13 @@
                 
                 <h:form>
 
-                    <p:dataTable id="datalist"
-                                 value="#{facturasController.obtenerFacturas(sesionController.logeado)}"
-                                 var="item"
-                                 paginator="#{facturasController.facturasCliente}"
-                                 rows="20"
-                                 rowsPerPageTemplate="20,30,40"
-                                 >
+                    <p:dataTable 
+                        id="datalist"
+                        value="#{facturasController.obtenerFacturas(sesionController.logeado)}"
+                        var="item"
+                        paginator="#{facturasController.facturasCliente}"
+                        rows="20"
+                        rowsPerPageTemplate="20,30,40">
 
                         <p:column>
                             <f:facet name="header">
@@ -67,18 +67,31 @@
 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Descargar"/>
+                                <h:outputText value="Mostrar"/>
                             </f:facet>
                             
                             <p:commandButton
-                                actionListener="#{facturasController.descargarFactura(item)}"
-                                icon="pi pi-download"/>
+                                icon="pi pi-search"
+                                update=":VerFactura,:VerDialogFactura"
+                                oncomplete="PF('VerDialogFactura').show()">
+                                
+                                <f:actionListener 
+                                    binding="#{facturasController.setFacturaInfo(item)}"/>
+
+                                <f:actionListener 
+                                    binding="#{facturasController.resetFacturaCliente()}"/>
+
+                            </p:commandButton>
+                            
                         </p:column>
 
                     </p:dataTable>
                 </h:form>
                 
             </p:card>
+            
+            <ui:include src="facturasVer.xhtml"/>
+            
         </ui:define>
     </ui:composition>
 

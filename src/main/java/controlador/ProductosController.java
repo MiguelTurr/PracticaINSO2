@@ -6,6 +6,8 @@ import controlador.util.JsfUtil.PersistAction;
 import EJB.ProductosFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -15,6 +17,7 @@ import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -26,52 +29,32 @@ public class ProductosController implements Serializable {
     @EJB
     private ProductosFacade ejbFacade;
     private List<Productos> items = null;
-    private Productos selected;
+    
+    private Productos productoInfo;
 
     public ProductosController() {
     }
-
-    public Productos getSelected() {
-        return selected;
+    
+    public void setProductoInfo(Productos producto) {
+        this.productoInfo = producto;
+    }
+    
+    public Productos getProductoInfo() {
+        return this.productoInfo;
     }
 
-    public void setSelected(Productos selected) {
-        this.selected = selected;
+    public Productos nuevoProductoInfo() {
+        this.productoInfo = new Productos();
+        return this.productoInfo;
     }
-
-    protected void setEmbeddableKeys() {
-    }
-
-    protected void initializeEmbeddableKey() {
+    
+    public Productos editarProductoInfo(Productos edit) {
+        this.productoInfo = edit;
+        return this.productoInfo;
     }
 
     private ProductosFacade getFacade() {
         return ejbFacade;
-    }
-
-    public Productos prepareCreate() {
-        selected = new Productos();
-        initializeEmbeddableKey();
-        return selected;
-    }
-
-    public void create() {
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("ProductosCreated"));
-        if (!JsfUtil.isValidationFailed()) {
-            items = null;    // Invalidate list of items to trigger re-query.
-        }
-    }
-
-    public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("ProductosUpdated"));
-    }
-
-    public void destroy() {
-        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("ProductosDeleted"));
-        if (!JsfUtil.isValidationFailed()) {
-            selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
-        }
     }
 
     public List<Productos> getItems() {
@@ -79,34 +62,6 @@ public class ProductosController implements Serializable {
             items = getFacade().findAll();
         }
         return items;
-    }
-
-    private void persist(PersistAction persistAction, String successMessage) {
-        if (selected != null) {
-            setEmbeddableKeys();
-            try {
-                if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
-                }
-                JsfUtil.addSuccessMessage(successMessage);
-            } catch (EJBException ex) {
-                String msg = "";
-                Throwable cause = ex.getCause();
-                if (cause != null) {
-                    msg = cause.getLocalizedMessage();
-                }
-                if (msg.length() > 0) {
-                    JsfUtil.addErrorMessage(msg);
-                } else {
-                    JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            }
-        }
     }
 
     public Productos getProductos(java.lang.Integer id) {
@@ -119,6 +74,93 @@ public class ProductosController implements Serializable {
 
     public List<Productos> getItemsAvailableSelectOne() {
         return getFacade().findAll();
+    }
+    
+    public void comprobarNombreProducto(FacesContext context, UIComponent comp, Object value){
+
+        String mno = (String) value;
+
+        if(mno.length() < 3) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("Esa celda necesita más de 3 caracteres");
+        }
+    }
+    
+    public void comprobarCantidadProducto(FacesContext context, UIComponent comp, Object value){
+
+        int valor = (int) value;
+        if(valor < -1) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("No puedes poner ese stock");
+        }
+    }
+    
+    public void comprobarPrecioProducto(FacesContext context, UIComponent comp, Object value){
+
+        float valor = (float) value;
+
+        if(valor <= 0.0) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("No puedes poner ese precio");
+        }
+    }
+    
+    public void comprobarDescuentoProducto(FacesContext context, UIComponent comp, Object value){
+
+        float valor = (float) value;
+
+        if(valor < 0.0) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("No puedes poner ese precio");
+        }
+    }
+    
+    public void borrarProducto(Productos producto) {
+        
+        if(producto.getCantidad() > 0) {
+            JsfUtil.addErrorMessage("Ese producto tiene stock en la tienda");
+            return;
+        }
+        
+        getFacade().remove(producto);
+        items = null;
+        
+        JsfUtil.addSuccessMessage("Producto eliminado");
+    }
+    
+    public void crearProducto() {
+        
+        this.productoInfo.setDescuento(0.0f);
+        
+        getFacade().create(this.productoInfo);
+        this.items = null;
+        this.productoInfo = null;
+        
+        JsfUtil.addSuccessMessage("Producto creado");
+    }
+    
+    public void editarProducto() {
+        
+        getFacade().edit(this.productoInfo);
+        JsfUtil.addSuccessMessage("Producto editado");
+        
+        this.productoInfo = null;
+    }
+    
+    public List<Productos> getProductosDisponibles() {
+        List<Productos> lista = getFacade().findAll();
+        List<Productos> listaFinal = new ArrayList<Productos>();
+        Productos prod;
+        Iterator<Productos> it = lista.iterator();
+        
+        while(it.hasNext()) {
+            prod = it.next();
+            if(prod.getCantidad() != 0) {
+                listaFinal.add(prod);
+            }
+        }
+        
+        return listaFinal;
     }
 
     @FacesConverter(forClass = Productos.class)

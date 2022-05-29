@@ -23,53 +23,70 @@
             
             <br/>
             
-            <p:card>
-                <f:facet name="title">
-                    <h:form>
+            <h:form id="animalesCliente">
+                <p:card>
+                    <f:facet name="title">
                         <p:commandButton
                             style="margin-right:20px;"
                             actionListener="#{mascotasController.prepareCreate}"
                             value="Añadir mascota"
+                            icon="pi pi-plus-circle"
                             update=":CrearMascota"
                             oncomplete="PF('CrearDialogMascota').show()"/>
 
                         <p:commandButton
-                            styleClass="danger-button"
+                            update=":CrearDialogFactura"
                             style="margin-right:20px;"
-                            value="Hacer factura"/>
-                        
+                            icon="pi pi-file-o"
+                            value="Hacer factura"
+                            onclick="return confirm('¿Estás seguro?');"
+                            oncomplete="PF('CrearDialogFactura').show()">
+
+                            <f:actionListener 
+                                binding="#{facturasController.prepararFactura(buscarController.verPerfilCliente)}"/>
+                            
+                            <f:actionListener 
+                                binding="#{infofacturasController.nuevaInfoFacturasInfo()}"/>
+                        </p:commandButton>  
+
                         <p:commandButton
                             style="background:red;border-color:red;"
                             value="Borrar cliente"
-                            onclick="return confirm('¿Estás seguro?');"
-                            actionListener="#{usuariosController.borrarCliente(buscarController.verPerfilCliente)}"/> 
-                    </h:form>
-                </f:facet>
-                
-                <hr/>
-                
-                <h:form id="animalesCliente">
-                    <p:dataTable value="" style="text-align:center" styleClass="noHeader">
-                        
-                        <p:column>
+                            icon="pi pi-times-circle"
+                            onclick="return confirm('¿Estás seguro?');"> 
+
+                            <f:actionListener 
+                                binding="#{usuariosController.borrarCliente(buscarController.verPerfilCliente)}"/>
                             
+                            <f:actionListener 
+                                binding="#{buscarController.limpiarBusquedaClientes()}"/>
+                        </p:commandButton>
+                        
+                    </f:facet>
+
+                    <hr/>
+
+                    <p:dataTable value="" style="text-align:center" styleClass="noHeader">
+
+                        <p:column>
+
                             <p:graphicImage style="height:10%; width:10%;" url="/imagenes/persona.png" />
 
                             <p>#{buscarController.verPerfilCliente.nombre} #{buscarController.verPerfilCliente.apellido1} #{buscarController.verPerfilCliente.apellido2}</p>
-                             
+
                             <p>Usuario: #{buscarController.verPerfilCliente.usuario}</p>
                             <p>Creado: 
                                 <h:outputText value="#{buscarController.verPerfilCliente.creadoEn}">
-                                    <f:convertDateTime pattern="MM/dd/yyyy" />
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
                                 </h:outputText>
                             </p>
                             <p>DNI: #{buscarController.verPerfilCliente.dni}</p>
                             <p>Telefono: #{buscarController.verPerfilCliente.telefono}</p>
-                            
+
                         </p:column>
 
                         <p:column>
-                            <p>
+                            <p style="font-size: 15px;font-weight: bold;">
                                 Mascotas:
                             </p>
 
@@ -77,11 +94,11 @@
                                 styleClass="ui-datagrid-no-border"
                                 var="item" 
                                 value="#{buscarController.verPerfilCliente.mascotasList}"
-                                columns="2"
+                                columns="3"
                                 layout="grid"
                                 rows="20">
 
-                                <p:panel style="text-align:center">
+                                <p:panel style="text-align:center;">
 
                                     <p:graphicImage
                                         style="height:20%; width:20%;"
@@ -89,7 +106,7 @@
                                     <br/>
                                     <h:outputText value="#{item.nombre}"/>
                                     <br/>
-                                    
+
                                     <p:commandButton
                                         actionListener="#{buscarController.verPerfil(item)}"
                                         icon="pi pi-search"/>
@@ -98,10 +115,11 @@
 
                         </p:column>
                     </p:dataTable>
-                </h:form>
-            </p:card>
+                </p:card>
+            </h:form>
             
             <ui:include src="crearMascota.xhtml"/>
+            <ui:include src="perfilClienteFactura.xhtml"/>
             
         </ui:define>
     </ui:composition>

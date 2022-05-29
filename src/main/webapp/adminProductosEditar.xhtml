@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog
+            id="EditarDialogProducto" 
+            widgetVar="EditarDialogProducto" 
+            modal="true" 
+            resizable="false" 
+            appendTo="@(body)" 
+            header="#{bundle.EditProdTitle}">
+            
+            <h:form id="EditarProducto">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2">
+
+                        <p:outputLabel value="Nombre producto" for="prodNombre" />
+                        <p:inputText
+                            id="prodNombre"
+                            validator="#{productosController.comprobarNombreProducto}"
+                            value="#{productosController.productoInfo.producto}"
+                            required="true"
+                            requiredMessage="Debes escribir un nombre"/>
+
+                        <p:outputLabel value="Stock" for="prodCantidad" />
+                        <p:inputText
+                            id="prodCantidad"
+                            validator="#{productosController.comprobarCantidadProducto}"
+                            value="#{productosController.productoInfo.cantidad}"
+                            required="true"
+                            requiredMessage="Debes escribir una cantidad"/>
+
+                        <p:outputLabel value="Precio" for="prodPrecio" />
+                        <p:inputText
+                            id="prodPrecio"
+                            validator="#{productosController.comprobarPrecioProducto}"
+                            value="#{productosController.productoInfo.precio}"
+                            required="true"
+                            requiredMessage="Debes escribir un precio"/>
+
+                        <p:outputLabel value="Descuento" for="prodDescuento" />
+                        <p:inputText
+                            id="prodDescuento"
+                            validator="#{productosController.comprobarDescuentoProducto}"
+                            value="#{productosController.productoInfo.descuento}"
+                            required="true"
+                            requiredMessage="Debes escribir un descuento"/>
+
+                    </p:panelGrid>
+                   
+                    <div style="text-align:center;"> 
+                        
+                        <p:commandButton 
+                            actionListener="#{productosController.editarProducto}" 
+                            value="#{bundle.Editar}" 
+                            update="display,:ListaProductos,:growl" 
+                            oncomplete="handleSubmit(args,'EditarDialogProducto');"/>
+                        
+                        <p:commandButton
+                            style="margin-left: 10px;background:red;border-color:red;"
+                            value="#{bundle.Cancelar}" 
+                            onclick="EditarDialogProducto.hide()"/>
+                    </div>
+                        
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

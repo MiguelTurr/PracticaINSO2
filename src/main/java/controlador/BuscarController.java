@@ -86,13 +86,6 @@ public class BuscarController implements Serializable {
     
     public void verPerfil(Usuarios usuario) throws IOException {
         
-        if(usuario == null) {
-            System.out.println("Usuario vacio");
-            return;
-        }
-        
-        System.out.println("Ver perfil de cliente:" +usuario.getNombre());
-        
         this.verPerfilCliente = usuario;
         
         // Ir al perfil cliente
@@ -111,7 +104,6 @@ public class BuscarController implements Serializable {
     }
     
     public void verPerfil(Mascotas mascota) throws IOException {
-        System.out.println("Ver perfil de mascota :" +mascota.getNombre());
         
         this.verPerfilMascota = mascota;
         
@@ -119,5 +111,13 @@ public class BuscarController implements Serializable {
             
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect("perfilMascota.xhtml");
+    }
+    
+    public void limpiarBusquedaClientes() {
+       this.buscarClientes = null;
+    }
+    
+    public void limpiarBusquedaMascotas() {
+       this.buscarMascotas = null;
     }
 }

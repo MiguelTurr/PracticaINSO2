@@ -4,6 +4,7 @@ import modelo.Mascotas;
 import controlador.util.JsfUtil;
 import controlador.util.JsfUtil.PersistAction;
 import EJB.MascotasFacade;
+import java.io.IOException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -143,12 +145,29 @@ public class MascotasController implements Serializable {
     }
     
     public void crearNuevaMascota(Usuarios usuario) {
-        System.out.println("Quiero crear una mascota: "+ mascotaTipo.getTipoAnimal());
-        System.out.println("de: "+ usuario.getNombre());
+        
+        Mascotas mascota = new Mascotas();
+        
+        mascota.setNombre(mascotaNombre);
+        mascota.setIdAnimal(mascotaTipo);
+        mascota.setIdCliente(usuario);
+        
+        getFacade().create(mascota); 
+        this.items = null;
+        usuario.getMascotasList().add(mascota);
+        JsfUtil.addSuccessMessage("Se ha creado una nueva mascota");
     }
     
-    public void borrarMascota(Mascotas mascota) {
-        System.out.println("Quiero borrar una mascota: "+mascota.getNombre());
+    public void borrarMascota(Mascotas mascota) throws IOException {
+        
+        Usuarios usuario = mascota.getIdCliente();
+        usuario.getMascotasList().remove(mascota);
+        
+        getFacade().remove(mascota);
+        this.items = null;
+        
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect("inicio.xhtml");
     }
 
     @FacesConverter(forClass = Mascotas.class)

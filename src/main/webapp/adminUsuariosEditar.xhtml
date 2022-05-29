@@ -6,61 +6,37 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
+    <ui:composition>
 
-        <ui:define name="body">
-            <br/>
+        <p:dialog
+            id="EditarDialogUsuario" 
+            widgetVar="EditarDialogUsuario" 
+            modal="true" 
+            resizable="false" 
+            appendTo="@(body)" 
+            header="#{bundle.EditUserTitle}">
+            
+            <h:form id="EditarUsuario">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="4">
 
-            <p:growl globalOnly="true" life="3000" >
-                <p:autoUpdate/>
-            </p:growl>
-
-            <h:form id="CrearFormCliente">
-                <p:card>
-                    <f:facet name="title">
-                        <p:commandButton
-                            icon="pi pi-plus-circle"
-                            actionListener="#{usuariosController.crearUsuario(rolesController.items.get(2))}"
-                            value="Crear cliente"
-                            update=":growl,:CrearFormCliente">
-                        </p:commandButton>
-                        
-                        <p:commandButton
-                            rendered="#{usuariosController.usuarioCreado ne null}"
-                            style="margin-left:10px;background:green;border-color:green;"
-                            action="#{buscarController.verPerfil(usuariosController.usuarioCreado)}"
-                            immediate="true"
-                            value="Ir perfil de #{usuariosController.usuarioCreado.getNombre()} #{usuariosController.usuarioCreado.getApellido1()}"
-                        />
-
-                    </f:facet>
-                
-                    <hr/>
-
-                    <p:panelGrid
-                        rendered="#{usuariosController.usuarioInfo != null}"
-                        columns="4"
-                        columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-2,ui-g-12 ui-md-4"
-                        layout="grid"
-                        styleClass="ui-panelgrid-blank ui-fluid">
-                        
-                        <p:outputLabel for="name" value="Nombre"/>
-                        <p:inputText 
-
-                            validator="#{usuariosController.sinNumerosAndSize}"
-                            id="name"
-                            required="true"
-                            requiredMessage="Es necesario escribir un nombre"
-                            value="#{usuariosController.usuarioInfo.nombre}"/>
-
-                        <p:outputLabel for="apellido1" value="Apellido 1"/>
+                        <p:outputLabel value="Nombre" for="userNombre" />
                         <p:inputText
+                            id="userNombre"
                             validator="#{usuariosController.sinNumerosAndSize}"
-                            id="apellido1"
+                            value="#{usuariosController.usuarioInfo.nombre}"
                             required="true"
-                            requiredMessage="Es necesario escribir un apellido"
-                            value="#{usuariosController.usuarioInfo.apellido1}"/>
+                            requiredMessage="Debes escribir un nombre"/>
 
+                        <p:outputLabel value="Apellido1" for="userApellido1" />
+                        <p:inputText
+                            id="userApellido1"
+                            validator="#{usuariosController.sinNumerosAndSize}"
+                            value="#{usuariosController.usuarioInfo.apellido1}"
+                            required="true"
+                            requiredMessage="Debes escribir un apellido"/>
+                        
+                        
                         <p:outputLabel for="apellido2" value="Apellido 2"/>
                         <p:inputText 
                             validator="#{usuariosController.sinNumeros}"
@@ -108,13 +84,35 @@
                             required="true"
                             requiredMessage="Es necesario escribir una contraseña"
                             value="#{usuariosController.usuarioInfo.password}"/>
+                        
+                        <p:outputLabel value="Rol" for="rol" />
+                        <h:selectOneMenu id="rol" value="#{usuariosController.usuarioInfo.idRol}">
+                                <f:selectItems 
+                                    value="#{rolesController.itemsAvailableSelectOne}"
+                                    var="entry"
+                                    itemValue="#{entry}"
+                                    itemLabel="#{entry.tipoUsuario}" />
+                        </h:selectOneMenu>
 
                     </p:panelGrid>
-
-                </p:card>
+                   
+                    <div style="text-align:center;"> 
+                        
+                        <p:commandButton 
+                            actionListener="#{usuariosController.editarUsuario}" 
+                            value="#{bundle.Editar}" 
+                            update="display,:ListaUsuarios,:growl" 
+                            oncomplete="handleSubmit(args,'EditarDialogUsuario');"/>
+                        
+                        <p:commandButton
+                            style="margin-left: 10px;background:red;border-color:red;"
+                            value="#{bundle.Cancelar}" 
+                            onclick="EditarDialogUsuario.hide()"/>
+                    </div>
+                        
+                </h:panelGroup>
             </h:form>
-           
-        </ui:define>
-    </ui:composition>
+        </p:dialog>
 
+    </ui:composition>
 </html>

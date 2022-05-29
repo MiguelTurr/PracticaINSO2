@@ -30,16 +30,4 @@ public class UsuariosFacade extends AbstractFacade<Usuarios> {
     public UsuariosFacade() {
         super(Usuarios.class);
     }
-    
-    public Usuarios buscarID() {
-        return (Usuarios) em.createNamedQuery("Usuarios.findByIdUsuario").setParameter("idUsuario", 1).getResultList().get(0);
-    }
-    
-    public void crearNuevoCliente(Usuarios usuario) {
-        
-        Roles rol = (Roles) em.createNamedQuery("Roles.findByIdRol").setParameter("idRol", 3).getResultList().get(0);
-        usuario.setIdRol(rol);
-        
-        em.persist(usuario);
-    }
 }

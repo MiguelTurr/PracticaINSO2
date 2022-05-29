@@ -2,18 +2,15 @@ package controlador;
 
 import modelo.Usuarios;
 import controlador.util.JsfUtil;
-import controlador.util.JsfUtil.PersistAction;
 import EJB.UsuariosFacade;
 import java.io.IOException;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -22,6 +19,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import modelo.Roles;
 
 @Named("usuariosController")
 @SessionScoped
@@ -30,120 +28,50 @@ public class UsuariosController implements Serializable {
     @EJB
     private UsuariosFacade ejbFacade;
     private List<Usuarios> items = null;
-    private Usuarios selected;
     
-    private String clienteNombre;
-    private String clienteApellido1;
-    private String clienteApellido2;
-    private String clienteDni;
-    private String clienteTelefono;
-    private Date clienteFecha;
-    private String clienteUsuario;
-    private String clientePassword;
-    
+    private Usuarios usuarioInfo;
     private Usuarios usuarioCreado = null;
+    
+    public Usuarios nuevoUsuarioInfo() throws IOException {
+        this.usuarioInfo = new Usuarios();
+        
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect("crearCliente.xhtml");
+        
+        return this.usuarioInfo;
+    }
+    
+    public Usuarios nuevoUsuarioInfoAdmin() {
+        this.usuarioInfo = new Usuarios();
+        return this.usuarioInfo;
+    }
+    
+    public Usuarios editarUsuarioInfo(Usuarios user) {
+        this.usuarioInfo = user;
+        return this.usuarioInfo;
+    }
+    
+    public void setUsuarioInfo(Usuarios user) {
+        this.usuarioInfo = user;
+    }
+    
+    public Usuarios getUsuarioInfo() {
+        return this.usuarioInfo;
+    }
 
     public UsuariosController() {
     }
-    
-    public String getClienteNombre() {
-        return this.clienteNombre;
-    }
-    public String getClienteApellido1() {
-        return this.clienteApellido1;
-    }
-    public String getClienteApellido2() {
-        return this.clienteApellido2;
-    }
-    public String getClienteDni() {
-        return this.clienteDni;
-    }
-    public String getClienteTelefono() {
-        return this.clienteTelefono;
-    }
-    public Date getClienteFecha() {
-        return this.clienteFecha;
-    }
-    public String getClienteUsuario() {
-        return this.clienteUsuario;
-    }
-    public String getClientePassword() {
-        return this.clientePassword;
-    }
-    public Usuarios getUsuarioCreado() {
-        return this.usuarioCreado;
-    }
-    
-    public void setClienteNombre(String nombre) {
-        this.clienteNombre = nombre;
-    }
-    public void setClienteApellido1(String apellido) {
-        this.clienteApellido1 = apellido;
-    }
-    public void setClienteApellido2(String apellido) {
-        this.clienteApellido2 = apellido;
-    }
-    public void setClienteDni(String dni) {
-        this.clienteDni = dni;
-    }
-    public void setClienteTelefono(String telefono) {
-        this.clienteTelefono = telefono;
-    }
-    public void setClienteFecha(Date fecha) {
-        this.clienteFecha = fecha;
-    }
-    public void setClienteUsuario(String user) {
-        this.clienteUsuario = user;
-    }
-    public void setClientePassword(String password) {
-        this.clientePassword = password;
-    }
+  
     public void setUsuarioCreado(Usuarios user) {
         this.usuarioCreado = user;
     }
-
-    public Usuarios getSelected() {
-        return selected;
-    }
-
-    public void setSelected(Usuarios selected) {
-        this.selected = selected;
-    }
   
-    protected void setEmbeddableKeys() {
-    }
-
-    protected void initializeEmbeddableKey() {
+    public Usuarios getUsuarioCreado() {
+        return this.usuarioCreado;
     }
 
     private UsuariosFacade getFacade() {
         return ejbFacade;
-    }
-
-    public Usuarios prepareCreate() {
-        selected = new Usuarios();
-        initializeEmbeddableKey();
-        return selected;
-    }
-
-    public void create() {
-        
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("UsuariosCreated"));
-        if (!JsfUtil.isValidationFailed()) {
-            items = null;    // Invalidate list of items to trigger re-query.
-        }
-    }
-
-    public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("UsuariosUpdated"));
-    }
-
-    public void destroy() {
-        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("UsuariosDeleted"));
-        if (!JsfUtil.isValidationFailed()) {
-            selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
-        }
     }
 
     public List<Usuarios> getItems() {
@@ -151,34 +79,6 @@ public class UsuariosController implements Serializable {
             items = getFacade().findAll();
         }
         return items;
-    }
-
-    private void persist(PersistAction persistAction, String successMessage) {
-        if (selected != null) {
-            setEmbeddableKeys();
-            try {
-                if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
-                }
-                JsfUtil.addSuccessMessage(successMessage);
-            } catch (EJBException ex) {
-                String msg = "";
-                Throwable cause = ex.getCause();
-                if (cause != null) {
-                    msg = cause.getLocalizedMessage();
-                }
-                if (msg.length() > 0) {
-                    JsfUtil.addErrorMessage(msg);
-                } else {
-                    JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            }
-        }
     }
 
     public Usuarios getUsuarios(java.lang.Integer id) {
@@ -193,6 +93,20 @@ public class UsuariosController implements Serializable {
         return getFacade().findAll();
     }
     
+    public void sinNumerosAndSize(FacesContext context, UIComponent comp, Object value) {
+
+        String mno = (String) value;
+
+        if(mno.length() < 3) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("Esa celda necesita más de 3 caracteres");
+            
+        } else if (mno.matches(".*[0-9].*")) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("Esa celda no puede contener números");
+        }
+    }
+    
     public void sinNumeros(FacesContext context, UIComponent comp, Object value) {
 
         String mno = (String) value;
@@ -200,6 +114,16 @@ public class UsuariosController implements Serializable {
         if (mno.matches(".*[0-9].*")) {
             ((UIInput) comp).setValid(false);
             JsfUtil.addErrorMessage("Esa celda no puede contener números");
+        }
+    }
+    
+    public void sizeString(FacesContext context, UIComponent comp, Object value){
+
+        String mno = (String) value;
+
+        if(mno.length() < 3) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("Esa celda necesita más de 3 caracteres");
         }
     }
     
@@ -215,48 +139,83 @@ public class UsuariosController implements Serializable {
         }
     }
     
-    public void crearCliente() throws IOException {
- 
-        Usuarios nuevoUsuario = new Usuarios();
-
-        //
+    public void comprobarTelefono(FacesContext context, UIComponent comp, Object value) {
         
-        nuevoUsuario.setNombre(clienteNombre);
-        nuevoUsuario.setApellido1(clienteApellido1);
-        nuevoUsuario.setApellido2(clienteApellido2);
-        nuevoUsuario.setDni(clienteDni);
-        nuevoUsuario.setTelefono(clienteTelefono);
-        nuevoUsuario.setFechaNacimiento(clienteFecha);
-        nuevoUsuario.setCreadoEn(new Date());
-        nuevoUsuario.setUltimaConexion(new Date());
-
-        // Creación Usuario
-        nuevoUsuario.setUsuario(clienteUsuario);
-        nuevoUsuario.setPassword(clientePassword);
-
-        //
-        getFacade().crearNuevoCliente(nuevoUsuario);
+        String mno = (String) value;
+        
+        if(!mno.matches("[0-9]{9}")) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("El número de teléfono no es correcto");
+        }
+    }
+    
+    public void comprobarFecha(FacesContext context, UIComponent comp, Object value) {
+        Date fecha = (Date) value;
+        Date fechaValida = new Date(104, 1, 1);
+        
+        if(fechaValida.compareTo(fecha) < 0) {
+            ((UIInput) comp).setValid(false);
+            JsfUtil.addErrorMessage("Debe tener más de 18 años");
+        }
+    }
+    
+    public void crearUsuario(Roles rol) throws IOException {
+        
+        this.usuarioInfo.setCreadoEn(new Date());
+        this.usuarioInfo.setUltimaConexion(new Date());
+        this.usuarioInfo.setIdRol(rol);
+        
+        getFacade().create(this.usuarioInfo);
         JsfUtil.addSuccessMessage("Se ha creado el nuevo cliente");
 
-        this.usuarioCreado = nuevoUsuario;
+        this.usuarioCreado = this.usuarioInfo;
         
-        // Reset
+        this.items = null;
+        this.usuarioInfo = new Usuarios();
+        this.usuarioInfo.setIdRol(this.usuarioCreado.getIdRol());
+    }
+    
+    public void crearUsuarioAdmin() throws IOException {
         
-        clienteNombre = "";
-        clienteApellido1 = "";
-        clienteApellido2 = "";
-        clienteDni = "";
-        clienteTelefono = "";
-        clienteFecha = null;
-        clienteUsuario = "";
-        clientePassword = "";
+        this.usuarioInfo.setCreadoEn(new Date());
+        this.usuarioInfo.setUltimaConexion(new Date());
+        
+        getFacade().create(this.usuarioInfo);
+        JsfUtil.addSuccessMessage("Se ha creado un nuevo usuario");
+        
+        this.items = null;
+        this.usuarioInfo = null;
+    }
+    
+    public void editarUsuario() {
+        getFacade().edit(this.usuarioInfo);
+        JsfUtil.addSuccessMessage("Has editado al usuario");
+        
+        this.usuarioInfo = null;
+    }
+    
+    public void actualizarUsuario(Usuarios usuario) {
+        getFacade().edit(usuario);
     }
     
     public void borrarCliente(Usuarios usuario) throws IOException {
         getFacade().remove(usuario);
+        items = null;
         
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect("inicio.xhtml");
+    }
+    
+    public void borrarUsuario(Usuarios usuario, Usuarios admin) throws IOException {
+        if(usuario.equals(admin)) {
+            JsfUtil.addErrorMessage("No puedes borrar ese usuario");
+            return;
+        }
+        
+        getFacade().remove(usuario);
+        items = null;
+        
+        JsfUtil.addSuccessMessage("Usuario eliminado");
     }
 
     @FacesConverter(forClass = Usuarios.class)

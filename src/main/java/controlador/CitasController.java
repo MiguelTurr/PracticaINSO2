@@ -6,7 +6,10 @@ import controlador.util.JsfUtil.PersistAction;
 import EJB.CitasFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -20,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import modelo.Mascotas;
+import modelo.Usuarios;
 
 @Named("citasController")
 @SessionScoped
@@ -28,81 +32,28 @@ public class CitasController implements Serializable {
     @EJB
     private CitasFacade ejbFacade;
     private List<Citas> items = null;
-    private Citas selected;
     
-    private Date citaFecha;
-    private String citaDesc;
-    private Mascotas citaMascota;
+    private Citas citaInfo;
 
     public CitasController() {
         
     }
-
-    public Citas getSelected() {
-        return selected;
-    }
-
-    public void setSelected(Citas selected) {
-        this.selected = selected;
+    
+    public Citas getCitaInfo() {
+        return this.citaInfo;
     }
     
-    public Date getCitaFecha() {
-        return citaFecha;
+    public void setCitaInfo(Citas cita) {
+        this.citaInfo = cita;
     }
     
-    public void setCitaFecha(Date date) {
-        this.citaFecha = date;
-    }
-    
-    public String getCitaDesc() {
-        return citaDesc;
-    }
-    
-    public void setCitaDesc(String desc) {
-        this.citaDesc = desc;
-    }
-    
-    public Mascotas getCitaMascota() {
-        return citaMascota;
-    }
-    
-    public void setCitaMascota(Mascotas mascota) {
-        this.citaMascota = mascota;
-    }
-
-    protected void setEmbeddableKeys() {
-    }
-
-    protected void initializeEmbeddableKey() {
+    public Citas nuevaCitaInfo() {
+        this.citaInfo = new Citas();
+        return this.citaInfo;
     }
 
     private CitasFacade getFacade() {
         return ejbFacade;
-    }
-
-    public Citas prepareCreate() {
-        selected = new Citas();
-        initializeEmbeddableKey();
-        return selected;
-    }
-
-    public void create() {
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("CitasCreated"));
-        if (!JsfUtil.isValidationFailed()) {
-            items = null;    // Invalidate list of items to trigger re-query.
-        }
-    }
-
-    public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("CitasUpdated"));
-    }
-
-    public void destroy() {
-        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("CitasDeleted"));
-        if (!JsfUtil.isValidationFailed()) {
-            selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
-        }
     }
 
     public List<Citas> getItems() {
@@ -110,34 +61,6 @@ public class CitasController implements Serializable {
             items = getFacade().findAll();
         }
         return items;
-    }
-
-    private void persist(PersistAction persistAction, String successMessage) {
-        if (selected != null) {
-            setEmbeddableKeys();
-            try {
-                if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
-                }
-                JsfUtil.addSuccessMessage(successMessage);
-            } catch (EJBException ex) {
-                String msg = "";
-                Throwable cause = ex.getCause();
-                if (cause != null) {
-                    msg = cause.getLocalizedMessage();
-                }
-                if (msg.length() > 0) {
-                    JsfUtil.addErrorMessage(msg);
-                } else {
-                    JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            }
-        }
     }
 
     public Citas getCitas(java.lang.Integer id) {
@@ -164,28 +87,66 @@ public class CitasController implements Serializable {
         return lista;
     }
     
+    public List<Citas> obtenerCitasCliente(Usuarios usuario) {
+        
+        List<Citas> listaFinal = new ArrayList<>();
+        List<Citas> lista = null;
+        
+        Iterator<Mascotas> itAnimales = usuario.getMascotasList().iterator();
+        Mascotas infoAnimales;
+        
+        while(itAnimales.hasNext()) {
+            infoAnimales = itAnimales.next();
+            lista = getFacade().citasMascota(infoAnimales);
+            
+            if (!lista.isEmpty()) {
+                listaFinal.addAll(lista);
+            }
+        }
+        
+        Collections.sort(listaFinal, (x, y) -> x.getFechaCita().compareTo(y.getFechaCita()));
+        return listaFinal;
+    }
+    
+    public Citas obtenerCitaMasCercana(Usuarios usuario) {
+        
+        List<Citas> listaFinal = obtenerCitasCliente(usuario);
+        Citas cita = null;
+        
+        if(!listaFinal.isEmpty()) {
+            cita = listaFinal.get(0);
+        }
+        
+        return cita;
+    }
+    
     public void crearNuevaCita() {
         
-        if(JsfUtil.fechaValida(citaFecha) <= 0) {
+        if(JsfUtil.fechaValida(this.citaInfo.getFechaCita()) <= 0) {
             
             JsfUtil.addErrorMessage("Fecha introducida es incorrecta");
-            this.citaFecha = null;
+            this.citaInfo.setFechaCita(null);
             return;
         }
         
-        if(this.citaDesc.length() <= 10) {
+        if(this.citaInfo.getDescripcion().length() <= 10) {
             
             JsfUtil.addErrorMessage("Descripción demasiado corta");
-            this.citaDesc = "";
             return;
         }
-
-        Citas cita = new Citas();
-        cita.setFechaCita(this.citaFecha);
-        cita.setDescripcion(this.citaDesc);
-        cita.setIdMascota(this.citaMascota);
-
-        getFacade().crearNuevaCita(cita); 
+        
+        getFacade().create(this.citaInfo); 
+        JsfUtil.addSuccessMessage("Cita creada");
+        this.items = null;
+        this.citaInfo = null;
+    }
+    
+    public void borrarCita(Citas cita) {
+        
+        getFacade().remove(cita);
+        items = null;
+        
+        JsfUtil.addSuccessMessage("Cita eliminada");
     }
 
     @FacesConverter(forClass = Citas.class)

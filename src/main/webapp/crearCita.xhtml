@@ -14,25 +14,34 @@
                     <p:panelGrid columns="2">
                        
                         <p:outputLabel value="Fecha" for="fechaCita" />
-                        <p:calendar id="fechaCita" pattern="dd/MM/yyyy HH:mm:ss" value="#{citasController.citaFecha}" required="true" requiredMessage="#{bundle.CitaSinFecha}" showOn="button"/>
+                        <p:calendar id="fechaCita" pattern="dd/MM/yyyy HH:mm" value="#{citasController.citaInfo.fechaCita}" required="true" requiredMessage="#{bundle.CitaSinFecha}" showOn="button"/>
                         
                         <p:outputLabel value="Descripción" for="citaDesc" />
-                        <p:inputTextarea id="citaDesc" value="#{citasController.citaDesc}" required="true" requiredMessage="#{bundle.CitaSinDesc}"/>
+                        <p:inputTextarea id="citaDesc" value="#{citasController.citaInfo.descripcion}" required="true" requiredMessage="#{bundle.CitaSinDesc}"/>
                         
                         <p:outputLabel value="Mascota" for="citaMascota" />
-                        <h:selectOneMenu id="citaMascota" value="#{citasController.citaMascota}">
+                        <h:selectOneMenu id="citaMascota" value="#{citasController.citaInfo.idMascota}">
                                 <f:selectItems 
                                     value="#{mascotasController.itemsAvailableSelectOne}"
                                     var="entry"
                                     itemValue="#{entry}"
                                     itemLabel="#{entry.nombre}" />
                         </h:selectOneMenu>
-                        
-                        <p:commandButton actionListener="#{citasController.crearNuevaCita}" value="#{bundle.Crear}" update="display,:CalendarioEmpleado,:growl" oncomplete="handleSubmit(args,'CrearDialogCita');"/>
-                        <p:commandButton value="#{bundle.Cancelar}" onclick="CrearDialogCita.hide()"/>
-                        
                     </p:panelGrid>
-                    
+                   
+                    <div style="text-align:center;">     
+                        <p:commandButton 
+                            actionListener="#{citasController.crearNuevaCita}" 
+                            value="#{bundle.Crear}" 
+                            update="display,:CalendarioEmpleado,:growl" 
+                            oncomplete="handleSubmit(args,'CrearDialogCita');"/>
+                        
+                        <p:commandButton
+                            style="margin-left: 10px;background:red;border-color:red;"
+                            value="#{bundle.Cancelar}" 
+                            onclick="CrearDialogCita.hide()"/>
+                    </div>
+                        
                 </h:panelGroup>
             </h:form>
         </p:dialog>
