@@ -354,37 +354,54 @@ public class FacturasController implements Serializable {
 	FacesContext facesContext = FacesContext.getCurrentInstance(); 
 	ExternalContext externalContext = facesContext.getExternalContext();
         ServletContext e = (ServletContext) externalContext.getContext();
-        File file = new File(e.getRealPath("/resources/facturas/")+ "/informe.txt");
         
         try {
-            file.createNewFile();
+            Document documento = new Document();
+
+            //
             
-            FileWriter myWriter = new FileWriter(file);
+            FileOutputStream ficheroPdf = new FileOutputStream(e.getRealPath("/resources/facturas/")+ "/informe.pdf");
+
+            //
             
-            myWriter.write("\t\t\tFactura de "+this.nombreMes+"\n\n");
-            myWriter.write("Ganancias del mes: "+this.gananciasMes+"€\n");
-            myWriter.write("------------------------------------------------\n\n");
+            PdfWriter.getInstance(documento, ficheroPdf).setInitialLeading(20);
+            documento.open();
             
-            myWriter.write("Producto\t\tVendidos\t\tGanancia total\n\n");
+            Paragraph titulo = new Paragraph("Factura de "+this.nombreMes); 
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            documento.add(titulo);
+            
+            documento.add(new Paragraph("Ganancias del mes: " +this.gananciasMes+"€"));
+            documento.add(new Chunk(""));
+            
+            //
+            
+            PdfPTable tabla = new PdfPTable(3);
+            tabla.addCell("Producto");
+            tabla.addCell("Vendido");
+            tabla.addCell("Ganancia total");
             
             Infofacturas info;
             
             for(int i = 0; i < this.productosDelMes.size(); i++) {
                 info = this.productosDelMes.get(i);
                 
-                myWriter.write(info.getIdProducto().getProducto()+"\t\t");
-                myWriter.write(info.getCantidad()+"\t\t\t");
-                myWriter.write((info.getCantidad() * info.getPrecio())+"€\n");
+                tabla.addCell(info.getIdProducto().getProducto());
+                tabla.addCell(info.getCantidad()+"");
+                tabla.addCell((info.getCantidad() * info.getPrecio())+"€");
             }
+            documento.add(tabla);
             
-            myWriter.close();
+            //
+            
+            documento.close();
             
             //
             
             this.informeSemanal = DefaultStreamedContent.builder()
-                .name("informe-" +this.nombreMes+ ".txt")
-                .contentType("text/txt")
-                .stream(() -> FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/facturas/informe.txt"))
+                .name("informe-" +this.nombreMes+ ".pdf")
+                .contentType("application/force-download")
+                .stream(() -> externalContext.getResourceAsStream("/resources/facturas/informe.pdf"))
                 .build();
             
         } catch(Exception a) {
