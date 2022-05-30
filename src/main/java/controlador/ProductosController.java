@@ -147,9 +147,20 @@ public class ProductosController implements Serializable {
         this.productoInfo = null;
     }
     
+    public void actualizarStock(Productos producto, int cantidad) {
+        
+        int stock = producto.getCantidad();
+        
+        if(stock != -1) {
+            producto.setCantidad(stock - cantidad);
+            getFacade().edit(producto);
+            this.items = null;
+        }
+    }
+    
     public List<Productos> getProductosDisponibles() {
         List<Productos> lista = getFacade().findAll();
-        List<Productos> listaFinal = new ArrayList<Productos>();
+        List<Productos> listaFinal = new ArrayList<>();
         Productos prod;
         Iterator<Productos> it = lista.iterator();
         

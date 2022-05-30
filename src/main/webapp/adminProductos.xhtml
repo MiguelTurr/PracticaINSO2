@@ -80,6 +80,11 @@
                                 <h:outputText value="Precio"/>
                             </f:facet>
                             <h:outputText value="#{item.precio}€"/>
+                            
+                            <h:outputText 
+                                rendered="#{item.descuento!=0.0}"
+                                style="color:green;"
+                                value=" -> #{item.precio - item.precio * (item.descuento / 100)}€"/>
                         </p:column>
 
                         <p:column>
