@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `productos` (
 DELETE FROM `productos`;
 INSERT INTO `productos` (`IdProducto`, `Producto`, `Precio`, `Cantidad`, `Descuento`) VALUES
 	
-    	(1, 'Consulta', 30.0, -1, 0.0),
+    	(1, 'Consulta', 30.0, -1, 10.0),
 	(2, 'Collar de perro', 10.5, 20, 0.0),
     	(3, 'Juguete de perro', 2.9, 25, 0.0),
     	(4, 'Comida de pez', 1.5, 50, 0.0),

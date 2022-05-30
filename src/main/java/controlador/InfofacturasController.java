@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
+import javax.el.ELContext;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -72,6 +73,13 @@ public class InfofacturasController implements Serializable {
             JsfUtil.addErrorMessage("No hay tanta cantidad de ese producto");
             return;
         }
+        
+        //
+        
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        ProductosController beanProd = (ProductosController) elContext.getELResolver().getValue(elContext, null, "productosController");
+        
+        beanProd.actualizarStock(this.infoFacturasInfo.getIdProducto(), cantidadElegida);
         
         // Descuento
         
