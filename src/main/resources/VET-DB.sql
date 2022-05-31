@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `facturas` (
   PRIMARY KEY (`IdFactura`),
   KEY `FK_Factura_Cliente` (`IdCliente`),
   CONSTRAINT `FK_Factura_Cliente` FOREIGN KEY (`IdCliente`) REFERENCES `usuarios` (`IdUsuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 DELETE FROM `facturas`;
 INSERT INTO `facturas` (`IdFactura`, `IdCliente`, `FechaFactura`) VALUES
@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `productos` (
   `Cantidad` int(11) NOT NULL,
   `Descuento` float default 0.0,
   PRIMARY KEY (`IdProducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 DELETE FROM `productos`;
 INSERT INTO `productos` (`IdProducto`, `Producto`, `Precio`, `Cantidad`, `Descuento`) VALUES
@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `infofacturas` (
   CONSTRAINT `FK_Info_Factura` FOREIGN KEY (`IdFactura`) REFERENCES `facturas` (`IdFactura`),
   CONSTRAINT `FK_Info_Producto` FOREIGN KEY (`IdProducto`) REFERENCES `productos` (`IdProducto`)
 
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 DELETE FROM `infofacturas`;
 INSERT INTO `infofacturas` (`IdInfo`, `IdFactura`, `IdProducto`, `Cantidad`, `Precio`) VALUES
