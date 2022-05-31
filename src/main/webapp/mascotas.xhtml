@@ -75,6 +75,25 @@
                                 <h:outputText value="#{item.descripcion}"/>
                             </p:column>
 
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Valoración"/>
+                                </f:facet>
+                                
+                                <p:rating
+                                    value="#{item.valoracion}"
+                                    disabled="#{item.valoracion != 0}"
+                                    cancel="false"
+                                    valueChangeListener="#{consultasController.valorarConsulta(item)}">
+                                    
+                                    <p:ajax
+                                        event="rate"
+                                        listener="#{consultasController.valorarConsulta}"
+                                        update=":growl,:MascotasCliente"/>
+                                    
+                                </p:rating>
+                            </p:column>
+
                         </p:dataTable>       
                     </p:card>
                 </ui:repeat>

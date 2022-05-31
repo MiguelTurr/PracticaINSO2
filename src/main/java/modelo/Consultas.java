@@ -53,6 +53,9 @@ public class Consultas implements Serializable {
     @Size(min = 1, max = 200)
     @Column(name = "Descripcion")
     private String descripcion;
+    @Basic(optional = false)
+    @Column(name = "Valoracion")
+    private int valoracion;
     @JoinColumn(name = "IdMascota", referencedColumnName = "IdMascota")
     @ManyToOne(optional = false)
     private Mascotas idMascota;
@@ -94,6 +97,14 @@ public class Consultas implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+    
+    public int getValoracion() {
+        return valoracion;
+    }
+    
+    public void setValoracion(int val) {
+        this.valoracion = val;
     }
 
     public Mascotas getIdMascota() {

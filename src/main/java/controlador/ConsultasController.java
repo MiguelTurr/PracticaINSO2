@@ -24,6 +24,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import modelo.Mascotas;
 import modelo.Usuarios;
+import org.primefaces.event.RateEvent;
 
 @Named("consultasController")
 @SessionScoped
@@ -35,6 +36,7 @@ public class ConsultasController implements Serializable {
     private Consultas selected;
     
     private String consultaInfo;
+    private Consultas rateConsulta;
 
     public ConsultasController() {
     }
@@ -165,6 +167,39 @@ public class ConsultasController implements Serializable {
         getFacade().create(consulta); 
         mascota.getConsultasList().add(consulta);
         JsfUtil.addSuccessMessage("Se ha creado una nueva consulta");
+    }
+    
+    public void valorarConsulta(RateEvent<Integer> rateEvent) {
+        
+        rateConsulta.setValoracion(rateEvent.getRating());
+        getFacade().edit(rateConsulta);
+        JsfUtil.addSuccessMessage("Has valorado la consulta");
+    }
+    
+    public void valorarConsulta(Consultas consulta) {
+        rateConsulta = consulta;
+    }
+    
+    public int obtenerValoracionEmpleado(Usuarios empleado) {
+        int valoracion = 0;
+        int total = 0;
+        List<Consultas> lista = getFacade().findAll();
+        Consultas comparar;
+        
+        for(int i = 0; i < lista.size(); i++) {
+            comparar = lista.get(i);
+            
+            if(comparar.getIdEmpleado().equals(empleado)) {
+                valoracion += comparar.getValoracion();
+                total ++;
+            }
+        }
+        
+        if(total > 1) {
+            valoracion = valoracion / total;
+        }
+        
+        return valoracion;
     }
 
     @FacesConverter(forClass = Consultas.class)

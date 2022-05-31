@@ -34,7 +34,8 @@
                     value="#{sesionController.usuario}"
                     required="true"
                     requiredMessage="Escribe el usuario"
-                    label="username"/>
+                    label="username"
+                    placeholder="Usuario"/>
                 
                 <h:outputLabel for="password" value="Clave:" />
                 <p:password
@@ -42,7 +43,8 @@
                     value="#{sesionController.password}"
                     required="true"
                     requiredMessage="Escribe la contraseña"
-                    label="password"/>
+                    label="password"
+                    placeholder="Contraseña"/>
                 
                 <f:facet name="footer" >
                   <p:commandButton

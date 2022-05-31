@@ -62,8 +62,28 @@
                                 styleClass="ui-datagrid-no-border"
                                 columns="2"
                                 layout="grid">
-
+                                
                                <p:panel
+                                   rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Empleado'}">
+                                   
+                                    <br/>
+                                    
+                                    <h:outputText 
+                                        style="font-size:20px; font-weight: bold;"
+                                        value="Tu valoración:"/>
+                                   
+                                    <br/>
+                                    <br/>
+                                   
+                                    <p:rating
+                                        value="#{consultasController.obtenerValoracionEmpleado(sesionController.logeado)}"
+                                        disabled="true"
+                                        cancel="false"/>
+                                    <br/>
+                                   
+                                </p:panel> 
+
+                                <p:panel
                                    rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Cliente'}">
                                    
                                     <h:outputText 

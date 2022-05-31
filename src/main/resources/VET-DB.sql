@@ -97,6 +97,7 @@ CREATE TABLE IF NOT EXISTS `consultas` (
   `IdConsulta` int(11) NOT NULL AUTO_INCREMENT,
   `FechaConsulta` DATETIME DEFAULT NOW(),
   `Descripcion` varchar(200) NOT NULL,
+  `Valoracion` int(11) default 0,
   `IdEmpleado` int(11) NOT NULL,
   `IdMascota` int(11) NOT NULL,
   PRIMARY KEY (`IdConsulta`),
