@@ -48,7 +48,7 @@
                             <p>Estas conectado como: #{sesionController.logeado.idRol.getTipoUsuario()}</p>
                             <p>Tu última conexión fue: 
                                 <h:outputText value="#{sesionController.ultimoLogin}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                    <f:convertDateTime pattern="dd/MM/yyyy - HH:mm" />
                                 </h:outputText>
                             </p>
                             <p:outputLabel rendered="#{sesionController.logeado.idRol.tipoUsuario eq 'Cliente'}">
